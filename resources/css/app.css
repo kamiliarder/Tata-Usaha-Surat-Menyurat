@@ -1,3 +1,23 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+    /* Better font fallbacks for Linux systems */
+    body {
+        font-family: 'Figtree', 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Ubuntu', 'Cantarell', 'Noto Sans', sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+    
+    /* Ensure SVG icons render properly */
+    svg {
+        display: inline-block;
+        vertical-align: middle;
+    }
+    
+    /* Better text rendering on Linux */
+    * {
+        text-rendering: optimizeLegibility;
+    }
+}

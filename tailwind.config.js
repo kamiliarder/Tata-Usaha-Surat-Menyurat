@@ -12,7 +12,23 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                sans: [
+                    'Figtree', 
+                    'Inter', 
+                    'system-ui', 
+                    '-apple-system', 
+                    'BlinkMacSystemFont', 
+                    'Segoe UI', 
+                    'Roboto', 
+                    'Ubuntu', 
+                    'Cantarell', 
+                    'Noto Sans', 
+                    'sans-serif', 
+                    'Apple Color Emoji', 
+                    'Segoe UI Emoji', 
+                    'Segoe UI Symbol', 
+                    'Noto Color Emoji'
+                ],
             },
         },
     },

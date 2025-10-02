@@ -9,13 +9,13 @@
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
     }
-    
+
     /* Ensure SVG icons render properly */
     svg {
         display: inline-block;
         vertical-align: middle;
     }
-    
+
     /* Better text rendering on Linux */
     * {
         text-rendering: optimizeLegibility;

@@ -48,7 +48,7 @@ class ShowLoginCredentials extends Command
         $teachers = User::where('role', 'guru')
                        ->where('email', '!=', 'visitor@dummy.local')
                        ->get();
-        
+
         if ($teachers->count() > 0) {
             $this->info('👨‍🏫 TEACHER ACCOUNTS:');
             foreach ($teachers as $teacher) {
@@ -65,7 +65,7 @@ class ShowLoginCredentials extends Command
         $this->line('2. Click "Login Staff" button');
         $this->line('3. Use any of the credentials above');
         $this->line('');
-        
+
         $this->warn('⚠️  Change passwords before production!');
     }
 }

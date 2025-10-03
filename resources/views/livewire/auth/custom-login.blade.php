@@ -14,8 +14,8 @@ use Livewire\Attributes\Validate;
 use Livewire\Volt\Component;
 
 new #[Layout('components.layouts.auth.custom-login')] class extends Component {
-    #[Validate('required|string')]
-    public string $username = '';
+    #[Validate('required|string|email')]
+    public string $email = '';
 
     #[Validate('required|string')]
     public string $password = '';
@@ -28,11 +28,11 @@ new #[Layout('components.layouts.auth.custom-login')] class extends Component {
 
         $this->ensureIsNotRateLimited();
 
-        if (!Auth::attempt(['username' => $this->username, 'password' => $this->password], $this->remember)) {
+        if (!Auth::attempt(['email' => $this->email, 'password' => $this->password], $this->remember)) {
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
-                'username' => trans('auth.failed'),
+                'email' => trans('auth.failed'),
             ]);
         }
 
@@ -40,7 +40,7 @@ new #[Layout('components.layouts.auth.custom-login')] class extends Component {
 
         Session::regenerate();
 
-        $this->redirect(route('dashboard', absolute: false), navigate: true);
+        $this->redirectRoute('dashboard');
     }
 
     protected function ensureIsNotRateLimited(): void
@@ -54,7 +54,7 @@ new #[Layout('components.layouts.auth.custom-login')] class extends Component {
         $seconds = RateLimiter::availableIn($this->throttleKey());
 
         throw ValidationException::withMessages([
-            'username' => trans('auth.throttle', [
+            'email' => trans('auth.throttle', [
                 'seconds' => $seconds,
                 'minutes' => ceil($seconds / 60),
             ]),
@@ -63,26 +63,26 @@ new #[Layout('components.layouts.auth.custom-login')] class extends Component {
 
     protected function throttleKey(): string
     {
-        return Str::transliterate(Str::lower($this->username).'|'.request()->ip());
+        return Str::transliterate(Str::lower($this->email).'|'.request()->ip());
     }
 }; ?>
 
 <div>
     <h2 class="login-title">LOGIN</h2>
 
-    <form wire:submit="login" class="login-form">
+    <form wire:submit.prevent="login" class="login-form">
         <!-- Username -->
         <div class="form-group">
             <input
-                wire:model="username"
-                id="username"
-                name="username"
+                wire:model="email"
+                id="email"
+                name="email"
                 type="text"
                 required
-                placeholder="Nama pengguna"
+                placeholder="Email"
                 class="form-input"
             />
-            @error('username')
+            @error('email')
                 <p class="error-message">{{ $message }}</p>
             @enderror
         </div>
@@ -116,10 +116,8 @@ new #[Layout('components.layouts.auth.custom-login')] class extends Component {
         </div>
 
         <!-- Login button -->
-        <div>
-            <button type="submit" class="login-button">
-                Login
-            </button>
-        </div>
+        <button type="submit" class="ms-3 inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
+            {{ __('Log in') }}
+        </button>
     </form>
 </div>

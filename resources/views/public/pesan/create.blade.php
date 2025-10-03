@@ -282,7 +282,7 @@
                     <div class="upload-area">
                         <div class="download-icon">📄</div>
                         <span class="download-btn">Unduh</span>
-                    </div>
+                    </div>  
                 </div>
             </div>
 

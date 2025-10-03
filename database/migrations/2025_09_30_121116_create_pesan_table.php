@@ -23,7 +23,7 @@ return new class extends Migration
             $table->dateTime('tanggal_kirim')->useCurrent();
             $table->string('pengirim', 200)->notNullable();
             $table->unsignedInteger('id_penerima')->notNullable();
-            $table->enum('status_pesan', ['diterima', 'dalam_proses', 'perlu_perbaikan', 'disetujui', 'ditolak'])->default('diterima')->notNullable();
+            $table->enum('status_pesan', ['pending', 'diterima', 'dalam_proses', 'perlu_perbaikan', 'disetujui', 'ditolak'])->default('pending')->notNullable();
             $table->string('instansi', 50)->nullable();
             $table->string('kontak_pengirim', 100)->nullable(); // WhatsApp/Email contact
             $table->string('alamat_pengirim', 255)->nullable(); // Address if needed

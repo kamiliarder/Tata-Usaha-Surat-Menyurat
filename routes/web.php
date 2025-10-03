@@ -51,6 +51,7 @@ Route::middleware(['auth'])->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+Route::view('/manajemen', 'manajemen_surat')->name('manajemen_surat');
 
 // Include Volt routes for custom authentication
 require __DIR__.'/volt.php';

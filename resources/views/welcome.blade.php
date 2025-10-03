@@ -47,8 +47,8 @@
     </div>
 
     <!-- Features Section -->
-    <div class="grid md:grid-cols-3 gap-8 mb-16">
-        <div class="text-center p-6 bg-white rounded-lg shadow-md">
+    <div class="grid md:tgrid-cols-3 gap-8 mb-16">
+        <div class="text-center p-6 bg-whie rounded-lg shadow-md">
             <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>

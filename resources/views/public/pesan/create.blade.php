@@ -212,11 +212,7 @@
     <!-- Header -->
     <div class="header">
         <div class="logo">T</div>
-        <nav class="nav">
-            <a href="#">Dashboard</a>
-            <a href="#">Surat</a>
-            <a href="#">Laporan</a>
-        </nav>
+
     </div>
 
     <!-- Page Title -->

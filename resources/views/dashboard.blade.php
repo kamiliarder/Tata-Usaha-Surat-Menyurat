@@ -15,21 +15,21 @@
 </head>
 <body class="font-sans antialiased bg-gray-50">
     <!-- Custom Navigation Bar -->
-    <nav class="bg-white shadow-sm border-b border-gray-200">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16">
+    <nav class="bg-white border-b border-gray-200 shadow-sm">
+        <div class="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
                 <!-- Left side - Logo and Navigation -->
                 <div class="flex items-center space-x-8">
                     <!-- Logo -->
                     <div class="flex items-center space-x-2">
-                        <img src="{{ asset('images/mainLogo.png') }}" alt="Telkom Schools Logo" class="h-10 w-auto">
+                        <img src="{{ asset('images/logo.png') }}" alt="Telkom Schools Logo" class="w-auto h-10">
                     </div>
 
                     <!-- Navigation Links -->
                     <nav class="flex space-x-6">
-                        <a href="{{ route('dashboard') }}" class="text-red-600 font-medium px-3 py-2 rounded-md bg-red-50">Dashboard</a>
-                        <a href="#" class="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md hover:bg-gray-50">Surat</a>
-                        <a href="#" class="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md hover:bg-gray-50">Akun Guru</a>
+                        <a href="{{ route('dashboard') }}" class="px-3 py-2 font-medium text-red-600 rounded-md bg-red-50">Dashboard</a>
+                        <a href="#" class="px-3 py-2 text-gray-600 rounded-md hover:text-gray-900 hover:bg-gray-50">Surat</a>
+                        <a href="#" class="px-3 py-2 text-gray-600 rounded-md hover:text-gray-900 hover:bg-gray-50">Akun Guru</a>
                     </nav>
                 </div>
 
@@ -37,8 +37,8 @@
                 <div class="flex items-center space-x-4">
                     <span class="text-sm text-gray-700">{{ Auth::user()->name }}</span>
                     <div class="relative">
-                        <button onclick="toggleDropdown()" class="flex items-center space-x-2 text-gray-600 hover:text-gray-900 p-2 rounded-md hover:bg-gray-50">
-                            <div class="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center">
+                        <button onclick="toggleDropdown()" class="flex items-center p-2 space-x-2 text-gray-600 rounded-md hover:text-gray-900 hover:bg-gray-50">
+                            <div class="flex items-center justify-center w-8 h-8 bg-gray-200 rounded-full">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                                 </svg>
@@ -49,11 +49,11 @@
                         </button>
 
                         <!-- Dropdown Menu -->
-                        <div id="userDropdown" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg border border-gray-200 z-50">
+                        <div id="userDropdown" class="absolute right-0 z-50 hidden w-48 mt-2 bg-white border border-gray-200 rounded-md shadow-lg">
                             <a href="{{ route('profile.edit') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Profile</a>
                             <form method="POST" action="{{ route('logout') }}" class="block">
                                 @csrf
-                                <button type="submit" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Log Out</button>
+                                <button type="submit" class="w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-gray-50">Log Out</button>
                             </form>
                         </div>
                     </div>
@@ -65,14 +65,14 @@
     <!-- Main Content -->
     <main class="min-h-screen bg-gray-50">
         <div class="py-6">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
                 <!-- Page Title -->
                 <div class="mb-8">
                     <h1 class="text-2xl font-bold text-gray-900">Dashboard - Tata Usaha Telkom Schools Banjarbaru</h1>
                 </div>
 
             <!-- Stats Cards -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="grid grid-cols-1 gap-6 mb-8 md:grid-cols-3">
                 <!-- Surat Masuk -->
                 <div class="stats-card stats-card-red">
                     <div class="stats-content">
@@ -120,7 +120,7 @@
             </div>
 
             <!-- Main Content Grid -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <div class="grid grid-cols-1 gap-6 mb-8 lg:grid-cols-2">
                 <!-- Statistics Chart -->
                 <div class="dashboard-card">
                     <div class="card-header">
@@ -185,8 +185,8 @@
 
             <!-- Action Buttons -->
             <div class="mb-8">
-                <h3 class="text-xl font-bold text-gray-900 mb-4">Aksi Cepat</h3>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <h3 class="mb-4 text-xl font-bold text-gray-900">Aksi Cepat</h3>
+                <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
                     <button class="action-btn action-btn-red">
                         <svg class="action-btn-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>

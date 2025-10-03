@@ -53,4 +53,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+// Include Volt routes for custom authentication
+require __DIR__.'/volt.php';
+
+// Comment out the default auth routes since we're using custom Volt routes
+// require __DIR__.'/auth.php';

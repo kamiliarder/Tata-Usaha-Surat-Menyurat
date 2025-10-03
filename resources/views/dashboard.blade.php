@@ -27,6 +27,7 @@
 
                     <!-- Navigation Links -->
                     <nav class="flex space-x-6">
+                        <li>|</li>
                         <a href="{{ route('dashboard') }}" class="px-3 py-2 font-medium text-red-600 rounded-md bg-red-50">Dashboard</a>
                         <a href="#" class="px-3 py-2 text-gray-600 rounded-md hover:text-gray-900 hover:bg-gray-50">Surat</a>
                         <a href="#" class="px-3 py-2 text-gray-600 rounded-md hover:text-gray-900 hover:bg-gray-50">Akun Guru</a>

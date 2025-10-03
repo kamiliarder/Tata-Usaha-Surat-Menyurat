@@ -372,6 +372,7 @@
                 <div class="logo-container">
                     <img src="{{ asset('images/logo.png') }}" alt="Telkom Schools Logo">
                 </div>
+                <li>|</li>
                 <li><a href="#dashboard" class="nav-link">Dashboard</a></li>
                 <li><a href="#surat" class="nav-link active">Surat</a></li>
                 <li><a href="#laporan" class="nav-link">Laporan</a></li>

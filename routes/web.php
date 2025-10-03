@@ -53,4 +53,6 @@ Route::middleware(['auth'])->group(function () {
 });
 Route::view('/manajemen', 'manajemen_surat')->name('manajemen_surat');
 
+Route::view('/detailsurat', 'detailsurat')->name('detail_surat');
+
 require __DIR__.'/auth.php';

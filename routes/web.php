@@ -5,6 +5,7 @@ use App\Http\Controllers\PublicPesanController;
 use App\Http\Controllers\AdminPesanController;
 use App\Http\Controllers\GuruPesanController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\DashboardController;
 
 // Public routes (no authentication required)
 Route::get('/', function () {
@@ -20,10 +21,8 @@ Route::prefix('pesan')->name('public.pesan.')->group(function () {
 });
 
 // Authenticated routes
-Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+Route::middleware(['auth'])->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     // Admin routes (will add middleware later)
     Route::prefix('admin')->name('admin.')->group(function () {

@@ -4,13 +4,12 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PublicPesanController;
 use App\Http\Controllers\AdminPesanController;
 use App\Http\Controllers\GuruPesanController;
+use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 
 // Public routes (no authentication required)
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [WelcomeController::class, 'index']);
 
 // Public correspondence submission
 Route::prefix('pesan')->name('public.pesan.')->group(function () {

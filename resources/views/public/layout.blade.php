@@ -33,20 +33,16 @@
                 <div class="flex justify-between items-center h-16">
                     <!-- Logo -->
                     <div class="flex items-center">
-                        <a href="{{ route('public.pesan.create') }}" class="flex items-center">
-                            <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
-                            </svg>
-                            <span class="ml-3 text-xl font-semibold text-gray-900">Sistem Surat Sekolah</span>
-                        </a>
+                        <img src="{{ asset('images/schoolLogo.png') }}" alt="Logo" class="w-8 h-8">
+                        <span class="ml-3 text-xl font-semibold text-gray-900">SMK Telkom Banjarbaru</span>
                     </div>
 
                     <!-- Navigation Links -->
                     <div class="flex items-center space-x-4">
-                        <a href="{{ route('public.pesan.create') }}" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">
+                        <a href="{{ route('public.pesan.create') }}" class="text-gray-700 hover:text-red-600 px-3 py-2 rounded-md text-sm font-medium">
                             Kirim Surat
                         </a>
-                        <a href="{{ route('login') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium">
+                        <a href="{{ route('login') }}" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md text-sm font-medium">
                             Login Staff
                         </a>
                     </div>

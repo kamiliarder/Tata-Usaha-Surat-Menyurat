@@ -32,6 +32,8 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('admin')->name('admin.')->group(function () {
         Route::prefix('pesan')->name('pesan.')->group(function () {
             Route::get('/', [AdminPesanController::class, 'index'])->name('index');
+            Route::get('/create', [AdminPesanController::class, 'create'])->name('create');
+            Route::post('/', [AdminPesanController::class, 'store'])->name('store');
             Route::get('/{id}', [AdminPesanController::class, 'show'])->name('show');
             Route::patch('/{id}', [AdminPesanController::class, 'update'])->name('update');
             Route::delete('/{id}', [AdminPesanController::class, 'destroy'])->name('destroy');

@@ -19,6 +19,97 @@
             margin: 0;
         }
 
+        /* Search Box Styles */
+        .search-box {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .search-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .search-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin: 0;
+        }
+
+        .search-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+        }
+
+        .search-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .search-group label {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+            color: #374151;
+        }
+
+        .search-input {
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #dc2626;
+            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+        }
+
+        .search-input::placeholder {
+            color: #9ca3af;
+        }
+
+        select.search-input {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23374151' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.75rem center;
+            cursor: pointer;
+            padding-right: 2.5rem;
+        }
+
+        .create-button {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.75rem 1.5rem;
+            background-color: #dc2626;
+            color: white;
+            font-weight: 500;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: background-color 0.2s;
+            font-size: 0.875rem;
+        }
+
+        .create-button:hover {
+            background-color: #b91c1c;
+        }
+
+        .create-button svg {
+            width: 1.25rem;
+            height: 1.25rem;
+            margin-right: 0.5rem;
+        }
+
         /* Table Styles */
         .table-container {
             background: white;
@@ -312,15 +403,96 @@
                 margin: 1rem;
                 width: calc(100% - 2rem);
             }
+
+            .search-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .search-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+        }
+
+        @media (max-width: 1024px) and (min-width: 769px) {
+            .search-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
     </style>
     @endpush
 
     <div class="py-6">
         <div class="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
-            <!-- Page Header -->
-            <div class="page-header">
-                <h1 class="page-title">Manajemen Surat</h1>
+            <!-- Success Message -->
+            @if(session('success'))
+                <div class="mb-4 p-4 bg-green-50 border border-green-200 rounded-lg">
+                    <div class="flex">
+                        <svg class="w-5 h-5 text-green-400" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                        </svg>
+                        <div class="ml-3">
+                            <p class="text-sm font-medium text-green-800">
+                                {{ session('success') }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            @endif
+            <!-- Search Box -->
+            <div class="search-box">
+                <div class="search-header">
+                    <h1 class="search-title">Manajemen Surat</h1>
+                    <a href="{{ route('admin.pesan.create') }}" class="create-button">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                        </svg>
+                        Buat Surat Keluar
+                    </a>
+                </div>
+                <form method="GET" action="{{ route('admin.pesan.index') }}" id="searchForm">
+                    <div class="search-grid">
+                        <div class="search-group">
+                            <label for="search">Pencarian</label>
+                            <input type="text" id="search" name="search" class="search-input"
+                                   placeholder="Cari judul atau nomor surat"
+                                   value="{{ request('search') }}">
+                        </div>
+                        <div class="search-group">
+                            <label for="kategori">Kategori</label>
+                            <select id="kategori" name="kategori" class="search-input">
+                                <option value="">Semua Kategori</option>
+                                <option value="akademik" {{ request('kategori') == 'akademik' ? 'selected' : '' }}>Akademik</option>
+                                <option value="kesiswaan" {{ request('kategori') == 'kesiswaan' ? 'selected' : '' }}>Kesiswaan</option>
+                                <option value="keuangan" {{ request('kategori') == 'keuangan' ? 'selected' : '' }}>Keuangan</option>
+                                <option value="umum" {{ request('kategori') == 'umum' ? 'selected' : '' }}>Umum</option>
+                                <option value="non_akademik" {{ request('kategori') == 'non_akademik' ? 'selected' : '' }}>Non Akademik</option>
+                                <option value="sarpras" {{ request('kategori') == 'sarpras' ? 'selected' : '' }}>Sarpras</option>
+                            </select>
+                        </div>
+                        <div class="search-group">
+                            <label for="tipe">Tipe</label>
+                            <select id="tipe" name="tipe" class="search-input">
+                                <option value="">Semua Tipe</option>
+                                <option value="masuk" {{ request('tipe') == 'masuk' ? 'selected' : '' }}>Masuk</option>
+                                <option value="keluar" {{ request('tipe') == 'keluar' ? 'selected' : '' }}>Keluar</option>
+                            </select>
+                        </div>
+                        <div class="search-group">
+                            <label for="status">Status</label>
+                            <select id="status" name="status" class="search-input">
+                                <option value="">Semua Status</option>
+                                <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending</option>
+                                <option value="diterima" {{ request('status') == 'diterima' ? 'selected' : '' }}>Diterima</option>
+                                <option value="dalam_proses" {{ request('status') == 'dalam_proses' ? 'selected' : '' }}>Dalam Proses</option>
+                                <option value="perlu_perbaikan" {{ request('status') == 'perlu_perbaikan' ? 'selected' : '' }}>Perlu Perbaikan</option>
+                                <option value="disetujui" {{ request('status') == 'disetujui' ? 'selected' : '' }}>Disetujui</option>
+                                <option value="ditolak" {{ request('status') == 'ditolak' ? 'selected' : '' }}>Ditolak</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
             </div>
 
             <!-- Main Table -->
@@ -685,6 +857,37 @@
                 }
             });
         }
+
+        // Search functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchForm = document.getElementById('searchForm');
+            const searchInput = document.getElementById('search');
+            const kategoriSelect = document.getElementById('kategori');
+            const tipeSelect = document.getElementById('tipe');
+            const statusSelect = document.getElementById('status');
+
+            // Auto-submit form when filters change
+            kategoriSelect.addEventListener('change', function() {
+                searchForm.submit();
+            });
+
+            tipeSelect.addEventListener('change', function() {
+                searchForm.submit();
+            });
+
+            statusSelect.addEventListener('change', function() {
+                searchForm.submit();
+            });
+
+            // Debounced search for text input
+            let searchTimeout;
+            searchInput.addEventListener('input', function() {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(function() {
+                    searchForm.submit();
+                }, 500); // Wait 500ms after user stops typing
+            });
+        });
     </script>
     @endpush
 </x-app-custom>

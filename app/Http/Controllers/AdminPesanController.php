@@ -48,6 +48,77 @@ class AdminPesanController extends Controller
     }
 
     /**
+     * Show form to create new outgoing letter.
+     */
+    public function create()
+    {
+        // Get all staff members for recipient selection
+        $staffMembers = User::where('email', '!=', 'visitor@dummy.local')
+            ->orderBy('nama')
+            ->get();
+
+        return view('admin.pesan.create', compact('staffMembers'));
+    }
+
+    /**
+     * Store new outgoing letter.
+     */
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'judul' => 'required|string|max:200',
+            'perihal' => 'nullable|string',
+            'kategori' => 'required|in:akademik,kesiswaan,keuangan,sarpras,non_akademik,umum',
+            'pengirim' => 'required|string|max:200',
+            'penerima' => 'required|string|max:200',
+            'instansi' => 'nullable|string|max:50',
+            'kontak_penerima' => 'nullable|string|max:20',
+            'alamat_penerima' => 'nullable|string',
+            'lampiran.*' => 'nullable|file|max:10240|mimes:pdf,doc,docx,jpg,jpeg,png,gif',
+        ]);
+
+        // Get dummy visitor account for outgoing messages
+        $dummyAccount = User::where('email', 'visitor@dummy.local')->first();
+
+        // Generate unique message number
+        $nomorPesan = Pesan::generateNomorPesan();
+
+        // Create outgoing letter
+        $pesan = Pesan::create([
+            'nomor_pesan' => $nomorPesan,
+            'judul' => $validated['judul'],
+            'perihal' => $validated['perihal'],
+            'kategori' => $validated['kategori'],
+            'tipe' => 'keluar',
+            'tanggal_kirim' => now(),
+            'pengirim' => $validated['pengirim'],
+            'id_penerima' => $dummyAccount->id_pengguna, // Dummy account for external recipient
+            'status_pesan' => 'diterima', // Outgoing letters start as "received"
+            'instansi' => $validated['instansi'],
+            'kontak_pengirim' => $validated['kontak_penerima'], // Store recipient contact
+            'alamat_pengirim' => $validated['alamat_penerima'], // Store recipient address
+        ]);
+
+        // Handle file uploads
+        if ($request->hasFile('lampiran')) {
+            foreach ($request->file('lampiran') as $file) {
+                $originalName = $file->getClientOriginalName();
+                $fileName = time() . '_' . \Illuminate\Support\Str::random(10) . '.' . $file->getClientOriginalExtension();
+                $filePath = $file->storeAs('lampiran', $fileName, 'public');
+
+                Lampiran::create([
+                    'id_pesan' => $pesan->id_pesan,
+                    'nama_file' => $originalName,
+                    'path_file' => $filePath,
+                ]);
+            }
+        }
+
+        return redirect()->route('admin.pesan.index')
+            ->with('success', 'Surat keluar berhasil dicatat dengan nomor: ' . $nomorPesan);
+    }
+
+    /**
      * Show specific message details.
      */
     public function show($id, Request $request)
@@ -185,12 +256,15 @@ class AdminPesanController extends Controller
                 ->with('error', 'Surat hanya dapat dihapus jika statusnya "Perlu Perbaikan" atau "Ditolak".');
         }
 
-        // Delete associated files
+        // Delete associated files from storage and database records
         foreach ($pesan->lampiran as $lampiran) {
+            // Delete physical file from storage
             Storage::disk('public')->delete($lampiran->path_file);
+            // Delete lampiran record from database
+            $lampiran->delete();
         }
 
-        // Delete message (attachments will be deleted by foreign key cascade)
+        // Now delete the message (no foreign key constraint violation)
         $pesan->delete();
 
         if ($request->expectsJson()) {

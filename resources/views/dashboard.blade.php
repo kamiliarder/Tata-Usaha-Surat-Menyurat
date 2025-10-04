@@ -328,20 +328,20 @@
             <div class="mb-8">
                 <h3 class="mb-4 text-xl font-bold text-gray-900">Aksi Cepat</h3>
                 <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
-                    <button class="action-btn action-btn-red">
+                    <a href="{{ route('admin.pesan.create') }}" class="action-btn action-btn-red">
                         <svg class="action-btn-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                         </svg>
                         Buat Surat Baru
-                    </button>
+                    </a>
 
-                    <button class="action-btn action-btn-red" href="{{ route('admin.pesan.index') }}">
+                    <a href="{{ route('admin.pesan.index') }}" class="action-btn action-btn-red">
                         <svg class="action-btn-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
                         </svg>
                         Lihat Semua Surat
-                    </button>
+                    </a>
 
                     <button class="action-btn action-btn-red">
                         <svg class="action-btn-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">

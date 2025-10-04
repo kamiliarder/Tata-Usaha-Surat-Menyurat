@@ -12,15 +12,17 @@
                 <!-- Navigation Links -->
                 <nav class="flex space-x-6">
                     <a href="{{ route('dashboard') }}"
-                       class="px-3 py-2 font-medium rounded-md {{ request()->routeIs('dashboard') ? 'text-red-600 bg-red-50' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50' }}">
+                       class="px-3 py-2 font-medium transition-all duration-200 {{ request()->routeIs('dashboard') ? 'text-red-600' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50' }}"
+                       style="{{ request()->routeIs('dashboard') ? 'border-bottom: 2px solid #dc2626;' : '' }}">
                         Dashboard
                     </a>
                     <a href="{{ route('admin.pesan.index') }}"
-                       class="px-3 py-2 font-medium rounded-md {{ request()->routeIs('admin.pesan.*') ? 'text-red-600 bg-red-50' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50' }}">
+                       class="px-3 py-2 font-medium transition-all duration-200 {{ request()->routeIs('admin.pesan.*') ? 'text-red-600' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50' }}"
+                       style="{{ request()->routeIs('admin.pesan.*') ? 'border-bottom: 2px solid #dc2626;' : '' }}">
                         Surat
                     </a>
                     <a href="#"
-                       class="px-3 py-2 text-gray-600 rounded-md hover:text-gray-900 hover:bg-gray-50">
+                       class="px-3 py-2 text-gray-600 transition-all duration-200 hover:text-gray-900 hover:bg-gray-50">
                         Akun Guru
                     </a>
                 </nav>

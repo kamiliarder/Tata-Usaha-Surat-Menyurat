@@ -207,8 +207,8 @@ resources/views/
 
 ### 🚧 Planned Features
 - [ ] Email notifications for status changes
-- [ ] Advanced search and filtering
-- [ ] Letter templates
+- [x] Advanced search and filtering
+- [x] Letter templates
 - [ ] Bulk operations
 - [ ] Audit trail
 - [ ] Reports and analytics
@@ -259,6 +259,12 @@ For technical issues or questions:
 
 This project is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
 
+## 💌 Special Thanks to
+- Arman D. (Requirement Analyst)
+- Muhammad Husain H. (Quality Assurance)
+- Meraz E.H. (Frontend, UI/UX)
+- Betarus M.B. (Frontend, UI/UX)
+- Copilot (Backend & Frontend Assist)
 ---
 
 **Developed for Telkom Schools** | Last Updated: October 2025

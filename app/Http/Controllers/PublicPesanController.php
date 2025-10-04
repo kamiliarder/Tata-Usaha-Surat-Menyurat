@@ -29,10 +29,8 @@ class PublicPesanController extends Controller
     /**
      * Get staff members filtered by division (AJAX endpoint).
      */
-    public function getStaffByDivisi(Request $request)
+    public function getStaffByDivisi($divisi)
     {
-        $divisi = $request->input('divisi');
-
         $query = User::where('email', '!=', 'visitor@dummy.local');
 
         if ($divisi && $divisi !== 'umum') {
@@ -83,7 +81,7 @@ class PublicPesanController extends Controller
             'tanggal_kirim' => now(),
             'pengirim' => $validated['pengirim'],
             'id_penerima' => $validated['id_penerima'],
-            'status_pesan' => 'diterima',
+            'status_pesan' => 'pending',
             'instansi' => $validated['instansi'],
             'kontak_pengirim' => $validated['kontak_pengirim'],
             'alamat_pengirim' => $validated['alamat_pengirim'],

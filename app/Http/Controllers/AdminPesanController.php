@@ -42,18 +42,23 @@ class AdminPesanController extends Controller
             });
         }
 
-        $pesanList = $query->orderBy('tanggal_kirim', 'desc')->paginate(15);
+        $letters = $query->orderBy('tanggal_kirim', 'desc')->paginate(15);
 
-        return view('admin.pesan.index', compact('pesanList'));
+        return view('admin.pesan.index', compact('letters'));
     }
 
     /**
      * Show specific message details.
      */
-    public function show($id)
+    public function show($id, Request $request)
     {
         $pesan = Pesan::with(['penerima', 'lampiran', 'pesanTerkait', 'balasan'])
             ->findOrFail($id);
+
+        // If it's an AJAX request, return JSON
+        if ($request->expectsJson()) {
+            return response()->json($pesan);
+        }
 
         $staffMembers = User::where('email', '!=', 'visitor@dummy.local')
             ->orderBy('nama')
@@ -70,19 +75,27 @@ class AdminPesanController extends Controller
         $pesan = Pesan::findOrFail($id);
 
         $validated = $request->validate([
-            'status_pesan' => 'required|in:diterima,dalam_proses,perlu_perbaikan,disetujui,ditolak',
+            'status_pesan' => 'required|in:pending,diterima,dalam_proses,perlu_perbaikan,disetujui,ditolak',
             'id_penerima' => 'nullable|exists:tb_pengguna,id_pengguna',
         ]);
 
         // Prevent assignment to dummy visitor account for incoming messages
-        if ($pesan->tipe === 'masuk' && $validated['id_penerima']) {
+        if ($pesan->tipe === 'masuk' && isset($validated['id_penerima'])) {
             $dummyAccountId = User::where('email', 'visitor@dummy.local')->first()->id_pengguna;
             if ($validated['id_penerima'] == $dummyAccountId) {
+                if ($request->expectsJson()) {
+                    return response()->json(['success' => false, 'message' => 'Cannot assign visitor account to incoming messages.'], 400);
+                }
                 return back()->withErrors(['id_penerima' => 'Cannot assign visitor account to incoming messages.']);
             }
         }
 
         $pesan->update($validated);
+
+        // If it's an AJAX request, return JSON
+        if ($request->expectsJson()) {
+            return response()->json(['success' => true, 'message' => 'Status berhasil diperbarui.']);
+        }
 
         return redirect()->route('admin.pesan.show', $pesan->id_pesan)
             ->with('success', 'Pesan berhasil diperbarui.');
@@ -159,9 +172,18 @@ class AdminPesanController extends Controller
     /**
      * Delete a message.
      */
-    public function destroy($id)
+    public function destroy($id, Request $request)
     {
         $pesan = Pesan::with('lampiran')->findOrFail($id);
+
+        // Only allow deletion if status is 'perlu_perbaikan' or 'ditolak'
+        if (!in_array($pesan->status_pesan, ['perlu_perbaikan', 'ditolak'])) {
+            if ($request->expectsJson()) {
+                return response()->json(['success' => false, 'message' => 'Surat hanya dapat dihapus jika statusnya "Perlu Perbaikan" atau "Ditolak".'], 400);
+            }
+            return redirect()->route('admin.pesan.index')
+                ->with('error', 'Surat hanya dapat dihapus jika statusnya "Perlu Perbaikan" atau "Ditolak".');
+        }
 
         // Delete associated files
         foreach ($pesan->lampiran as $lampiran) {
@@ -171,7 +193,11 @@ class AdminPesanController extends Controller
         // Delete message (attachments will be deleted by foreign key cascade)
         $pesan->delete();
 
+        if ($request->expectsJson()) {
+            return response()->json(['success' => true, 'message' => 'Surat berhasil dihapus.']);
+        }
+
         return redirect()->route('admin.pesan.index')
-            ->with('success', 'Pesan berhasil dihapus.');
+            ->with('success', 'Surat berhasil dihapus.');
     }
 }

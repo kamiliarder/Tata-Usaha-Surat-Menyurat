@@ -14,7 +14,7 @@ This system is designed for Telkom Schools administrative staff to manage corres
 
 ## 🛠️ Technology Stack
 
-- **Backend**: Laravel 12 (PHP 8.2+)
+- **Backend**: Laravel 12 (PHP 8.3+)
 - **Frontend**: Livewire, Alpine.js, Tailwind CSS 4.x
 - **Database**: MySQL
 - **Authentication**: Laravel Fortify
@@ -24,7 +24,7 @@ This system is designed for Telkom Schools administrative staff to manage corres
 
 ## 📋 System Requirements
 
-- PHP 8.2 or higher
+- PHP 8.3 or higher
 - Composer
 - Node.js & npm
 - MySQL/MariaDB

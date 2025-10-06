@@ -131,8 +131,41 @@
             border-radius: 20px;
             font-size: 12px;
             font-weight: 500;
+            text-transform: capitalize;
         }
 
+        /* Status Badges - Matching admin index.blade.php */
+        .status-pending {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+
+        .status-diterima {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+
+        .status-dalam_proses {
+            background-color: #dbeafe;
+            color: #1e40af;
+        }
+
+        .status-perlu_perbaikan {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+
+        .status-disetujui {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+
+        .status-ditolak {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+
+        /* Legacy status classes for backward compatibility */
         .status-completed {
             background-color: #d1fae5;
             color: #059669;
@@ -287,20 +320,14 @@
                                             <p>{{ $letter->nomor_pesan }}</p>
                                             <p>{{ $letter->pengirim }}</p>
                                         </div>
-                                        <div class="letter-status
-                                            @if($letter->status_pesan == 'pending') status-follow-up
-                                            @elseif($letter->status_pesan == 'disetujui') status-completed
-                                            @elseif($letter->status_pesan == 'dalam_proses') status-follow-up
-                                            @elseif($letter->status_pesan == 'ditolak') status-follow-up
-                                            @else status-completed
-                                            @endif">
+                                        <div class="letter-status status-{{ $letter->status_pesan }}">
                                             @if($letter->status_pesan == 'pending') Pending
                                             @elseif($letter->status_pesan == 'disetujui') Disetujui
                                             @elseif($letter->status_pesan == 'dalam_proses') Dalam Proses
                                             @elseif($letter->status_pesan == 'diterima') Diterima
                                             @elseif($letter->status_pesan == 'ditolak') Ditolak
                                             @elseif($letter->status_pesan == 'perlu_perbaikan') Perlu Perbaikan
-                                            @else {{ ucfirst($letter->status_pesan) }}
+                                            @else {{ ucfirst(str_replace('_', ' ', $letter->status_pesan)) }}
                                             @endif
                                         </div>
                                         <div class="letter-time">
@@ -342,13 +369,6 @@
                         </svg>
                         Lihat Semua Surat
                     </a>
-
-                    <button class="action-btn action-btn-red">
-                        <svg class="action-btn-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z"></path>
-                        </svg>
-                        Manajemen Akun Guru
-                    </button>
                 </div>
             </div>
             </div>

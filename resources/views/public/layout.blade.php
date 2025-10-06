@@ -39,9 +39,6 @@
 
                     <!-- Navigation Links -->
                     <div class="flex items-center space-x-4">
-                        <a href="{{ route('public.pesan.create') }}" class="text-gray-700 hover:text-red-600 px-3 py-2 rounded-md text-sm font-medium">
-                            Kirim Surat
-                        </a>
                         <a href="{{ route('login') }}" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md text-sm font-medium">
                             Login Staff
                         </a>

@@ -71,10 +71,15 @@
                         Tata Usaha bertanggung jawab dalam mengelola seluruh korespondensi dan
                         administrasi sekolah dengan efisien dan terorganisir.
                     </p>
-                    <p class="text-gray-600">
+                    <p class="text-gray-600 mb-8">
                         Sistem ini memudahkan proses pengiriman, penerimaan, dan tracking surat
                         untuk memastikan komunikasi yang lancar antara sekolah dan pihak eksternal.
                     </p>
+                    <blockquote class="bg-gray-100 border-l-4 border-red-600 px-4 py-3 my-6 rounded shadow-sm">
+                        <p class="text-gray-700 italic text-base">
+                            "Streamlining Correspondence, Empowering Administration."
+                        </p>
+                    </blockquote>
                 </div>
 
                 <!-- Action Button -->

@@ -1,10 +1,9 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Buat Surat - Telkom Schools Banjarbaru</title>
-    <style>
+@extends('public.layout')
+
+@section('title', 'Buat Surat')
+
+@push('styles')
+<style>
         * {
             margin: 0;
             padding: 0;
@@ -14,45 +13,6 @@
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #e8e8e8;
-        }
-
-        /* Header */
-        .header {
-            background-color: white;
-            padding: 15px 40px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .logo {
-            width: 40px;
-            height: 40px;
-            background-color: #c41e3a;
-            border-radius: 4px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-            font-size: 24px;
-        }
-
-        .nav {
-            display: flex;
-            gap: 30px;
-        }
-
-        .nav a {
-            text-decoration: none;
-            color: #333;
-            font-size: 16px;
-            font-weight: 500;
-        }
-
-        .nav a:hover {
-            color: #c41e3a;
         }
 
         /* Page Title */
@@ -123,7 +83,7 @@
         textarea:focus,
         select:focus {
             outline: none;
-            border-color: #c41e3a;
+            border-color: #dc2626;
         }
 
         select:disabled {
@@ -137,7 +97,7 @@
         }
 
         .error-text {
-            color: #c41e3a;
+            color: #dc2626;
             font-size: 12px;
             margin-top: 5px;
             display: block;
@@ -188,12 +148,12 @@
             padding: 40px;
             text-align: center;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.5s;
             background-color: #fafafa;
         }
 
         .upload-area:hover {
-            border-color: #c41e3a;
+            border-color: #dc2626;
             background-color: #fff;
         }
 
@@ -216,7 +176,7 @@
         }
 
         .download-btn {
-            background-color: #c41e3a;
+            background-color: #dc2626;
             color: white;
             padding: 8px 20px;
             border-radius: 20px;
@@ -230,7 +190,7 @@
         .submit-btn {
             width: 100%;
             padding: 15px;
-            background-color: #c41e3a;
+            background-color: #dc2626;
             color: white;
             border: none;
             border-radius: 6px;
@@ -241,24 +201,21 @@
         }
 
         .submit-btn:hover {
-            background-color: #a01829;
+            background-color: #b91c1c;
         }
 
         .submit-btn:active {
             transform: translateY(1px);
         }
     </style>
-</head>
-<body>
-    <!-- Header -->
-    <div class="header">
-        <div class="logo">T</div>
+@endpush
 
-    </div>
-
+@section('content')
     <!-- Page Title -->
     <div class="page-title">
-        Buat Surat Baru - Tata Usaha Telkom Schools Banjarbaru
+                        <p class="text-gray-700 italic text-base ml-12">
+                            "Streamlining Correspondence, Empowering Administration."
+                        </p>
     </div>
 
     <!-- Main Container -->
@@ -383,81 +340,84 @@
             <button type="submit" class="submit-btn">Kirim Surat</button>
         </form>
     </div>
+@endsection
 
-    <script>
-        // Dynamic dropdown for penerima based on kategori
-        async function loadPenerima() {
-            const kategori = document.getElementById('kategori').value;
-            const penerimaSelect = document.getElementById('id_penerima');
+@push('scripts')
+<script>
+    // Dynamic dropdown for penerima based on kategori
+    async function loadPenerima() {
+        const kategori = document.getElementById('kategori').value;
+        const penerimaSelect = document.getElementById('id_penerima');
 
-            console.log('Loading penerima for kategori:', kategori);
+        console.log('Loading penerima for kategori:', kategori);
 
-            // Reset and disable penerima dropdown
-            penerimaSelect.innerHTML = '<option value="">Loading...</option>';
-            penerimaSelect.disabled = true;
+        // Reset and disable penerima dropdown
+        penerimaSelect.innerHTML = '<option value="">Loading...</option>';
+        penerimaSelect.disabled = true;
 
-            if (!kategori) {
-                penerimaSelect.innerHTML = '<option value="">Pilih kategori terlebih dahulu</option>';
-                return;
-            }
-
-            try {
-                // Make AJAX request to get teachers by division
-                const url = `/api/pengguna/by-divisi/${kategori}`;
-                console.log('Fetching from URL:', url);
-
-                const response = await fetch(url);
-                console.log('Response status:', response.status);
-
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-
-                const teachers = await response.json();
-                console.log('Teachers received:', teachers);
-
-                // Clear and populate dropdown
-                penerimaSelect.innerHTML = '<option value="">Pilih Penerima</option>';
-
-                teachers.forEach(teacher => {
-                    const option = document.createElement('option');
-                    option.value = teacher.id_pengguna;
-                    option.textContent = `${teacher.nama} (${teacher.divisi})`;
-                    penerimaSelect.appendChild(option);
-                });
-
-                // Restore old value if exists
-                const oldValue = '{{ old("id_penerima") }}';
-                if (oldValue) {
-                    penerimaSelect.value = oldValue;
-                }
-
-                penerimaSelect.disabled = false;
-                console.log('Dropdown populated successfully');
-            } catch (error) {
-                console.error('Error loading teachers:', error);
-                penerimaSelect.innerHTML = '<option value="">Error loading data</option>';
-            }
-        }        // Update file name display
-        function updateFileName() {
-            const fileInput = document.getElementById('lampiran');
-            const uploadText = document.getElementById('upload-text');
-
-            if (fileInput.files.length > 0) {
-                const fileNames = Array.from(fileInput.files).map(file => file.name);
-                uploadText.textContent = `${fileInput.files.length} file(s) selected: ${fileNames.join(', ')}`;
-            } else {
-                uploadText.textContent = 'Browse files';
-            }
+        if (!kategori) {
+            penerimaSelect.innerHTML = '<option value="">Pilih kategori terlebih dahulu</option>';
+            return;
         }
 
-        // Load penerima on page load if kategori is already selected (for old input)
-        document.addEventListener('DOMContentLoaded', function() {
-            const kategori = document.getElementById('kategori').value;
-            if (kategori) {
-                loadPenerima();
+        try {
+            // Make AJAX request to get teachers by division
+            const url = `/api/pengguna/by-divisi/${kategori}`;
+            console.log('Fetching from URL:', url);
+
+            const response = await fetch(url);
+            console.log('Response status:', response.status);
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
             }
-        });
-    </script>
-</body>
-</html>
+
+            const teachers = await response.json();
+            console.log('Teachers received:', teachers);
+
+            // Clear and populate dropdown
+            penerimaSelect.innerHTML = '<option value="">Pilih Penerima</option>';
+
+            teachers.forEach(teacher => {
+                const option = document.createElement('option');
+                option.value = teacher.id_pengguna;
+                option.textContent = `${teacher.nama} (${teacher.divisi})`;
+                penerimaSelect.appendChild(option);
+            });
+
+            // Restore old value if exists
+            const oldValue = '{{ old("id_penerima") }}';
+            if (oldValue) {
+                penerimaSelect.value = oldValue;
+            }
+
+            penerimaSelect.disabled = false;
+            console.log('Dropdown populated successfully');
+        } catch (error) {
+            console.error('Error loading teachers:', error);
+            penerimaSelect.innerHTML = '<option value="">Error loading data</option>';
+        }
+    }
+
+    // Update file name display
+    function updateFileName() {
+        const fileInput = document.getElementById('lampiran');
+        const uploadText = document.getElementById('upload-text');
+
+        if (fileInput.files.length > 0) {
+            const fileNames = Array.from(fileInput.files).map(file => file.name);
+            uploadText.textContent = `${fileInput.files.length} file(s) selected: ${fileNames.join(', ')}`;
+        } else {
+            uploadText.textContent = 'Browse files';
+        }
+    }
+
+    // Load penerima on page load if kategori is already selected (for old input)
+    document.addEventListener('DOMContentLoaded', function() {
+        const kategori = document.getElementById('kategori').value;
+        if (kategori) {
+            loadPenerima();
+        }
+    });
+</script>
+@endpush

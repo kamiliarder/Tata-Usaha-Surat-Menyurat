@@ -31,7 +31,7 @@ new #[Layout('components.layouts.auth.custom-login')] class extends Component {
 
         if (!Auth::attempt(['email' => $this->email, 'password' => $this->password], $this->remember)) {
             $this->errorMessage = 'Login gagal! Email atau password salah.';
-            
+
             $this->addError('email', 'Email atau password salah.');
             return;
         }
@@ -42,6 +42,173 @@ new #[Layout('components.layouts.auth.custom-login')] class extends Component {
         $this->redirect(route('dashboard'));
     }
 }; ?>
+
+<style>
+/* Login page styles */
+.login-container {
+    min-height: 100vh;
+    display: flex;
+}
+
+.login-bg {
+    background-image: url('/assets/bg-login.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.building-image-container {
+    display: none;
+    width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem; /* Increased padding */
+    height: 100vh; /* Full viewport height */
+}
+
+.building-image {
+    width: 95%; /* Slightly increased width */
+    height: 85vh; /* Set specific height relative to viewport */
+    object-fit: cover;
+    border-radius: 24px;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1); /* Add subtle shadow */
+}
+
+.form-container {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.form-wrapper {
+    width: 100%;
+    max-width: 28rem;
+}
+
+.login-card {
+
+}
+
+.logo-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center logo horizontally */
+    justify-content: center;
+    margin-bottom: 2rem;
+    position: relative;
+    padding-bottom: 1.5rem;
+}
+
+.logo {
+    height: auto;
+    width: 200px;
+    object-fit: contain; /* Maintains aspect ratio */
+}
+
+.logo-container::after {
+    content: '';
+    bottom: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #000000;
+}
+
+.login-title {
+    font-size: 1.875rem;
+    font-weight: 700;
+    text-align: center;
+    color: #271111;
+    margin-bottom: 2rem;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    color: #111827;
+    background-color: #f3f4f6;
+    border: none;
+    border-radius: 0.5rem;
+    outline: none;
+}
+
+.form-input:focus {
+    outline: 2px solid #ef4444;
+    outline-offset: 2px;
+}
+
+.remember-me {
+    display: flex;
+    align-items: center;
+}
+
+.checkbox-input {
+    height: 1rem;
+    width: 1rem;
+    border-radius: 0.25rem;
+    border-color: #d1d5db;
+    accent-color: #ef4444;
+}
+
+.checkbox-label {
+    margin-left: 0.5rem;
+    font-size: 0.875rem;
+    color: #4b5563;
+}
+
+.login-button {
+    width: 100%;
+    padding: 0.875rem;
+    background-color: #F92020;
+    color: white;
+    font-size: 1rem;
+    font-weight: 500;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.login-button:hover {
+    background-color: #e31c1c;
+}
+
+.login-button:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(249, 32, 32, 0.25);
+}
+
+.error-message {
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
+    color: #ef4444;
+}
+
+@media (min-width: 1024px) {
+    .building-image-container {
+        display: flex;
+    }
+
+    .form-container {
+        width: 50%;
+        padding: 4rem;
+        height: 100vh; /* Match container height */
+    }
+}
+</style>
 
 <div>
     <h2 class="login-title">LOGIN</h2>

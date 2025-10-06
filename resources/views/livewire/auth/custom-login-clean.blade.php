@@ -31,7 +31,7 @@ new #[Layout('components.layouts.auth.custom-login')] class extends Component {
 
         if (!Auth::attempt(['email' => $this->email, 'password' => $this->password], $this->remember)) {
             $this->errorMessage = 'Login gagal! Email atau password salah.';
-            
+
             $this->addError('email', 'Email atau password salah.');
             return;
         }

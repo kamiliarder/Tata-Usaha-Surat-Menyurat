@@ -2,6 +2,7 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         @include('partials.head')
+        @livewireStyles
         <link rel="stylesheet" href="{{ asset('assets/css/login.css') }}">
     </head>
     <body>
@@ -25,6 +26,7 @@
                 </div>
             </div>
         </div>
+        @livewireScripts
         @fluxScripts
     </body>
 </html>

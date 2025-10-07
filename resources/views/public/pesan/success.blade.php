@@ -5,11 +5,11 @@
 @push('styles')
 <style>
     .success-gradient {
-        background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+        background: linear-gradient(135deg, #bdffc0 0%, #bdffc0 100%);
     }
 
     .success-icon-bg {
-        background: linear-gradient(135deg, #fecaca 0%, #f87171 100%);
+        background: linear-gradient(135deg, #dafddc 0%, #bdffc0 10%);
     }
 
     .success-card {
@@ -40,7 +40,7 @@
             <div class="text-center">
                 <!-- Success Icon -->
                 <div class="mx-auto flex items-center justify-center h-28 w-28 rounded-full success-icon-bg mb-8 shadow-lg">
-                    <svg class="h-16 w-16 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="h-16 w-16 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                     </svg>
                 </div>

@@ -123,7 +123,7 @@ new #[Layout('components.layouts.auth.custom-login')] class extends Component {
     </div>
 
     <!-- Success popup -->
-    <div x-data="{ show: @entangle('successMessage').defer.length > 0 }" x-show="show" x-transition class="fixed top-6 right-6 z-50">
+    <div x-data="{ show: @entangle('successMessage').defer.length > 0 }" x-show="show" x-transition style="position: fixed; top: 20px; right: 20px; z-index: 9999; max-width: 400px;">
         <div style="background-color: #10b981; color: white; padding: 1rem 1.5rem; border-radius: 0.5rem; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); display: flex; align-items: center; gap: 0.5rem;">
             <svg style="width: 1.5rem; height: 1.5rem; color: white;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />

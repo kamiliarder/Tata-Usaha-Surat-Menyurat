@@ -415,6 +415,52 @@
             }
         }
 
+        /* Radio Button Styles */
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .radio-item {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .radio-item:hover {
+            border-color: #dc2626;
+            background-color: #fef2f2;
+        }
+
+        .radio-item.selected {
+            border-color: #dc2626;
+            background-color: #fef2f2;
+        }
+
+        .radio-item input[type="radio"] {
+            width: 1.25rem;
+            height: 1.25rem;
+            margin-right: 0.75rem;
+            cursor: pointer;
+            accent-color: #dc2626;
+        }
+
+        .radio-label {
+            font-weight: 500;
+            color: #374151;
+            cursor: pointer;
+            flex-grow: 1;
+        }
+
+        .radio-item.selected .radio-label {
+            color: #dc2626;
+        }
+
         @media (max-width: 1024px) and (min-width: 769px) {
             .search-grid {
                 grid-template-columns: repeat(2, 1fr);
@@ -598,14 +644,32 @@
                 @method('PATCH')
                 <div class="form-group">
                     <label class="form-label">Status Surat</label>
-                    <select id="statusSelect" name="status_pesan" class="form-select" required>
-                        <option value="pending">Pending</option>
-                        <option value="diterima">Diterima</option>
-                        <option value="dalam_proses">Dalam Proses</option>
-                        <option value="perlu_perbaikan">Perlu Perbaikan</option>
-                        <option value="disetujui">Disetujui</option>
-                        <option value="ditolak">Ditolak</option>
-                    </select>
+                    <div class="radio-group">
+                        <label class="radio-item" data-value="pending">
+                            <input type="radio" name="status_pesan" value="pending" required>
+                            <span class="radio-label">Pending</span>
+                        </label>
+                        <label class="radio-item" data-value="diterima">
+                            <input type="radio" name="status_pesan" value="diterima" required>
+                            <span class="radio-label">Diterima</span>
+                        </label>
+                        <label class="radio-item" data-value="dalam_proses">
+                            <input type="radio" name="status_pesan" value="dalam_proses" required>
+                            <span class="radio-label">Dalam Proses</span>
+                        </label>
+                        <label class="radio-item" data-value="perlu_perbaikan">
+                            <input type="radio" name="status_pesan" value="perlu_perbaikan" required>
+                            <span class="radio-label">Perlu Perbaikan</span>
+                        </label>
+                        <label class="radio-item" data-value="disetujui">
+                            <input type="radio" name="status_pesan" value="disetujui" required>
+                            <span class="radio-label">Disetujui</span>
+                        </label>
+                        <label class="radio-item" data-value="ditolak">
+                            <input type="radio" name="status_pesan" value="ditolak" required>
+                            <span class="radio-label">Ditolak</span>
+                        </label>
+                    </div>
                 </div>
                 <div class="flex justify-end space-x-2">
                     <button type="button" class="btn-secondary" onclick="closeModal('editStatusModal')">Batal</button>
@@ -632,7 +696,23 @@
     <script>
         // Show edit status modal
         function showEditStatus(letterId, currentStatus) {
-            document.getElementById('statusSelect').value = currentStatus;
+            // Clear all radio selections and styling
+            document.querySelectorAll('.radio-item').forEach(item => {
+                item.classList.remove('selected');
+            });
+            document.querySelectorAll('input[name="status_pesan"]').forEach(radio => {
+                radio.checked = false;
+            });
+
+            // Select the current status radio button
+            const targetRadio = document.querySelector(`input[name="status_pesan"][value="${currentStatus}"]`);
+            const targetItem = document.querySelector(`.radio-item[data-value="${currentStatus}"]`);
+
+            if (targetRadio && targetItem) {
+                targetRadio.checked = true;
+                targetItem.classList.add('selected');
+            }
+
             document.getElementById('editStatusForm').action = `/admin/pesan/${letterId}`;
             showModal('editStatusModal');
         }
@@ -886,6 +966,41 @@
                 searchTimeout = setTimeout(function() {
                     searchForm.submit();
                 }, 500); // Wait 500ms after user stops typing
+            });
+        });
+
+        // Radio button styling and interaction
+        document.addEventListener('DOMContentLoaded', function() {
+            // Handle radio button selection styling
+            document.querySelectorAll('input[name="status_pesan"]').forEach(radio => {
+                radio.addEventListener('change', function() {
+                    // Remove selected class from all items
+                    document.querySelectorAll('.radio-item').forEach(item => {
+                        item.classList.remove('selected');
+                    });
+
+                    // Add selected class to the parent of the checked radio
+                    if (this.checked) {
+                        const parentItem = this.closest('.radio-item');
+                        if (parentItem) {
+                            parentItem.classList.add('selected');
+                        }
+                    }
+                });
+            });
+
+            // Handle clicking on the radio item container
+            document.querySelectorAll('.radio-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    // Prevent double-firing if radio input was clicked directly
+                    if (e.target.type === 'radio') return;
+
+                    const radio = this.querySelector('input[type="radio"]');
+                    if (radio) {
+                        radio.checked = true;
+                        radio.dispatchEvent(new Event('change'));
+                    }
+                });
             });
         });
     </script>

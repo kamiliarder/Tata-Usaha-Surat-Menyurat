@@ -22,8 +22,12 @@
     }
 
     .info-card {
-        background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
-        border: 1px solid #fecaca;
+        border: 0.1rem solid black;
+    }
+
+    .top-info-card {
+        background: linear-gradient(135deg, #dafddc 0%, #bdffc0 10%);
+        border: 1px solid #bdffc0;
     }
 
     .contact-card {
@@ -39,7 +43,7 @@
         <div class="success-card rounded-3xl shadow-2xl p-8 md:p-12">
             <div class="text-center">
                 <!-- Success Icon -->
-                <div class="mx-auto flex items-center justify-center h-28 w-28 rounded-full success-icon-bg mb-8 shadow-lg">
+                <div class="mx-auto flex items-center justify-center rounded-full success-icon-bg mb-8 shadow-lg" style="width: 7rem; height: 7rem;">
                     <svg class="h-16 w-16 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                     </svg>
@@ -49,8 +53,8 @@
                 <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">Surat Berhasil Dikirim!</h1>
 
                 @if(session('success'))
-                    <div class="info-card rounded-xl p-6 mb-8">
-                        <p class="text-red-800 font-medium text-lg">{{ session('success') }}</p>
+                    <div class="top-info-card rounded-xl p-6 mb-8">
+                        <p class="text-green-600 font-medium text-lg">{{ session('success') }}</p>
                     </div>
                 @endif
 
@@ -113,7 +117,7 @@
             </div>
 
             <!-- Contact Information -->
-            <div class="contact-card rounded-2xl p-8 border mt-8">
+           <div class="contact-card rounded-2xl p-8 border mt-8">
                 <div class="text-center">
                     <h3 class="text-2xl font-bold text-gray-900 mb-4">Butuh Bantuan?</h3>
                     <p class="text-gray-600 mb-8 max-w-lg mx-auto">
@@ -121,8 +125,8 @@
                         Tim Tata Usaha Telkom Schools Banjarbaru.
                     </p>
 
-                    <div class="grid sm:grid-cols-2 gap-6 max-w-lg mx-auto">
-                        <div class="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow">
+                    <div class="flex flex-col sm:flex-row gap-6 max-w-2xl mx-auto">
+                        <div class="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow flex-1">
                             <div class="flex items-center justify-center mb-3">
                                 <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
                                     <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -134,13 +138,13 @@
                             <p class="text-gray-600 text-sm">tatausaha@telkomschools.sch.id</p>
                         </div>
 
-                        <div class="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow">
+                        <div class="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow flex-1">
                             <div class="flex items-center justify-center mb-3">
                                 <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
                                     <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
                                     </svg>
-                                </div>
+                                 </div>
                             </div>
                             <h4 class="font-semibold text-gray-900 mb-1">Telepon</h4>
                             <p class="text-gray-600 text-sm">(0511) 123-4567</p>

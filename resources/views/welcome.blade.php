@@ -39,6 +39,24 @@
         background-repeat: no-repeat;
         background-position: center;
     }
+
+    /* Step connector lines */
+    @media (min-width: 768px) {
+        .step-connector::after {
+            content: '';
+            position: absolute;
+            top: 32px; /* Half of step circle height (64px/2) */
+            right: -50%;
+            width: 100%;
+            height: 2px;
+            border-top: 2px dashed #fca5a5; /* red-300 */
+            z-index: 1;
+        }
+
+        .step-connector:last-child::after {
+            display: none;
+        }
+    }
 </style>
 @endpush
 
@@ -187,8 +205,8 @@
 
             <div class="grid md:grid-cols-3 gap-8">
                 <!-- Step 1 -->
-                <div class="text-center">
-                    <div class="inline-flex items-center justify-center w-16 h-16 bg-red-600 text-white rounded-full mb-6">
+                <div class="text-center relative step-connector">
+                    <div class="inline-flex items-center justify-center w-16 h-16 bg-red-600 text-white rounded-full mb-6 relative z-10">
                         <span class="text-xl font-bold">1</span>
                     </div>
                     <h3 class="text-xl font-semibold text-gray-900 mb-4">Kirim Surat</h3>
@@ -198,8 +216,8 @@
                 </div>
 
                 <!-- Step 2 -->
-                <div class="text-center">
-                    <div class="inline-flex items-center justify-center w-16 h-16 bg-red-600 text-white rounded-full mb-6">
+                <div class="text-center relative step-connector">
+                    <div class="inline-flex items-center justify-center w-16 h-16 bg-red-600 text-white rounded-full mb-6 relative z-10">
                         <span class="text-xl font-bold">2</span>
                     </div>
                     <h3 class="text-xl font-semibold text-gray-900 mb-4">Verifikasi Tim</h3>
@@ -209,8 +227,8 @@
                 </div>
 
                 <!-- Step 3 -->
-                <div class="text-center">
-                    <div class="inline-flex items-center justify-center w-16 h-16 bg-red-600 text-white rounded-full mb-6">
+                <div class="text-center relative step-connector">
+                    <div class="inline-flex items-center justify-center w-16 h-16 bg-red-600 text-white rounded-full mb-6 relative z-10">
                         <span class="text-xl font-bold">3</span>
                     </div>
                     <h3 class="text-xl font-semibold text-gray-900 mb-4">Respon Cepat</h3>

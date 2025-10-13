@@ -220,7 +220,7 @@
 
     <!-- Main Container -->
     <div class="container">
-        <h1 class="form-title">Buat Surat</h1>
+        <h1 class="form-title">Kirim Data Surat</h1>
 
         <form action="{{ route('public.pesan.store') }}" method="POST" enctype="multipart/form-data">
             @csrf

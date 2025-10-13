@@ -38,6 +38,7 @@ class User extends Authenticatable
         'nomor_telp',
         'nip',
         'jenis_kelamin',
+        'profile_picture',
     ];
 
     /**
@@ -80,5 +81,34 @@ class User extends Authenticatable
     public function isGuru(): bool
     {
         return $this->role === 'guru';
+    }
+
+    /**
+     * Get the full URL for the user's profile picture.
+     */
+    public function getProfilePictureUrlAttribute(): string
+    {
+        if ($this->profile_picture && file_exists(storage_path('app/public/profile-pictures/' . $this->profile_picture))) {
+            return asset('storage/profile-pictures/' . $this->profile_picture);
+        }
+
+        return $this->getDefaultAvatarUrl();
+    }
+
+    /**
+     * Get default avatar URL based on user's gender.
+     */
+    public function getDefaultAvatarUrl(): string
+    {
+        $defaultAvatar = $this->jenis_kelamin === 'perempuan' ? 'female-avatar.png' : 'male-avatar.png';
+        return asset('images/defaults/' . $defaultAvatar);
+    }
+
+    /**
+     * Check if user has a custom profile picture.
+     */
+    public function hasProfilePicture(): bool
+    {
+        return !empty($this->profile_picture) && file_exists(storage_path('app/public/profile-pictures/' . $this->profile_picture));
     }
 }

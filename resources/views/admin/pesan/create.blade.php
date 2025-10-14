@@ -163,7 +163,7 @@
         }
 
         .btn-primary {
-            background-color: #dc2626;
+            background-color: #991b1b;
             color: white;
         }
 
@@ -198,12 +198,12 @@
     </style>
     @endpush
 
-    <div class="py-6">
+    <div class=-6">
         <div class="px-4 mx-auto max-w-4xl sm:px-6 lg:px-8">
             <div class="form-container">
                 <div class="form-header">
-                    <h1 class="form-title">Buat Surat Keluar</h1>
-                    <p class="form-subtitle">Formulir untuk mencatat surat keluar yang dikirim oleh sekolah</p>
+                    <h1 class="form-title">Buat Data Surat</h1>
+                    <p class="form-subtitle">Formulir untuk mencatat surat yang dikirim oleh sekolah</p>
                 </div>
 
                 @if ($errors->any())

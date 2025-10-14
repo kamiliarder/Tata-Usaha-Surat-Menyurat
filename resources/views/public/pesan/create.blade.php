@@ -176,7 +176,7 @@
         }
 
         .download-btn {
-            background-color: #dc2626;
+            background-color: #931b1b;
             color: white;
             padding: 8px 20px;
             border-radius: 20px;
@@ -190,7 +190,7 @@
         .submit-btn {
             width: 100%;
             padding: 15px;
-            background-color: #dc2626;
+            background-color: #931b1b;
             color: white;
             border: none;
             border-radius: 6px;
@@ -220,7 +220,7 @@
 
     <!-- Main Container -->
     <div class="container">
-        <h1 class="form-title">Buat Surat</h1>
+        <h1 class="form-title">Data Surat</h1>
 
         <form action="{{ route('public.pesan.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
@@ -328,9 +328,12 @@
                     <label>Unduh Template Surat</label>
                     <a href="{{ asset('files/KOP SURAT 2022.docx') }}" download class="download-link">
                         <div class="upload-area download-area">
-                            <div class="download-icon">📄</div>
+                            <div class="download-icon">
+                                <svg width="48" height="48" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                </svg>
+                            </div>
                             <span class="download-btn">Unduh Template</span>
-                            <div class="download-hint">KOP SURAT 2022.docx</div>
                         </div>
                     </a>
                 </div>

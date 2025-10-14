@@ -103,7 +103,7 @@
                 <!-- Action Button -->
                 <div class="pt-4">
                     <a href="{{ route('public.pesan.create') }}"
-                       class="inline-flex items-center px-8 py-4 bg-red-600 text-white font-semibold rounded-lg hover:bg-red-700 transition-colors shadow-lg hover:shadow-xl transform hover:scale-105 transition-transform">
+                       class="inline-flex items-center px-8 py-4 bg-red-800 text-white font-semibold rounded-lg hover:bg-red-900 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105">
                         <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                         </svg>
@@ -184,7 +184,7 @@
 
                 @if($recentLetters->count() > 0)
                     <div class="mt-6 pt-4 border-t border-gray-200">
-                        <a href="{{ route('login') }}" class="block text-center text-red-600 hover:text-red-700 font-medium text-sm">
+                        <a href="{{ route('login') }}" class="block text-center text-red-800 hover:text-red-900 font-medium text-sm">
                             Login Staff untuk Lihat Semua Surat →
                         </a>
                     </div>
@@ -206,7 +206,7 @@
             <div class="grid md:grid-cols-3 gap-8">
                 <!-- Step 1 -->
                 <div class="text-center relative step-connector">
-                    <div class="inline-flex items-center justify-center w-16 h-16 bg-red-600 text-white rounded-full mb-6 relative z-10">
+                    <div class="inline-flex items-center justify-center w-16 h-16 bg-red-800 text-white rounded-full mb-6 relative z-10">
                         <span class="text-xl font-bold">1</span>
                     </div>
                     <h3 class="text-xl font-semibold text-gray-900 mb-4">Kirim Surat</h3>
@@ -217,7 +217,7 @@
 
                 <!-- Step 2 -->
                 <div class="text-center relative step-connector">
-                    <div class="inline-flex items-center justify-center w-16 h-16 bg-red-600 text-white rounded-full mb-6 relative z-10">
+                    <div class="inline-flex items-center justify-center w-16 h-16 bg-red-800 text-white rounded-full mb-6 relative z-10">
                         <span class="text-xl font-bold">2</span>
                     </div>
                     <h3 class="text-xl font-semibold text-gray-900 mb-4">Verifikasi Tim</h3>
@@ -228,7 +228,7 @@
 
                 <!-- Step 3 -->
                 <div class="text-center relative step-connector">
-                    <div class="inline-flex items-center justify-center w-16 h-16 bg-red-600 text-white rounded-full mb-6 relative z-10">
+                    <div class="inline-flex items-center justify-center w-16 h-16 bg-red-800 text-white rounded-full mb-6 relative z-10">
                         <span class="text-xl font-bold">3</span>
                     </div>
                     <h3 class="text-xl font-semibold text-gray-900 mb-4">Respon Cepat</h3>

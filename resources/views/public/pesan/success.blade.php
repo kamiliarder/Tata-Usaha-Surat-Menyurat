@@ -99,14 +99,6 @@
 
             <!-- Action Buttons -->
             <div class="flex flex-col sm:flex-row gap-4 justify-center mb-10">
-                <a href="{{ route('public.pesan.create') }}"
-                   class="inline-flex items-center justify-center px-8 py-4 bg-red-600 text-white font-semibold rounded-lg hover:bg-red-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105">
-                    <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-                    </svg>
-                    Kirim Surat Lain
-                </a>
-
                 <a href="/"
                    class="inline-flex items-center justify-center px-8 py-4 bg-white text-gray-700 font-semibold rounded-lg hover:bg-gray-50 transition-all duration-200 border-2 border-gray-200 hover:border-gray-300">
                     <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">

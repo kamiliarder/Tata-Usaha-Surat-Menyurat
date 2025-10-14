@@ -39,7 +39,7 @@
 
                     <!-- Navigation Links -->
                     <div class="flex items-center space-x-4">
-                        <a href="{{ route('login') }}" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md text-sm font-medium">
+                        <a href="{{ route('login') }}" class="bg-red-800 hover:bg-red-900 text-white px-4 py-2 rounded-md text-sm font-medium">
                             Login Staff
                         </a>
                     </div>

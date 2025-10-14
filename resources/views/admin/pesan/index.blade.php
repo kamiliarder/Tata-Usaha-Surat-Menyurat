@@ -91,7 +91,7 @@
             display: inline-flex;
             align-items: center;
             padding: 0.75rem 1.5rem;
-            background-color: #dc2626;
+            background-color: #991b1b;
             color: white;
             font-weight: 500;
             border-radius: 8px;
@@ -466,6 +466,62 @@
                 grid-template-columns: repeat(2, 1fr);
             }
         }
+
+        /* Pagination Styles */
+        .pagination {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .pagination-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 2.5rem;
+            height: 2.5rem;
+            font-weight: 500;
+            font-size: 0.875rem;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            border: 1px solid #d1d5db;
+        }
+
+        .pagination-btn-default {
+            background-color: white;
+            color: #374151;
+        }
+
+        .pagination-btn-default:hover {
+            background-color: #f9fafb;
+            border-color: #dc2626;
+            color: #dc2626;
+        }
+
+        .pagination-btn-active {
+            background-color: #991b1b;
+            border-color: #991b1b;
+            color: white;
+        }
+
+        .pagination-btn-nav {
+            background-color: white;
+            color: #374151;
+        }
+
+        .pagination-btn-nav:hover {
+            background-color: #f9fafb;
+            border-color: #dc2626;
+            color: #dc2626;
+        }
+
+        .pagination-btn-disabled {
+            background-color: #f9fafb;
+            border-color: #e5e7eb;
+            color: #9ca3af;
+            cursor: not-allowed;
+        }
     </style>
     @endpush
 
@@ -625,8 +681,18 @@
 
             <!-- Pagination -->
             @if($letters->hasPages())
-            <div class="mt-6">
-                {{ $letters->links() }}
+            <div class="mt-6 bg-white p-4 rounded-lg shadow">
+                <div class="flex justify-between items-center">
+                    <!-- Left side - Results description -->
+                    <div class="text-sm text-gray-600">
+                        Menampilkan {{ $letters->firstItem() }} - {{ $letters->lastItem() }} dari {{ $letters->total() }} surat.
+                    </div>
+
+                    <!-- Right side - Pagination controls -->
+                    <div class="pagination">
+                        {{ $letters->links('vendor.pagination.custom-white') }}
+                    </div>
+                </div>
             </div>
             @endif
         </div>

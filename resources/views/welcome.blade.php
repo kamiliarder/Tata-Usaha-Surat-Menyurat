@@ -39,25 +39,50 @@
         background-repeat: no-repeat;
         background-position: center;
     }
+
+    .steps-container {
+        position: relative;
+    }
+
+    .step-line {
+        position: absolute;
+        top: 2rem;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: linear-gradient(to right, #dc2626 0%, #dc2626 50%, #dc2626 100%);
+        z-index: 0;
+    }
+
+    @media (max-width: 768px) {
+        .step-line {
+            display: none;
+        }
+    }
+
+    .step-item {
+        position: relative;
+        z-index: 1;
+    }
 </style>
 @endpush
 
 @section('content')
 <div class="min-h-screen bg-gradient-to-br from-gray-50 to-white">
     <!-- Hero Section -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div class="grid lg:grid-cols-2 gap-12 items-center">
+    <div class="px-4 py-12 mx-auto max-w-7xl sm:px-6 lg:px-8">
+        <div class="grid items-center gap-12 lg:grid-cols-2">
             <!-- Left Content -->
             <div class="space-y-8">
                 <!-- Header -->
                 <div>
-                    <div class="flex items-center space-x-3 mb-4">
+                    <div class="flex items-center mb-4 space-x-3">
                         <img src="{{ asset('images/logo.png') }}" alt="Telkom Schools Logo" class="w-12 h-12">
                         <div>
-                            <h1 class="text-3xl md:text-4xl font-bold text-gray-900">
+                            <h1 class="text-3xl font-bold text-gray-900 md:text-4xl">
                                 Tata Usaha
                             </h1>
-                            <p class="text-xl text-red-600 font-semibold">
+                            <p class="text-xl font-semibold text-red-600">
                                 Telkom Schools Banjarbaru
                             </p>
                         </div>
@@ -66,17 +91,17 @@
 
                 <!-- Description -->
                 <div class="space-y-4">
-                    <p class="text-lg text-gray-600 leading-relaxed">
+                    <p class="text-lg leading-relaxed text-gray-600">
                         Selamat datang di sistem administrasi surat Telkom Schoolss Banjarbaru.
                         Tata Usaha bertanggung jawab dalam mengelola seluruh korespondensi dan
                         administrasi sekolah dengan efisien dan terorganisir.
                     </p>
-                    <p class="text-gray-600 mb-8">
+                    <p class="mb-8 text-gray-600">
                         Sistem ini memudahkan proses pengiriman, penerimaan, dan tracking surat
                         untuk memastikan komunikasi yang lancar antara sekolah dan pihak eksternal.
                     </p>
-                    <blockquote class="bg-gray-100 border-l-4 border-red-600 px-4 py-3 my-6 rounded shadow-sm">
-                        <p class="text-gray-700 italic text-base">
+                    <blockquote class="px-4 py-3 my-6 bg-gray-100 border-l-4 border-red-600 rounded shadow-sm">
+                        <p class="text-base italic text-gray-700">
                             "Streamlining Correspondence, Empowering Administration."
                         </p>
                     </blockquote>
@@ -85,7 +110,7 @@
                 <!-- Action Button -->
                 <div class="pt-4">
                     <a href="{{ route('public.pesan.create') }}"
-                       class="inline-flex items-center px-8 py-4 bg-red-600 text-white font-semibold rounded-lg hover:bg-red-700 transition-colors shadow-lg hover:shadow-xl transform hover:scale-105 transition-transform">
+                       class="inline-flex items-center px-8 py-4 font-semibold text-white transition-colors transition-transform transform bg-red-600 rounded-lg shadow-lg hover:bg-red-700 hover:shadow-xl hover:scale-105">
                         <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                         </svg>
@@ -95,21 +120,21 @@
             </div>
 
             <!-- Right Content - Recent Letters -->
-            <div class="bg-white rounded-2xl shadow-xl p-6">
+            <div class="p-6 bg-white shadow-xl rounded-2xl">
                 <div class="flex items-center justify-between mb-6">
                     <h2 class="text-xl font-bold text-gray-900">Surat Terbaru</h2>
                     <span class="text-sm text-gray-500">{{ $recentLetters->count() }} surat</span>
                 </div>
 
-                <div class="space-y-4 max-h-96 overflow-y-auto">
+                <div class="space-y-4 overflow-y-auto max-h-96">
                     @forelse($recentLetters as $letter)
-                        <div class="letter-item p-4 border border-gray-200 rounded-lg">
-                            <div class="flex justify-between items-start mb-2">
+                        <div class="p-4 border border-gray-200 rounded-lg letter-item">
+                            <div class="flex items-start justify-between mb-2">
                                 <div class="flex-1">
-                                    <h3 class="font-medium text-gray-900 text-sm leading-tight">
+                                    <h3 class="text-sm font-medium leading-tight text-gray-900">
                                         {{ Str::limit($letter->judul, 40) }}
                                     </h3>
-                                    <p class="text-xs text-gray-500 mt-1">
+                                    <p class="mt-1 text-xs text-gray-500">
                                         {{ $letter->nomor_pesan }}
                                     </p>
                                 </div>
@@ -139,14 +164,14 @@
                                 </span>
                             </div>
 
-                            <div class="flex justify-between items-center">
+                            <div class="flex items-center justify-between">
                                 <div class="flex items-center space-x-2">
                                     @if($letter->tipe == 'masuk')
                                         <span class="inline-block w-2 h-2 bg-green-500 rounded-full"></span>
-                                        <span class="text-xs text-green-600 font-medium">Masuk</span>
+                                        <span class="text-xs font-medium text-green-600">Masuk</span>
                                     @else
                                         <span class="inline-block w-2 h-2 bg-red-500 rounded-full"></span>
-                                        <span class="text-xs text-red-600 font-medium">Keluar</span>
+                                        <span class="text-xs font-medium text-red-600">Keluar</span>
                                     @endif
                                 </div>
                                 <span class="text-xs text-gray-400">
@@ -155,18 +180,18 @@
                             </div>
                         </div>
                     @empty
-                        <div class="text-center py-8">
-                            <svg class="w-12 h-12 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div class="py-8 text-center">
+                            <svg class="w-12 h-12 mx-auto mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                             </svg>
-                            <p class="text-gray-500 text-sm">Belum ada surat terbaru</p>
+                            <p class="text-sm text-gray-500">Belum ada surat terbaru</p>
                         </div>
                     @endforelse
                 </div>
 
                 @if($recentLetters->count() > 0)
-                    <div class="mt-6 pt-4 border-t border-gray-200">
-                        <a href="{{ route('login') }}" class="block text-center text-red-600 hover:text-red-700 font-medium text-sm">
+                    <div class="pt-4 mt-6 border-t border-gray-200">
+                        <a href="{{ route('login') }}" class="block text-sm font-medium text-center text-red-600 hover:text-red-700">
                             Login Staff untuk Lihat Semua Surat →
                         </a>
                     </div>
@@ -176,47 +201,52 @@
     </div>
 
     <!-- How It Works Section -->
-    <div class="bg-gray-50 py-16">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl font-bold text-gray-900 mb-3">Cara Kerja</h2>
-                <p class="text-lg text-gray-600 max-w-2xl mx-auto mb-8">
+    <div class="py-16 bg-gray-50">
+        <div class="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
+            <div class="mb-12 text-center">
+                <h2 class="mb-3 text-3xl font-bold text-gray-900">Cara Kerja</h2>
+                <p class="max-w-2xl mx-auto mb-8 text-lg text-gray-600">
                     Sistem surat digital yang memudahkan komunikasi antara sekolah dan pihak eksternal
                 </p>
             </div>
 
-            <div class="grid md:grid-cols-3 gap-8">
-                <!-- Step 1 -->
-                <div class="text-center">
-                    <div class="inline-flex items-center justify-center w-16 h-16 bg-red-600 text-white rounded-full mb-6">
-                        <span class="text-xl font-bold">1</span>
-                    </div>
-                    <h3 class="text-xl font-semibold text-gray-900 mb-4">Kirim Surat</h3>
-                    <p class="text-gray-600">
-                        Isi formulir pengiriman surat dengan lengkap. Lampirkan dokumen pendukung jika diperlukan.
-                    </p>
-                </div>
+            <div class="steps-container">
+                <!-- Connecting Line -->
+                <div class="hidden step-line md:block"></div>
 
-                <!-- Step 2 -->
-                <div class="text-center">
-                    <div class="inline-flex items-center justify-center w-16 h-16 bg-red-600 text-white rounded-full mb-6">
-                        <span class="text-xl font-bold">2</span>
+                <div class="grid gap-8 md:grid-cols-3">
+                    <!-- Step 1 -->
+                    <div class="text-center step-item">
+                        <div class="relative inline-flex items-center justify-center w-16 h-16 mb-6 text-white bg-red-600 rounded-full">
+                            <span class="text-xl font-bold">1</span>
+                        </div>
+                        <h3 class="mb-4 text-xl font-semibold text-gray-900">Kirim Surat</h3>
+                        <p class="text-gray-600">
+                            Isi formulir pengiriman surat dengan lengkap. Lampirkan dokumen pendukung jika diperlukan.
+                        </p>
                     </div>
-                    <h3 class="text-xl font-semibold text-gray-900 mb-4">Verifikasi Tim</h3>
-                    <p class="text-gray-600">
-                        Tim Tata Usaha akan memverifikasi dan memproses surat sesuai dengan kategori dan prioritas.
-                    </p>
-                </div>
 
-                <!-- Step 3 -->
-                <div class="text-center">
-                    <div class="inline-flex items-center justify-center w-16 h-16 bg-red-600 text-white rounded-full mb-6">
-                        <span class="text-xl font-bold">3</span>
+                    <!-- Step 2 -->
+                    <div class="text-center step-item">
+                        <div class="relative inline-flex items-center justify-center w-16 h-16 mb-6 text-white bg-red-600 rounded-full">
+                            <span class="text-xl font-bold">2</span>
+                        </div>
+                        <h3 class="mb-4 text-xl font-semibold text-gray-900">Verifikasi Tim</h3>
+                        <p class="text-gray-600">
+                            Tim Tata Usaha akan memverifikasi dan memproses surat sesuai dengan kategori dan prioritas.
+                        </p>
                     </div>
-                    <h3 class="text-xl font-semibold text-gray-900 mb-4">Respon Cepat</h3>
-                    <p class="text-gray-600">
-                        Dapatkan balasan dari kontak yang anda berikan.
-                    </p>
+
+                    <!-- Step 3 -->
+                    <div class="text-center step-item">
+                        <div class="relative inline-flex items-center justify-center w-16 h-16 mb-6 text-white bg-red-600 rounded-full">
+                            <span class="text-xl font-bold">3</span>
+                        </div>
+                        <h3 class="mb-4 text-xl font-semibold text-gray-900">Respon Cepat</h3>
+                        <p class="text-gray-600">
+                            Dapatkan balasan dari kontak yang anda berikan.
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>

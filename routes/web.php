@@ -39,6 +39,9 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/{id}/reply', [AdminPesanController::class, 'createReply'])->name('create-reply');
             Route::post('/{id}/reply', [AdminPesanController::class, 'storeReply'])->name('store-reply');
         });
+
+        // Manajemen akun guru (view route)
+        Route::view('/guru/manajemen-akun', 'admin.guru.manajemen_akun')->name('guru.manajemen_akun');
     });
 
     // Teacher routes (will add middleware later)
@@ -57,7 +60,6 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 Route::view('/manajemen', 'manajemen_surat')->name('manajemen_surat');
-
 // Include Volt routes for custom authentication
 require __DIR__.'/volt.php';
 

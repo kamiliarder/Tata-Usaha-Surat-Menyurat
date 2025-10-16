@@ -199,12 +199,12 @@
         }
 
         .action-btn-red {
-            background-color: #dc2626;
+            background-color: #991b1b;
             color: white;
         }
 
         .action-btn-red:hover {
-            background-color: #b91c1c;
+            background-color: #7f1d1d;
         }
 
         .action-btn-icon {

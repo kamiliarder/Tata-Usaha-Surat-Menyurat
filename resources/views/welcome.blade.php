@@ -40,29 +40,22 @@
         background-position: center;
     }
 
-    .steps-container {
-        position: relative;
-    }
+    /* Step connector lines */
+    @media (min-width: 768px) {
+        .step-connector::after {
+            content: '';
+            position: absolute;
+            top: 32px; /* Half of step circle height (64px/2) */
+            right: -50%;
+            width: 100%;
+            height: 2px;
+            border-top: 2px dashed #fca5a5; /* red-300 */
+            z-index: 1;
+        }
 
-    .step-line {
-        position: absolute;
-        top: 2rem;
-        left: 0;
-        right: 0;
-        height: 2px;
-        background: linear-gradient(to right, #dc2626 0%, #dc2626 50%, #dc2626 100%);
-        z-index: 0;
-    }
-
-    @media (max-width: 768px) {
-        .step-line {
+        .step-connector:last-child::after {
             display: none;
         }
-    }
-
-    .step-item {
-        position: relative;
-        z-index: 1;
     }
 </style>
 @endpush
@@ -110,7 +103,7 @@
                 <!-- Action Button -->
                 <div class="pt-4">
                     <a href="{{ route('public.pesan.create') }}"
-                       class="inline-flex items-center px-8 py-4 font-semibold text-white transition-colors transition-transform transform bg-red-600 rounded-lg shadow-lg hover:bg-red-700 hover:shadow-xl hover:scale-105">
+                       class="inline-flex items-center px-8 py-4 bg-red-800 text-white font-semibold rounded-lg hover:bg-red-900 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105">
                         <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                         </svg>
@@ -190,8 +183,8 @@
                 </div>
 
                 @if($recentLetters->count() > 0)
-                    <div class="pt-4 mt-6 border-t border-gray-200">
-                        <a href="{{ route('login') }}" class="block text-sm font-medium text-center text-red-600 hover:text-red-700">
+                    <div class="mt-6 pt-4 border-t border-gray-200">
+                        <a href="{{ route('login') }}" class="block text-center text-red-800 hover:text-red-900 font-medium text-sm">
                             Login Staff untuk Lihat Semua Surat →
                         </a>
                     </div>
@@ -210,42 +203,23 @@
                 </p>
             </div>
 
-            <div class="steps-container">
-                <!-- Connecting Line -->
-                <div class="hidden step-line md:block"></div>
-
-                <div class="grid gap-8 md:grid-cols-3">
-                    <!-- Step 1 -->
-                    <div class="text-center step-item">
-                        <div class="relative inline-flex items-center justify-center w-16 h-16 mb-6 text-white bg-red-600 rounded-full">
-                            <span class="text-xl font-bold">1</span>
-                        </div>
-                        <h3 class="mb-4 text-xl font-semibold text-gray-900">Kirim Surat</h3>
-                        <p class="text-gray-600">
-                            Isi formulir pengiriman surat dengan lengkap. Lampirkan dokumen pendukung jika diperlukan.
-                        </p>
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Step 1 -->
+                <div class="text-center relative step-connector">
+                    <div class="inline-flex items-center justify-center w-16 h-16 bg-red-800 text-white rounded-full mb-6 relative z-10">
+                        <span class="text-xl font-bold">1</span>
                     </div>
 
-                    <!-- Step 2 -->
-                    <div class="text-center step-item">
-                        <div class="relative inline-flex items-center justify-center w-16 h-16 mb-6 text-white bg-red-600 rounded-full">
-                            <span class="text-xl font-bold">2</span>
-                        </div>
-                        <h3 class="mb-4 text-xl font-semibold text-gray-900">Verifikasi Tim</h3>
-                        <p class="text-gray-600">
-                            Tim Tata Usaha akan memverifikasi dan memproses surat sesuai dengan kategori dan prioritas.
-                        </p>
+                <!-- Step 2 -->
+                <div class="text-center relative step-connector">
+                    <div class="inline-flex items-center justify-center w-16 h-16 bg-red-800 text-white rounded-full mb-6 relative z-10">
+                        <span class="text-xl font-bold">2</span>
                     </div>
 
-                    <!-- Step 3 -->
-                    <div class="text-center step-item">
-                        <div class="relative inline-flex items-center justify-center w-16 h-16 mb-6 text-white bg-red-600 rounded-full">
-                            <span class="text-xl font-bold">3</span>
-                        </div>
-                        <h3 class="mb-4 text-xl font-semibold text-gray-900">Respon Cepat</h3>
-                        <p class="text-gray-600">
-                            Dapatkan balasan dari kontak yang anda berikan.
-                        </p>
+                <!-- Step 3 -->
+                <div class="text-center relative step-connector">
+                    <div class="inline-flex items-center justify-center w-16 h-16 bg-red-800 text-white rounded-full mb-6 relative z-10">
+                        <span class="text-xl font-bold">3</span>
                     </div>
                 </div>
             </div>

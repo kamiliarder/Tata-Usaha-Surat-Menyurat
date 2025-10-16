@@ -30,7 +30,7 @@
 
             <!-- Right side - User Menu -->
             <div class="flex items-center space-x-4">
-                <span class="text-sm text-gray-700">{{ Auth::user()->name }}</span>
+                <span class="text-sm text-gray-700">{{ Auth::user()->nama }}</span>
                 <div class="relative">
                     <button onclick="toggleDropdown()" class="flex items-center p-2 space-x-2 text-gray-600 rounded-md hover:text-gray-900 hover:bg-gray-50">
                         <div class="flex items-center justify-center w-8 h-8 bg-gray-200 rounded-full">

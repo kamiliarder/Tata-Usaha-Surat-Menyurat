@@ -20,7 +20,7 @@
                        style="{{ request()->routeIs('admin.pesan.*') ? 'border-bottom: 2px solid #dc2626;' : '' }}">
                         Surat
                     </a>
-                    <a href="{{ route('manajemen_surat') }}"
+                    <a href="{{ route('admin.guru.manajemen_akun') }}"
                        class="px-3 py-2 text-gray-600 transition-all duration-200 hover:text-gray-900 hover:bg-gray-50">
                         Akun Guru
                     </a>

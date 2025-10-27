@@ -8,7 +8,6 @@
                 <div class="flex items-center space-x-2">
                     <img src="{{ asset('images/logo.png') }}" alt="Telkom Schools Logo" class="w-auto h-10">
                 </div>
-
                 <!-- Navigation Links -->
                 <nav class="flex space-x-6">
                     <a href="{{ route('dashboard') }}"
@@ -45,10 +44,10 @@
 
                     <!-- Dropdown Menu -->
                     <div id="userDropdown" class="absolute right-0 z-50 hidden w-48 mt-2 bg-white border border-gray-200 rounded-md shadow-lg">
-                        <a href="{{ route('profile.edit') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Profile</a>
+                        <a href="{{ route('profile.edit') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Profil</a>
                         <form method="POST" action="{{ route('logout') }}" class="block">
                             @csrf
-                            <button type="submit" class="w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-gray-50">Log Out</button>
+                            <button type="submit" class="w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-gray-50">Keluar</button>
                         </form>
                     </div>
                 </div>

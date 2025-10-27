@@ -41,7 +41,7 @@ Route::middleware(['auth'])->group(function () {
         });
 
         // Manajemen akun guru (view route)
-        Route::view('/guru/manajemen-akun', 'admin.guru.manajemen_akun')->name('guru.manajemen_akun');
+        Route::view('/guru/index', 'admin.guru.index')->name('guru.index');
     });
 
     // Teacher routes (will add middleware later)

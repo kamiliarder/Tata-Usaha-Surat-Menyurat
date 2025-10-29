@@ -626,7 +626,7 @@
                             </td>
                             <td class="table-cell">
                                 <span class="status-badge {{ $letter->tipe == 'masuk' ? 'status-diterima' : 'status-disetujui' }}">
-                                   manajemen-akun {{ ucfirst($letter->tipe) }}
+                                {{ ucfirst($letter->tipe) }}
                                 </span>
                             </td>
                             <td class="table-cell">{{ $letter->tanggal_kirim->format('d/m/Y') }}</td>

@@ -209,18 +209,32 @@
                     <div class="inline-flex items-center justify-center w-16 h-16 bg-red-800 text-white rounded-full mb-6 relative z-10">
                         <span class="text-xl font-bold">1</span>
                     </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Isi Form Surat</h3>
+                    <p class="text-gray-600">
+                        Lengkapi formulir pengiriman surat dengan informasi yang diperlukan
+                    </p>
+                </div>
 
                 <!-- Step 2 -->
                 <div class="text-center relative step-connector">
                     <div class="inline-flex items-center justify-center w-16 h-16 bg-red-800 text-white rounded-full mb-6 relative z-10">
                         <span class="text-xl font-bold">2</span>
                     </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Proses Verifikasi</h3>
+                    <p class="text-gray-600">
+                        Tim Tata Usaha akan memverifikasi dan memproses surat Anda
+                    </p>
+                </div>
 
                 <!-- Step 3 -->
                 <div class="text-center relative step-connector">
                     <div class="inline-flex items-center justify-center w-16 h-16 bg-red-800 text-white rounded-full mb-6 relative z-10">
                         <span class="text-xl font-bold">3</span>
                     </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Tracking Status</h3>
+                    <p class="text-gray-600">
+                        Pantau status surat Anda secara real-time di halaman ini
+                    </p>
                 </div>
             </div>
         </div>

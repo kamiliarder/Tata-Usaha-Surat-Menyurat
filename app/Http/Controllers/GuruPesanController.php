@@ -64,6 +64,14 @@ class GuruPesanController extends Controller
             })
             ->findOrFail($id);
 
+        // Auto-update status from 'pending' to 'diterima' when teacher views the message
+        if ($pesan->status_pesan === 'pending') {
+            $pesan->update(['status_pesan' => 'diterima']);
+
+            // Refresh the model to get the updated status
+            $pesan->refresh();
+        }
+
         return view('guru.pesan.show', compact('pesan'));
     }
 

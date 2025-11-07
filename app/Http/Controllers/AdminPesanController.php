@@ -74,6 +74,7 @@ class AdminPesanController extends Controller
             'instansi' => 'nullable|string|max:50',
             'kontak_penerima' => 'nullable|string|max:20',
             'alamat_penerima' => 'nullable|string',
+            'id_pesan_terkait' => 'nullable|exists:tb_pesan,id_pesan',
             'lampiran.*' => 'nullable|file|max:10240|mimes:pdf,doc,docx,jpg,jpeg,png,gif',
         ]);
 
@@ -93,10 +94,11 @@ class AdminPesanController extends Controller
             'tanggal_kirim' => now(),
             'pengirim' => $validated['pengirim'],
             'id_penerima' => $dummyAccount->id_pengguna, // Dummy account for external recipient
-            'status_pesan' => 'diterima', // Outgoing letters start as "received"
+            'status_pesan' => 'diterima', // Outgoing letters start as "diterima"
             'instansi' => $validated['instansi'],
             'kontak_pengirim' => $validated['kontak_penerima'], // Store recipient contact
             'alamat_pengirim' => $validated['alamat_penerima'], // Store recipient address
+            'id_pesan_terkait' => $validated['id_pesan_terkait'] ?? null, // Link to original message if this is a reply
         ]);
 
         // Handle file uploads
@@ -114,8 +116,13 @@ class AdminPesanController extends Controller
             }
         }
 
+        $successMessage = 'Surat keluar berhasil dicatat dengan nomor: ' . $nomorPesan;
+        if ($validated['id_pesan_terkait']) {
+            $successMessage .= ' (sebagai balasan)';
+        }
+
         return redirect()->route('admin.pesan.index')
-            ->with('success', 'Surat keluar berhasil dicatat dengan nomor: ' . $nomorPesan);
+            ->with('success', $successMessage);
     }
 
     /**
@@ -125,6 +132,14 @@ class AdminPesanController extends Controller
     {
         $pesan = Pesan::with(['penerima', 'lampiran', 'pesanTerkait', 'balasan'])
             ->findOrFail($id);
+
+        // Auto-update status from 'pending' to 'diterima' when admin views the message
+        if ($pesan->status_pesan === 'pending') {
+            $pesan->update(['status_pesan' => 'diterima']);
+
+            // Refresh the model to get the updated status
+            $pesan->refresh();
+        }
 
         // If it's an AJAX request, return JSON
         if ($request->expectsJson()) {

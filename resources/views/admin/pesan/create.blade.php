@@ -219,6 +219,35 @@
                 <form action="{{ route('admin.pesan.store') }}" method="POST" enctype="multipart/form-data" id="outgoingLetterForm">
                     @csrf
 
+                    <!-- Reply Information (Hidden when not replying) -->
+                    <div id="replyInfoSection" style="display: none; margin-bottom: 2rem; padding: 1.5rem; background: #f0f9ff; border: 2px solid #0ea5e9; border-radius: 8px;">
+                        <h3 style="font-size: 1rem; font-weight: 600; color: #0369a1; margin-bottom: 1rem; display: flex; align-items: center;">
+                            <svg style="width: 20px; height: 20px; margin-right: 0.5rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"/>
+                            </svg>
+                            Membalas Surat
+                        </h3>
+                        <input type="hidden" id="id_pesan_terkait" name="id_pesan_terkait" value="">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; font-size: 0.875rem;">
+                            <div>
+                                <span style="font-weight: 600; color: #374151;">Nomor Surat:</span>
+                                <span id="reply_nomor_pesan" style="color: #6b7280;">-</span>
+                            </div>
+                            <div>
+                                <span style="font-weight: 600; color: #374151;">Status:</span>
+                                <span id="reply_status_pesan" style="color: #6b7280;">-</span>
+                            </div>
+                            <div style="grid-column: 1 / -1;">
+                                <span style="font-weight: 600; color: #374151;">Judul:</span>
+                                <span id="reply_judul" style="color: #6b7280;">-</span>
+                            </div>
+                            <div style="grid-column: 1 / -1;">
+                                <span style="font-weight: 600; color: #374151;">Pengirim:</span>
+                                <span id="reply_pengirim" style="color: #6b7280;">-</span>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Letter Information -->
                     <div class="form-group">
                         <label for="judul" class="form-label required">Judul Surat</label>
@@ -342,6 +371,75 @@
     @push('scripts')
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Check if this is a reply to another letter
+            const urlParams = new URLSearchParams(window.location.search);
+            const replyToId = urlParams.get('reply_to');
+
+            if (replyToId) {
+                // Fetch the original letter details
+                fetch(`/admin/pesan/${replyToId}`, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest',
+                    }
+                })
+                .then(response => response.json())
+                .then(letter => {
+                    // Show reply info section
+                    document.getElementById('replyInfoSection').style.display = 'block';
+
+                    // Fill in reply information
+                    document.getElementById('id_pesan_terkait').value = letter.id_pesan;
+                    document.getElementById('reply_nomor_pesan').textContent = letter.nomor_pesan || '-';
+                    document.getElementById('reply_judul').textContent = letter.judul || '-';
+                    document.getElementById('reply_pengirim').textContent = letter.pengirim || '-';
+                    document.getElementById('reply_status_pesan').textContent = (letter.status_pesan || 'pending').replace('_', ' ');
+
+                    // Auto-fill form fields
+                    // 1. Set kategori (same as original)
+                    const kategoriSelect = document.getElementById('kategori');
+                    if (kategoriSelect && letter.kategori) {
+                        kategoriSelect.value = letter.kategori;
+                    }
+
+                    // 2. Set penerima to the original sender
+                    const penerimaInput = document.getElementById('penerima');
+                    if (penerimaInput && letter.pengirim) {
+                        penerimaInput.value = letter.pengirim;
+                    }
+
+                    // 3. Set instansi if available
+                    const instansiInput = document.getElementById('instansi');
+                    if (instansiInput && letter.instansi) {
+                        instansiInput.value = letter.instansi;
+                    }
+
+                    // 4. Set alamat_penerima to original sender's address
+                    const alamatInput = document.getElementById('alamat_penerima');
+                    if (alamatInput && letter.alamat_pengirim) {
+                        alamatInput.value = letter.alamat_pengirim;
+                    }
+
+                    // 5. Set kontak_penerima to original sender's contact
+                    const kontakInput = document.getElementById('kontak_penerima');
+                    if (kontakInput && letter.kontak_pengirim) {
+                        kontakInput.value = letter.kontak_pengirim;
+                    }
+
+                    // 6. Suggest judul with "Re:" prefix
+                    const judulInput = document.getElementById('judul');
+                    if (judulInput && letter.judul) {
+                        judulInput.value = `Re: ${letter.judul}`;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching letter details:', error);
+                    alert('Gagal memuat detail surat asli. Silakan isi form secara manual.');
+                });
+            }
+
+            // File upload functionality
             const fileUpload = document.getElementById('fileUpload');
             const fileInput = document.getElementById('fileInput');
             const fileList = document.getElementById('fileList');

@@ -815,11 +815,37 @@
                     console.log('Received data:', data);
                     document.getElementById('detailContent').innerHTML = generateDetailHTML(data);
                     showModal('detailModal');
+
+                    // Check if status was auto-updated from pending to diterima
+                    if (data.status_pesan === 'diterima') {
+                        // Update the status badge in the table row for this letter
+                        updateTableRowStatus(letterId, 'diterima');
+                    }
                 })
                 .catch(error => {
                     console.error('Error details:', error);
                     alert('Gagal memuat detail surat: ' + error.message);
                 });
+        }
+
+        // Helper function to update table row status
+        function updateTableRowStatus(letterId, newStatus) {
+            // Find the table row for this letter and update the status badge
+            const tableRows = document.querySelectorAll('.table-row');
+            tableRows.forEach(row => {
+                const viewButton = row.querySelector(`button[onclick="showDetail(${letterId})"]`);
+                if (viewButton) {
+                    const statusCell = row.querySelector('.table-cell:nth-child(7)'); // Status column
+                    if (statusCell) {
+                        const statusBadge = statusCell.querySelector('.status-badge');
+                        if (statusBadge) {
+                            // Update the badge class and text
+                            statusBadge.className = `status-badge status-${newStatus}`;
+                            statusBadge.textContent = newStatus.charAt(0).toUpperCase() + newStatus.slice(1).replace('_', ' ');
+                        }
+                    }
+                }
+            });
         }
 
         // Generate detail HTML
@@ -847,6 +873,18 @@
             };
 
             const safeValue = (value) => value || '-';
+
+            // Check if this letter has been replied to
+            const balasan = letter.balasan || [];
+            const hasReply = balasan.length > 0;
+            const replyIndicator = hasReply ? `
+                <div class="detail-item full-width" style="background: #dcfce7; border-left: 4px solid #16a34a;">
+                    <div class="detail-label" style="color: #16a34a;">Status Balasan</div>
+                    <div class="detail-value" style="color: #15803d;">
+                        ✓ Surat ini telah dibalas: ${balasan.map(b => b.nomor_pesan).join(', ')}
+                    </div>
+                </div>
+            ` : '';
 
             return `
                 <div class="detail-grid">
@@ -898,12 +936,21 @@
                         <div class="detail-label">Perihal</div>
                         <div class="detail-value">${safeValue(letter.perihal)}</div>
                     </div>
+                    ${replyIndicator}
                 </div>
                 <div class="detail-item">
                     <div class="detail-label">Lampiran</div>
                     <div class="attachment-list">
                         ${attachmentHTML}
                     </div>
+                </div>
+                <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid #e5e7eb; text-align: right;">
+                    <a href="/admin/pesan/create?reply_to=${letter.id_pesan}" class="btn btn-primary" style="display: inline-block; padding: 0.75rem 1.5rem; background-color: #991b1b; color: white; text-decoration: none; border-radius: 6px; font-weight: 500;">
+                        <svg style="display: inline-block; width: 16px; height: 16px; margin-right: 0.5rem; vertical-align: middle;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"/>
+                        </svg>
+                        Balas Surat
+                    </a>
                 </div>
             `;
         }

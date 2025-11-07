@@ -44,7 +44,7 @@
 
                     <!-- Dropdown Menu -->
                     <div id="userDropdown" class="absolute right-0 z-50 hidden w-48 mt-2 bg-white border border-gray-200 rounded-md shadow-lg">
-                        <a href="{{ route('profile.edit') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Profil</a>
+                        <a class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Profil (In development)</a>
                         <form method="POST" action="{{ route('logout') }}" class="block">
                             @csrf
                             <button type="submit" class="w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-gray-50">Keluar</button>

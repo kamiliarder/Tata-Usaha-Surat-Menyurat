@@ -46,7 +46,7 @@ class GuruPesanController extends Controller
 
         $pesanList = $query->orderBy('tanggal_kirim', 'desc')->paginate(15);
 
-        return view('guru.pesan.index', compact('pesanList'));
+        return view('pesan.index', compact('pesanList'));
     }
 
     /**
@@ -72,7 +72,7 @@ class GuruPesanController extends Controller
             $pesan->refresh();
         }
 
-        return view('guru.pesan.show', compact('pesan'));
+        return view('pesan.show', compact('pesan'));
     }
 
     /**
@@ -95,7 +95,7 @@ class GuruPesanController extends Controller
 
         $pesan->update($validated);
 
-        return redirect()->route('guru.pesan.show', $pesan->id_pesan)
+        return redirect()->route('pesan.show', $pesan->id_pesan)
             ->with('success', 'Status pesan berhasil diperbarui.');
     }
 
@@ -127,6 +127,6 @@ class GuruPesanController extends Controller
             ->limit(5)
             ->get();
 
-        return view('guru.dashboard', compact('statistics', 'recentMessages'));
+        return view('dashboard', compact('statistics', 'recentMessages'));
     }
 }

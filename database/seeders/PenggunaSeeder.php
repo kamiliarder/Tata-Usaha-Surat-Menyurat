@@ -23,7 +23,6 @@ class PenggunaSeeder extends Seeder
             'divisi' => 'umum',
             'nomor_telp' => '0000000000',
             'nip' => 0,
-            'jenis_kelamin' => 'laki-laki',
         ]);
 
         // 2. Create Admin account
@@ -35,7 +34,6 @@ class PenggunaSeeder extends Seeder
             'divisi' => 'umum',
             'nomor_telp' => '081234567890',
             'nip' => 1001,
-            'jenis_kelamin' => 'laki-laki',
         ]);
 
         // 3. Create sample teachers for each division
@@ -87,7 +85,6 @@ class PenggunaSeeder extends Seeder
                 'divisi' => $teacher['divisi'],
                 'nomor_telp' => '0812345678' . substr($teacher['nip'], -2),
                 'nip' => $teacher['nip'],
-                'jenis_kelamin' => 'laki-laki',
             ]);
         }
     }

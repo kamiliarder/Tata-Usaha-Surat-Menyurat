@@ -546,14 +546,14 @@
             <div class="search-box">
                 <div class="search-header">
                     <h1 class="search-title">Manajemen Surat</h1>
-                    <a href="{{ route('admin.pesan.create') }}" class="create-button">
+                    <a href="{{ route('pesan.create') }}" class="create-button">
                         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                         </svg>
                         Buat Surat Keluar
                     </a>
                 </div>
-                <form method="GET" action="{{ route('admin.pesan.index') }}" id="searchForm">
+                <form method="GET" action="{{ route('pesan.index') }}" id="searchForm">
                     <div class="search-grid">
                         <div class="search-group">
                             <label for="search">Pencarian</label>
@@ -779,7 +779,7 @@
                 targetItem.classList.add('selected');
             }
 
-            document.getElementById('editStatusForm').action = `/admin/pesan/${letterId}`;
+            document.getElementById('editStatusForm').action = `/pesan/${letterId}`;
             showModal('editStatusModal');
         }
 
@@ -787,7 +787,7 @@
         function showDetail(letterId) {
             console.log('Fetching details for letter ID:', letterId);
 
-            fetch(`/admin/pesan/${letterId}`, {
+            fetch(`/pesan/${letterId}`, {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json',
@@ -945,7 +945,7 @@
                     </div>
                 </div>
                 <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid #e5e7eb; text-align: right;">
-                    <a href="/admin/pesan/create?reply_to=${letter.id_pesan}" class="btn btn-primary" style="display: inline-block; padding: 0.75rem 1.5rem; background-color: #991b1b; color: white; text-decoration: none; border-radius: 6px; font-weight: 500;">
+                    <a href="/pesan/create?reply_to=${letter.id_pesan}" class="btn btn-primary" style="display: inline-block; padding: 0.75rem 1.5rem; background-color: #991b1b; color: white; text-decoration: none; border-radius: 6px; font-weight: 500;">
                         <svg style="display: inline-block; width: 16px; height: 16px; margin-right: 0.5rem; vertical-align: middle;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"/>
                         </svg>
@@ -960,7 +960,7 @@
             if (confirm('Apakah Anda yakin ingin menghapus surat ini?')) {
                 const form = document.createElement('form');
                 form.method = 'POST';
-                form.action = `/admin/pesan/${letterId}`;
+                form.action = `/pesan/${letterId}`;
 
                 const csrfToken = document.createElement('input');
                 csrfToken.type = 'hidden';

@@ -216,7 +216,7 @@
                     </div>
                 @endif
 
-                <form action="{{ route('admin.pesan.store') }}" method="POST" enctype="multipart/form-data" id="outgoingLetterForm">
+                <form action="{{ route('pesan.store') }}" method="POST" enctype="multipart/form-data" id="outgoingLetterForm">
                     @csrf
 
                     <!-- Reply Information (Hidden when not replying) -->
@@ -360,7 +360,7 @@
 
                     <!-- Submit Section -->
                     <div class="submit-section">
-                        <a href="{{ route('admin.pesan.index') }}" class="btn btn-secondary">Batal</a>
+                        <a href="{{ route('pesan.index') }}" class="btn btn-secondary">Batal</a>
                         <button type="submit" class="btn btn-primary">Simpan Surat Keluar</button>
                     </div>
                 </form>
@@ -377,7 +377,7 @@
 
             if (replyToId) {
                 // Fetch the original letter details
-                fetch(`/admin/pesan/${replyToId}`, {
+                fetch(`/pesan/${replyToId}`, {
                     method: 'GET',
                     headers: {
                         'Accept': 'application/json',

@@ -127,6 +127,35 @@
             font-weight: 500;
         }
 
+        /* Profile Picture Styles */
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .profile-pic {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 50%;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+
+        .profile-pic-placeholder {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 0.875rem;
+            flex-shrink: 0;
+        }
+
         /* Action Buttons */
         .action-btn {
             width: 2rem;
@@ -188,12 +217,14 @@
             <div class="search-box">
                 <div class="search-header">
                     <h1 class="search-title">Manajemen Akun Guru</h1>
-                    <button class="create-button">
-                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-                        </svg>
-                        Tambah Akun Baru
-                    </button>
+                    @if(auth()->user()->role === 'admin')
+                        <a href="{{ route('akun.create') }}" class="create-button">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                            </svg>
+                            Tambah Akun Baru
+                        </a>
+                    @endif
                 </div>
             </div>
 
@@ -205,43 +236,64 @@
                             <th>USERNAME</th>
                             <th>PASSWORD</th>
                             <th>NAMA LENGKAP</th>
-                            <th>JABATAN</th>
+                            <th>ROLE</th>
                             <th>NIP</th>
-                            <th>JENIS KELAMIN</th>
                             <th>AKSI</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse($teachers ?? [] as $teacher)
+                        @forelse($teachers as $teacher)
                         <tr class="table-row">
-                            <td class="table-cell">{{ $teacher->username }}</td>
+                            <td class="table-cell">
+                                <div class="user-info">
+                                    @if($teacher->profile_picture)
+                                        <img src="{{ asset('storage/profile-pictures/' . $teacher->profile_picture) }}"
+                                             alt="{{ $teacher->username }}"
+                                             class="profile-pic"
+                                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                        <div class="profile-pic-placeholder" style="display: none;">
+                                            {{ strtoupper(substr($teacher->username, 0, 1)) }}
+                                        </div>
+                                    @else
+                                        <div class="profile-pic-placeholder">
+                                            {{ strtoupper(substr($teacher->username, 0, 1)) }}
+                                        </div>
+                                    @endif
+                                    <span>{{ $teacher->username }}</span>
+                                </div>
+                            </td>
                             <td class="table-cell">{{ $teacher->password_display }}</td>
                             <td class="table-cell">{{ $teacher->nama_lengkap }}</td>
-                            <td class="table-cell">{{ $teacher->jabatan }}</td>
-                            <td class="table-cell">{{ $teacher->nip }}</td>
-                            <td class="table-cell">{{ $teacher->jenis_kelamin }}</td>
+                            <td class="table-cell">{{ ucfirst($teacher->role) }}</td>
+                            <td class="table-cell">{{ $teacher->nip ?? '-' }}</td>
                             <td class="table-cell">
                                 <!-- View Detail Button -->
-                                <button class="action-btn btn-view" title="Lihat Detail">
+                                <a href="{{ route('akun.show', $teacher->id_pengguna) }}" class="action-btn btn-view" title="Lihat Detail">
                                     <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
                                         <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                                         <path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
                                     </svg>
-                                </button>
+                                </a>
 
-                                <!-- Edit Button -->
-                                <button class="action-btn btn-edit" title="Edit">
-                                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
-                                        <path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
-                                    </svg>
-                                </button>
+                                @if(auth()->user()->role === 'admin')
+                                    <!-- Edit Button -->
+                                    <a href="{{ route('akun.edit', $teacher->id_pengguna) }}" class="action-btn btn-edit" title="Edit">
+                                        <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                                        </svg>
+                                    </a>
 
-                                <!-- Delete Button -->
-                                <button class="action-btn btn-delete" title="Hapus">
-                                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
-                                        <path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-                                    </svg>
-                                </button>
+                                    <!-- Delete Button -->
+                                    <form action="{{ route('akun.destroy', $teacher->id_pengguna) }}" method="POST" style="display: inline;" onsubmit="return confirm('Apakah Anda yakin ingin menghapus akun ini?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="action-btn btn-delete" title="Hapus">
+                                            <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+                                                <path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                            </svg>
+                                        </button>
+                                    </form>
+                                @endif
                             </td>
                         </tr>
                         @empty

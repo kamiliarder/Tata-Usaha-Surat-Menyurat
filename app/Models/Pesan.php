@@ -140,10 +140,22 @@ class Pesan extends Model
     {
         $year = date('Y');
         $month = date('m');
+
+        // Find the highest number in the current month/year
         $latest = static::whereYear('tanggal_kirim', $year)
             ->whereMonth('tanggal_kirim', $month)
-            ->count();
+            ->where('nomor_pesan', 'like', "$year/$month/%")
+            ->orderByRaw('CAST(SUBSTRING_INDEX(nomor_pesan, "/", -1) AS UNSIGNED) DESC')
+            ->first();
 
-        return sprintf('%s/%s/%04d', $year, $month, $latest + 1);
+        $nextNumber = 1;
+        if ($latest && $latest->nomor_pesan) {
+            // Extract the last part of the number (after the last /)
+            $parts = explode('/', $latest->nomor_pesan);
+            $lastNumber = (int) end($parts);
+            $nextNumber = $lastNumber + 1;
+        }
+
+        return sprintf('%s/%s/%04d', $year, $month, $nextNumber);
     }
 }

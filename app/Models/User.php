@@ -37,7 +37,6 @@ class User extends Authenticatable
         'divisi',
         'nomor_telp',
         'nip',
-        'jenis_kelamin',
         'profile_picture',
     ];
 
@@ -92,16 +91,7 @@ class User extends Authenticatable
             return asset('storage/profile-pictures/' . $this->profile_picture);
         }
 
-        return $this->getDefaultAvatarUrl();
-    }
-
-    /**
-     * Get default avatar URL based on user's gender.
-     */
-    public function getDefaultAvatarUrl(): string
-    {
-        $defaultAvatar = $this->jenis_kelamin === 'perempuan' ? 'female-avatar.png' : 'male-avatar.png';
-        return asset('images/defaults/' . $defaultAvatar);
+        return asset('images/defaults/male-avatar.png');
     }
 
     /**

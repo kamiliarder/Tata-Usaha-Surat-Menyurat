@@ -44,7 +44,7 @@ class AdminPesanController extends Controller
 
         $letters = $query->orderBy('tanggal_kirim', 'desc')->paginate(15);
 
-        return view('admin.pesan.index', compact('letters'));
+        return view('pesan.index', compact('letters'));
     }
 
     /**
@@ -57,7 +57,7 @@ class AdminPesanController extends Controller
             ->orderBy('nama')
             ->get();
 
-        return view('admin.pesan.create', compact('staffMembers'));
+        return view('pesan.create', compact('staffMembers'));
     }
 
     /**
@@ -81,25 +81,40 @@ class AdminPesanController extends Controller
         // Get dummy visitor account for outgoing messages
         $dummyAccount = User::where('email', 'visitor@dummy.local')->first();
 
-        // Generate unique message number
-        $nomorPesan = Pesan::generateNomorPesan();
+        // Generate unique message number with retry logic for race conditions
+        $maxRetries = 5;
+        $attempt = 0;
+        $pesan = null;
 
-        // Create outgoing letter
-        $pesan = Pesan::create([
-            'nomor_pesan' => $nomorPesan,
-            'judul' => $validated['judul'],
-            'perihal' => $validated['perihal'],
-            'kategori' => $validated['kategori'],
-            'tipe' => 'keluar',
-            'tanggal_kirim' => now(),
-            'pengirim' => $validated['pengirim'],
-            'id_penerima' => $dummyAccount->id_pengguna, // Dummy account for external recipient
-            'status_pesan' => 'diterima', // Outgoing letters start as "diterima"
-            'instansi' => $validated['instansi'],
-            'kontak_pengirim' => $validated['kontak_penerima'], // Store recipient contact
-            'alamat_pengirim' => $validated['alamat_penerima'], // Store recipient address
-            'id_pesan_terkait' => $validated['id_pesan_terkait'] ?? null, // Link to original message if this is a reply
-        ]);
+        while ($attempt < $maxRetries && !$pesan) {
+            try {
+                $nomorPesan = Pesan::generateNomorPesan();
+
+                // Create outgoing letter
+                $pesan = Pesan::create([
+                    'nomor_pesan' => $nomorPesan,
+                    'judul' => $validated['judul'],
+                    'perihal' => $validated['perihal'],
+                    'kategori' => $validated['kategori'],
+                    'tipe' => 'keluar',
+                    'tanggal_kirim' => now(),
+                    'pengirim' => $validated['pengirim'],
+                    'id_penerima' => $dummyAccount->id_pengguna, // Dummy account for external recipient
+                    'status_pesan' => 'diterima', // Outgoing letters start as "diterima"
+                    'instansi' => $validated['instansi'],
+                    'kontak_pengirim' => $validated['kontak_penerima'], // Store recipient contact
+                    'alamat_pengirim' => $validated['alamat_penerima'], // Store recipient address
+                    'id_pesan_terkait' => $validated['id_pesan_terkait'] ?? null, // Link to original message if this is a reply
+                ]);
+            } catch (\Illuminate\Database\UniqueConstraintViolationException $e) {
+                $attempt++;
+                if ($attempt >= $maxRetries) {
+                    throw $e;
+                }
+                // Small delay before retry
+                usleep(100000); // 100ms
+            }
+        }
 
         // Handle file uploads
         if ($request->hasFile('lampiran')) {
@@ -116,12 +131,12 @@ class AdminPesanController extends Controller
             }
         }
 
-        $successMessage = 'Surat keluar berhasil dicatat dengan nomor: ' . $nomorPesan;
+        $successMessage = 'Surat keluar berhasil dicatat dengan nomor: ' . $pesan->nomor_pesan;
         if ($validated['id_pesan_terkait']) {
             $successMessage .= ' (sebagai balasan)';
         }
 
-        return redirect()->route('admin.pesan.index')
+        return redirect()->route('pesan.index')
             ->with('success', $successMessage);
     }
 
@@ -150,7 +165,7 @@ class AdminPesanController extends Controller
             ->orderBy('nama')
             ->get();
 
-        return view('admin.pesan.show', compact('pesan', 'staffMembers'));
+        return view('pesan.show', compact('pesan', 'staffMembers'));
     }
 
     /**
@@ -183,7 +198,7 @@ class AdminPesanController extends Controller
             return response()->json(['success' => true, 'message' => 'Status berhasil diperbarui.']);
         }
 
-        return redirect()->route('admin.pesan.show', $pesan->id_pesan)
+        return redirect()->route('pesan.show', $pesan->id_pesan)
             ->with('success', 'Pesan berhasil diperbarui.');
     }
 
@@ -197,7 +212,7 @@ class AdminPesanController extends Controller
         // Get dummy visitor account for outgoing messages
         $dummyAccount = User::where('email', 'visitor@dummy.local')->first();
 
-        return view('admin.pesan.create-reply', compact('originalPesan', 'dummyAccount'));
+        return view('pesan.create-reply', compact('originalPesan', 'dummyAccount'));
     }
 
     /**
@@ -218,23 +233,38 @@ class AdminPesanController extends Controller
         // Get dummy visitor account
         $dummyAccount = User::where('email', 'visitor@dummy.local')->first();
 
-        // Generate unique message number
-        $nomorPesan = Pesan::generateNomorPesan();
+        // Generate unique message number with retry logic for race conditions
+        $maxRetries = 5;
+        $attempt = 0;
+        $replyPesan = null;
 
-        // Create reply message
-        $replyPesan = Pesan::create([
-            'nomor_pesan' => $nomorPesan,
-            'judul' => $validated['judul'],
-            'perihal' => $validated['perihal'],
-            'kategori' => $originalPesan->kategori, // Same category as original
-            'tipe' => 'keluar',
-            'tanggal_kirim' => now(),
-            'pengirim' => $validated['pengirim'],
-            'id_penerima' => $dummyAccount->id_pengguna, // Dummy account for external recipient
-            'status_pesan' => 'diterima',
-            'instansi' => $validated['instansi'],
-            'id_pesan_terkait' => $originalMessageId, // Link to original message
-        ]);
+        while ($attempt < $maxRetries && !$replyPesan) {
+            try {
+                $nomorPesan = Pesan::generateNomorPesan();
+
+                // Create reply message
+                $replyPesan = Pesan::create([
+                    'nomor_pesan' => $nomorPesan,
+                    'judul' => $validated['judul'],
+                    'perihal' => $validated['perihal'],
+                    'kategori' => $originalPesan->kategori, // Same category as original
+                    'tipe' => 'keluar',
+                    'tanggal_kirim' => now(),
+                    'pengirim' => $validated['pengirim'],
+                    'id_penerima' => $dummyAccount->id_pengguna, // Dummy account for external recipient
+                    'status_pesan' => 'diterima',
+                    'instansi' => $validated['instansi'],
+                    'id_pesan_terkait' => $originalMessageId, // Link to original message
+                ]);
+            } catch (\Illuminate\Database\UniqueConstraintViolationException $e) {
+                $attempt++;
+                if ($attempt >= $maxRetries) {
+                    throw $e;
+                }
+                // Small delay before retry
+                usleep(100000); // 100ms
+            }
+        }
 
         // Handle file uploads
         if ($request->hasFile('lampiran')) {
@@ -251,8 +281,8 @@ class AdminPesanController extends Controller
             }
         }
 
-        return redirect()->route('admin.pesan.show', $originalPesan->id_pesan)
-            ->with('success', 'Balasan berhasil dicatat dengan nomor: ' . $nomorPesan);
+        return redirect()->route('pesan.show', $originalPesan->id_pesan)
+            ->with('success', 'Balasan berhasil dicatat dengan nomor: ' . $replyPesan->nomor_pesan);
     }
 
     /**
@@ -267,7 +297,7 @@ class AdminPesanController extends Controller
             if ($request->expectsJson()) {
                 return response()->json(['success' => false, 'message' => 'Surat hanya dapat dihapus jika statusnya "Perlu Perbaikan" atau "Ditolak".'], 400);
             }
-            return redirect()->route('admin.pesan.index')
+            return redirect()->route('pesan.index')
                 ->with('error', 'Surat hanya dapat dihapus jika statusnya "Perlu Perbaikan" atau "Ditolak".');
         }
 
@@ -286,7 +316,7 @@ class AdminPesanController extends Controller
             return response()->json(['success' => true, 'message' => 'Surat berhasil dihapus.']);
         }
 
-        return redirect()->route('admin.pesan.index')
+        return redirect()->route('pesan.index')
             ->with('success', 'Surat berhasil dihapus.');
     }
 }

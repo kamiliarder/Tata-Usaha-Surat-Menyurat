@@ -1,5 +1,5 @@
 <x-app-custom>
-    <x-slot name="title">Tambah Akun Baru</x-slot>
+    <x-slot name="title">Edit Akun</x-slot>
 
     @push('styles')
     <style>
@@ -203,29 +203,110 @@
         <div class="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
             <div class="form-container">
                 <div class="form-header">
-                    <h1 class="form-title">Tambah Akun Baru</h1>
+                    <h1 class="form-title">Edit Akun: {{ $akun->nama }}</h1>
                 </div>
 
-                <form action="{{ route('akun.store') }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('akun.update', $akun) }}" method="POST" enctype="multipart/form-data">
                     @csrf
+                    @method('PUT')
 
+                    <!-- Nama Lengkap -->
+                    <div class="form-group">
+                        <label for="nama" class="form-label required">Nama Lengkap</label>
+                        <input type="text" id="nama" name="nama" class="form-input" value="{{ old('nama', $akun->nama) }}" required>
+                        @error('nama')
+                            <p class="form-error">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- Email -->
+                    <div class="form-group">
+                        <label for="email" class="form-label required">Email</label>
+                        <input type="email" id="email" name="email" class="form-input" value="{{ old('email', $akun->email) }}" required>
+                        @error('email')
+                            <p class="form-error">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- Password -->
+                    <div class="form-group">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" id="password" name="password" class="form-input">
+                        <small class="text-gray-500">Kosongkan jika tidak ingin mengubah password. Minimal 8 karakter.</small>
+                        @error('password')
+                            <p class="form-error">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- Konfirmasi Password -->
+                    <div class="form-group">
+                        <label for="password_confirmation" class="form-label">Konfirmasi Password</label>
+                        <input type="password" id="password_confirmation" name="password_confirmation" class="form-input">
+                    </div>
+
+                    <!-- Role -->
+                    <div class="form-group">
+                        <label for="role" class="form-label required">Role</label>
+                        <select id="role" name="role" class="form-select" required>
+                            <option value="">Pilih Role</option>
+                            <option value="admin" {{ old('role', $akun->role) == 'admin' ? 'selected' : '' }}>Admin</option>
+                            <option value="guru" {{ old('role', $akun->role) == 'guru' ? 'selected' : '' }}>Guru</option>
+                        </select>
+                        @error('role')
+                            <p class="form-error">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- NIP -->
+                    <div class="form-group">
+                        <label for="nip" class="form-label">NIP</label>
+                        <input type="text" id="nip" name="nip" class="form-input" value="{{ old('nip', $akun->nip) }}">
+                        @error('nip')
+                            <p class="form-error">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- Nomor Telepon -->
+                    <div class="form-group">
+                        <label for="nomor_telp" class="form-label">Nomor Telepon</label>
+                        <input type="text" id="nomor_telp" name="nomor_telp" class="form-input" value="{{ old('nomor_telp', $akun->nomor_telp) }}">
+                        @error('nomor_telp')
+                            <p class="form-error">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- Profile Picture -->
                     <div class="form-group">
                         <label class="form-label">Foto Profil</label>
                         <div class="avatar-upload-container">
                             <span class="avatar-upload-label">Upload avatar</span>
 
                             <div class="avatar-preview-wrapper">
-                                <img id="avatar-preview" class="avatar-preview" style="display: none;" src="" alt="Avatar Preview">
-                                <div id="avatar-placeholder" class="avatar-placeholder">
-                                    <svg width="48" height="48" fill="currentColor" viewBox="0 0 24 24">
-                                        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                                    </svg>
-                                </div>
-                                <button type="button" id="remove-avatar" class="remove-avatar-btn" title="Hapus foto">
-                                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
-                                        <path d="M6 18L18 6M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                                    </svg>
-                                </button>
+                                @if($akun->profile_picture)
+                                    <img id="avatar-preview" class="avatar-preview" src="{{ asset('storage/profile-pictures/' . $akun->profile_picture) }}" alt="Avatar Preview">
+                                    <div id="avatar-placeholder" class="avatar-placeholder" style="display: none;">
+                                        <svg width="48" height="48" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                                        </svg>
+                                    </div>
+                                    <button type="button" id="remove-avatar" class="remove-avatar-btn show" title="Hapus foto">
+                                        <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M6 18L18 6M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                        </svg>
+                                    </button>
+                                @else
+                                    <img id="avatar-preview" class="avatar-preview" style="display: none;" src="" alt="Avatar Preview">
+                                    <div id="avatar-placeholder" class="avatar-placeholder">
+                                        <svg width="48" height="48" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                                        </svg>
+                                    </div>
+                                    <button type="button" id="remove-avatar" class="remove-avatar-btn" title="Hapus foto">
+                                        <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M6 18L18 6M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                        </svg>
+                                    </button>
+                                @endif
                             </div>
 
                             <input type="file"
@@ -242,73 +323,12 @@
                             <div class="file-requirements">
                                 SVG, PNG, JPG or GIF (MAX. 800×400px).
                             </div>
+
+                            @if($akun->profile_picture)
+                                <input type="hidden" name="remove_profile_picture" id="remove_profile_picture_flag" value="0">
+                            @endif
                         </div>
                         @error('profile_picture')
-                            <p class="form-error">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <!-- Nama Lengkap -->
-                    <div class="form-group">
-                        <label for="nama" class="form-label required">Nama Lengkap</label>
-                        <input type="text" id="nama" name="nama" class="form-input" value="{{ old('nama') }}" required>
-                        @error('nama')
-                            <p class="form-error">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <!-- Email -->
-                    <div class="form-group">
-                        <label for="email" class="form-label required">Email</label>
-                        <input type="email" id="email" name="email" class="form-input" value="{{ old('email') }}" required>
-                        @error('email')
-                            <p class="form-error">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <!-- Password -->
-                    <div class="form-group">
-                        <label for="password" class="form-label required">Password</label>
-                        <input type="password" id="password" name="password" class="form-input" required>
-                        <small class="text-gray-500">Minimal 8 karakter</small>
-                        @error('password')
-                            <p class="form-error">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <!-- Konfirmasi Password -->
-                    <div class="form-group">
-                        <label for="password_confirmation" class="form-label required">Konfirmasi Password</label>
-                        <input type="password" id="password_confirmation" name="password_confirmation" class="form-input" required>
-                    </div>
-
-                    <!-- Role -->
-                    <div class="form-group">
-                        <label for="role" class="form-label required">Role</label>
-                        <select id="role" name="role" class="form-select" required>
-                            <option value="">Pilih Role</option>
-                            <option value="admin" {{ old('role') == 'admin' ? 'selected' : '' }}>Admin</option>
-                            <option value="guru" {{ old('role') == 'guru' ? 'selected' : '' }}>Guru</option>
-                        </select>
-                        @error('role')
-                            <p class="form-error">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <!-- NIP -->
-                    <div class="form-group">
-                        <label for="nip" class="form-label">NIP</label>
-                        <input type="text" id="nip" name="nip" class="form-input" value="{{ old('nip') }}">
-                        @error('nip')
-                            <p class="form-error">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <!-- Nomor Telepon -->
-                    <div class="form-group">
-                        <label for="nomor_telp" class="form-label">Nomor Telepon</label>
-                        <input type="text" id="nomor_telp" name="nomor_telp" class="form-input" value="{{ old('nomor_telp') }}">
-                        @error('nomor_telp')
                             <p class="form-error">{{ $message }}</p>
                         @enderror
                     </div>
@@ -316,7 +336,7 @@
                     <!-- Action Buttons -->
                     <div class="form-actions">
                         <a href="{{ route('akun.index') }}" class="btn btn-secondary">Batal</a>
-                        <button type="submit" class="btn btn-primary">Simpan Akun</button>
+                        <button type="submit" class="btn btn-primary">Update Akun</button>
                     </div>
                 </form>
             </div>
@@ -332,27 +352,21 @@
             const removeBtn = document.getElementById('remove-avatar');
 
             if (file) {
-                // Debug: Log file information
-                console.log('File name:', file.name);
-                console.log('File type:', file.type);
-                console.log('File size:', file.size);
-
                 // Validate file type - check extension as fallback for MIME type issues
                 const fileName = file.name.toLowerCase();
                 const validExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.svg'];
-                const validTypes = ['image/svg+xml', 'image/png', 'image/jpeg', 'image/jpg', 'image/gif', 'image/x-png', 'application/octet-stream'];
+                const validTypes = ['image/svg+xml', 'image/png', 'image/jpeg', 'image/jpg', 'image/gif', 'image/x-png'];
 
                 const hasValidExtension = validExtensions.some(ext => fileName.endsWith(ext));
                 const hasValidType = validTypes.includes(file.type);
 
-                console.log('Has valid extension:', hasValidExtension);
-                console.log('Has valid type:', hasValidType);
-
                 if (!hasValidExtension && !hasValidType) {
-                    alert('Format file tidak valid. Gunakan SVG, PNG, JPG atau GIF.\nFile type: ' + file.type);
+                    alert('Format file tidak valid. Gunakan SVG, PNG, JPG atau GIF.');
                     event.target.value = '';
                     return;
-                }                // Validate file size (5MB)
+                }
+
+                // Validate file size (5MB)
                 const maxSize = 5 * 1024 * 1024; // 5MB in bytes
                 if (file.size > maxSize) {
                     alert('Ukuran file terlalu besar. Maksimal 5MB.');
@@ -378,6 +392,7 @@
             const preview = document.getElementById('avatar-preview');
             const placeholder = document.getElementById('avatar-placeholder');
             const removeBtn = document.getElementById('remove-avatar');
+            const removeFlag = document.getElementById('remove_profile_picture_flag');
 
             // Reset file input
             fileInput.value = '';
@@ -387,6 +402,11 @@
             preview.style.display = 'none';
             placeholder.style.display = 'flex';
             removeBtn.classList.remove('show');
+
+            // Set flag to remove existing profile picture
+            if (removeFlag) {
+                removeFlag.value = '1';
+            }
         });
     </script>
     @endpush

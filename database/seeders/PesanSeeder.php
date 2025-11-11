@@ -18,6 +18,10 @@ class PesanSeeder extends Seeder
         // Get some users to assign as recipients
         $users = User::all();
         $admin = User::where('role', 'admin')->first();
+        $guruAkademik = User::where('email', 'akademik@sekolah.id')->first();
+        $guruKesiswaan = User::where('email', 'kesiswaan@sekolah.id')->first();
+        $guruKeuangan = User::where('email', 'keuangan@sekolah.id')->first();
+        $guruSarpras = User::where('email', 'sarpras@sekolah.id')->first();
 
         if ($users->isEmpty()) {
             $this->command->error('No users found! Please run PenggunaSeeder first.');
@@ -35,7 +39,7 @@ class PesanSeeder extends Seeder
                 'tipe' => 'masuk',
                 'tanggal_kirim' => Carbon::now()->subDays(1),
                 'pengirim' => 'Komite Sekolah',
-                'id_penerima' => $users->where('divisi', 'akademik')->first()?->id_pengguna ?? $admin->id_pengguna,
+                'id_penerima' => $guruAkademik?->id_pengguna ?? $admin->id_pengguna,
                 'status_pesan' => 'pending',
                 'instansi' => 'Komite Sekolah',
                 'kontak_pengirim' => '081234567890',
@@ -49,7 +53,7 @@ class PesanSeeder extends Seeder
                 'tipe' => 'masuk',
                 'tanggal_kirim' => Carbon::now()->subDays(2),
                 'pengirim' => 'Paguyuban Orang Tua',
-                'id_penerima' => $users->where('divisi', 'kesiswaan')->first()?->id_pengguna ?? $admin->id_pengguna,
+                'id_penerima' => $guruKesiswaan?->id_pengguna ?? $admin->id_pengguna,
                 'status_pesan' => 'disetujui',
                 'instansi' => 'Paguyuban Orang Tua Siswa',
                 'kontak_pengirim' => '081234567891',
@@ -63,7 +67,7 @@ class PesanSeeder extends Seeder
                 'tipe' => 'masuk',
                 'tanggal_kirim' => Carbon::now()->subDays(3),
                 'pengirim' => 'Yayasan Pendidikan',
-                'id_penerima' => $users->where('divisi', 'keuangan')->first()?->id_pengguna ?? $admin->id_pengguna,
+                'id_penerima' => $guruKeuangan?->id_pengguna ?? $admin->id_pengguna,
                 'status_pesan' => 'pending',
                 'instansi' => 'Yayasan Pendidikan Telkom',
                 'kontak_pengirim' => '081234567892',
@@ -109,7 +113,7 @@ class PesanSeeder extends Seeder
                 'tipe' => 'masuk',
                 'tanggal_kirim' => Carbon::now()->subDays(4),
                 'pengirim' => 'Koordinator Lab',
-                'id_penerima' => $users->where('divisi', 'sarpras')->first()?->id_pengguna ?? $admin->id_pengguna,
+                'id_penerima' => $guruSarpras?->id_pengguna ?? $admin->id_pengguna,
                 'status_pesan' => 'pending',
                 'instansi' => 'Telkom Schools Banjarbaru',
                 'kontak_pengirim' => '081234567893',
@@ -123,7 +127,7 @@ class PesanSeeder extends Seeder
                 'tipe' => 'masuk',
                 'tanggal_kirim' => Carbon::now()->subDays(5),
                 'pengirim' => 'Wali Kelas XII-A',
-                'id_penerima' => $users->where('divisi', 'keuangan')->first()?->id_pengguna ?? $admin->id_pengguna,
+                'id_penerima' => $guruKeuangan?->id_pengguna ?? $admin->id_pengguna,
                 'status_pesan' => 'pending',
                 'instansi' => 'Telkom Schools Banjarbaru',
                 'kontak_pengirim' => '081234567894',

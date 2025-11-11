@@ -55,7 +55,6 @@ class ShowLoginCredentials extends Command
                 $this->line("  📧 Email: {$teacher->email}");
                 $this->line("  🔑 Password: guru123");
                 $this->line("  👤 Name: {$teacher->nama}");
-                $this->line("  🏢 Division: {$teacher->divisi}");
                 $this->line('');
             }
         }

@@ -13,6 +13,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
             'admin' => \App\Http\Middleware\EnsureUserIsAdmin::class,
+            'readonly' => \App\Http\Middleware\RestrictToReadOnly::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

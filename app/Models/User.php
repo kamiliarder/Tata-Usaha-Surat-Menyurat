@@ -34,7 +34,6 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
-        'divisi',
         'nomor_telp',
         'nip',
         'profile_picture',

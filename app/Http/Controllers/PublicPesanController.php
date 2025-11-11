@@ -18,28 +18,22 @@ class PublicPesanController extends Controller
     {
         // Get all staff members except dummy visitor account
         $staffMembers = User::where('email', '!=', 'visitor@dummy.local')
-            ->orderBy('divisi')
             ->orderBy('nama')
-            ->get()
-            ->groupBy('divisi');
+            ->get();
 
         return view('public.pesan.create', compact('staffMembers'));
     }
 
     /**
      * Get staff members filtered by division (AJAX endpoint).
+     * Note: Division filtering has been removed as the divisi field no longer exists.
      */
     public function getStaffByDivisi($divisi)
     {
-        $query = User::where('email', '!=', 'visitor@dummy.local');
-
-        if ($divisi && $divisi !== 'umum') {
-            // For specific divisions, show only users with that division
-            $query->where('divisi', $divisi);
-        }
-        // For 'umum', show all users (no additional filter)
-
-        $staffMembers = $query->orderBy('nama')->get(['id_pengguna', 'nama', 'divisi']);
+        // Return all staff members regardless of division parameter
+        $staffMembers = User::where('email', '!=', 'visitor@dummy.local')
+            ->orderBy('nama')
+            ->get(['id_pengguna', 'nama']);
 
         return response()->json($staffMembers);
     }

@@ -384,7 +384,7 @@
             teachers.forEach(teacher => {
                 const option = document.createElement('option');
                 option.value = teacher.id_pengguna;
-                option.textContent = `${teacher.nama} (${teacher.divisi})`;
+                option.textContent = teacher.nama;
                 penerimaSelect.appendChild(option);
             });
 

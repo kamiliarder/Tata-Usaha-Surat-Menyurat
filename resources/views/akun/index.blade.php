@@ -67,6 +67,83 @@
             margin-right: 0.5rem;
         }
 
+        /* Search Input Styles */
+        .search-form {
+            margin-top: 1.5rem;
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+        }
+
+        .search-input-wrapper {
+            flex: 1;
+            position: relative;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
+            pointer-events: none;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 2.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #991b1b;
+            box-shadow: 0 0 0 3px rgba(153, 27, 27, 0.1);
+        }
+
+        .search-button {
+            padding: 0.75rem 1.5rem;
+            background-color: #991b1b;
+            color: white;
+            font-weight: 500;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            font-size: 0.875rem;
+            white-space: nowrap;
+        }
+
+        .search-button:hover {
+            background-color: #b91c1c;
+        }
+
+        .clear-button {
+            padding: 0.75rem 1.5rem;
+            background-color: #6b7280;
+            color: white;
+            font-weight: 500;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: background-color 0.2s;
+            font-size: 0.875rem;
+            display: inline-block;
+            white-space: nowrap;
+        }
+
+        .clear-button:hover {
+            background-color: #4b5563;
+        }
+
+        .search-result-info {
+            margin-top: 1rem;
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+
         /* Table Styles */
         .table-container {
             background: white;
@@ -191,6 +268,20 @@
                 align-items: flex-start;
                 gap: 1rem;
             }
+
+            .search-form {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .search-input-wrapper {
+                width: 100%;
+            }
+
+            .search-button,
+            .clear-button {
+                width: 100%;
+            }
         }
     </style>
     @endpush
@@ -226,6 +317,33 @@
                         </a>
                     @endif
                 </div>
+
+                <!-- Search Form -->
+                <form method="GET" action="{{ route('akun.index') }}" class="search-form">
+                    <div class="search-input-wrapper">
+                        <svg class="search-icon" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                        <input
+                            type="text"
+                            name="search"
+                            class="search-input"
+                            placeholder="Cari berdasarkan username, nama, role, atau NIP..."
+                            value="{{ $search ?? '' }}"
+                        >
+                    </div>
+                    <button type="submit" class="search-button">Cari</button>
+                    @if(isset($search) && $search)
+                        <a href="{{ route('akun.index') }}" class="clear-button">Clear</a>
+                    @endif
+                </form>
+
+                <!-- Search Result Info -->
+                @if(isset($search) && $search)
+                    <div class="search-result-info">
+                        Menampilkan hasil pencarian untuk "<strong>{{ $search }}</strong>" - Ditemukan {{ $teachers->count() }} akun
+                    </div>
+                @endif
             </div>
 
             <!-- Main Table -->

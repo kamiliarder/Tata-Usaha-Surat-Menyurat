@@ -17,12 +17,9 @@ class GuruPesanController extends Controller
 
         // Teachers can see messages where:
         // 1. They are specifically assigned (id_penerima matches their id)
-        // 2. Message category matches their division (team transparency)
+        // Note: Division-based filtering has been removed as the divisi field no longer exists
         $query = Pesan::with(['penerima', 'lampiran'])
-            ->where(function($q) use ($user) {
-                $q->where('id_penerima', $user->id_pengguna) // Specifically assigned to them
-                  ->orWhere('kategori', $user->divisi); // Division-wide messages
-            });
+            ->where('id_penerima', $user->id_pengguna); // Specifically assigned to them
 
         // Filter by type
         if ($request->filled('tipe')) {
@@ -57,11 +54,9 @@ class GuruPesanController extends Controller
         $user = Auth::user();
 
         // Check if teacher has permission to view this message
+        // Note: Division-based filtering has been removed as the divisi field no longer exists
         $pesan = Pesan::with(['penerima', 'lampiran', 'pesanTerkait', 'balasan'])
-            ->where(function($q) use ($user) {
-                $q->where('id_penerima', $user->id_pengguna) // Specifically assigned to them
-                  ->orWhere('kategori', $user->divisi); // Division-wide messages
-            })
+            ->where('id_penerima', $user->id_pengguna) // Specifically assigned to them
             ->findOrFail($id);
 
         // Auto-update status from 'pending' to 'diterima' when teacher views the message
@@ -83,10 +78,8 @@ class GuruPesanController extends Controller
         $user = Auth::user();
 
         // Check if teacher has permission to update this message
-        $pesan = Pesan::where(function($q) use ($user) {
-                $q->where('id_penerima', $user->id_pengguna) // Specifically assigned to them
-                  ->orWhere('kategori', $user->divisi); // Division-wide messages
-            })
+        // Note: Division-based filtering has been removed as the divisi field no longer exists
+        $pesan = Pesan::where('id_penerima', $user->id_pengguna) // Specifically assigned to them
             ->findOrFail($id);
 
         $validated = $request->validate([
@@ -106,10 +99,8 @@ class GuruPesanController extends Controller
     {
         $user = Auth::user();
 
-        $baseQuery = Pesan::where(function($q) use ($user) {
-            $q->where('id_penerima', $user->id_pengguna)
-              ->orWhere('kategori', $user->divisi);
-        });
+        // Note: Division-based filtering has been removed as the divisi field no longer exists
+        $baseQuery = Pesan::where('id_penerima', $user->id_pengguna);
 
         $statistics = [
             'total_masuk' => (clone $baseQuery)->where('tipe', 'masuk')->count(),

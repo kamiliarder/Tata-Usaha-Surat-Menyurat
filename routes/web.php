@@ -31,13 +31,19 @@ Route::middleware(['auth'])->group(function () {
     // Pesan (Correspondence) routes - no admin/teacher prefix
     Route::prefix('pesan')->name('pesan.')->group(function () {
         Route::get('/', [AdminPesanController::class, 'index'])->name('index');
-        Route::get('/create', [AdminPesanController::class, 'create'])->name('create');
-        Route::post('/', [AdminPesanController::class, 'store'])->name('store');
+
+        // Write operations - protected from 'guru' role by readonly middleware
+        Route::middleware(['readonly'])->group(function () {
+            Route::get('/create', [AdminPesanController::class, 'create'])->name('create');
+            Route::post('/', [AdminPesanController::class, 'store'])->name('store');
+            Route::patch('/{id}', [AdminPesanController::class, 'update'])->name('update');
+            Route::delete('/{id}', [AdminPesanController::class, 'destroy'])->name('destroy');
+            Route::get('/{id}/reply', [AdminPesanController::class, 'createReply'])->name('create-reply');
+            Route::post('/{id}/reply', [AdminPesanController::class, 'storeReply'])->name('store-reply');
+        });
+
+        // This must be after specific routes like /create to avoid matching "create" as an {id}
         Route::get('/{id}', [AdminPesanController::class, 'show'])->name('show');
-        Route::patch('/{id}', [AdminPesanController::class, 'update'])->name('update');
-        Route::delete('/{id}', [AdminPesanController::class, 'destroy'])->name('destroy');
-        Route::get('/{id}/reply', [AdminPesanController::class, 'createReply'])->name('create-reply');
-        Route::post('/{id}/reply', [AdminPesanController::class, 'storeReply'])->name('store-reply');
     });
 
     // Profile routes
@@ -46,11 +52,10 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     // Account management routes
-    // Index and Show - accessible to all authenticated users
+    // Index - accessible to all authenticated users
     Route::get('/akun', [AkunController::class, 'index'])->name('akun.index');
-    Route::get('/akun/{akun}', [AkunController::class, 'show'])->name('akun.show');
 
-    // Create, Edit, Update, Delete - admin only
+    // Create, Edit, Update, Delete - admin only (must be before {akun} routes)
     Route::middleware(['admin'])->group(function () {
         Route::get('/akun/create', [AkunController::class, 'create'])->name('akun.create');
         Route::post('/akun', [AkunController::class, 'store'])->name('akun.store');
@@ -59,6 +64,9 @@ Route::middleware(['auth'])->group(function () {
         Route::patch('/akun/{akun}', [AkunController::class, 'update']);
         Route::delete('/akun/{akun}', [AkunController::class, 'destroy'])->name('akun.destroy');
     });
+
+    // Show - accessible to all authenticated users (must be after /akun/create)
+    Route::get('/akun/{akun}', [AkunController::class, 'show'])->name('akun.show');
 });
 
 // Include Volt routes for custom authentication

@@ -20,7 +20,6 @@ class PenggunaSeeder extends Seeder
             'email' => 'visitor@dummy.local',
             'password' => Hash::make('dummy_password_never_used'),
             'role' => 'guru',
-            'divisi' => 'umum',
             'nomor_telp' => '0000000000',
             'nip' => 0,
         ]);
@@ -31,47 +30,40 @@ class PenggunaSeeder extends Seeder
             'email' => 'admin@sekolah.id',
             'password' => Hash::make('admin123'),
             'role' => 'admin',
-            'divisi' => 'umum',
             'nomor_telp' => '081234567890',
             'nip' => 1001,
         ]);
 
-        // 3. Create sample teachers for each division
+        // 3. Create sample teachers
         $teachers = [
             [
                 'nama' => 'Guru Akademik',
                 'email' => 'akademik@sekolah.id',
-                'divisi' => 'akademik',
                 'nip' => 2001,
             ],
             [
                 'nama' => 'Guru Kesiswaan',
                 'email' => 'kesiswaan@sekolah.id',
-                'divisi' => 'kesiswaan',
                 'nip' => 2002,
             ],
             [
                 'nama' => 'Guru Keuangan',
                 'email' => 'keuangan@sekolah.id',
-                'divisi' => 'keuangan',
                 'nip' => 2003,
             ],
             [
                 'nama' => 'Guru Sarana Prasarana',
                 'email' => 'sarpras@sekolah.id',
-                'divisi' => 'sarpras',
                 'nip' => 2004,
             ],
             [
                 'nama' => 'Guru Non Akademik',
                 'email' => 'nonakademik@sekolah.id',
-                'divisi' => 'non_akademik',
                 'nip' => 2005,
             ],
             [
                 'nama' => 'Guru Umum',
                 'email' => 'umum@sekolah.id',
-                'divisi' => 'umum',
                 'nip' => 2006,
             ],
         ];
@@ -82,7 +74,6 @@ class PenggunaSeeder extends Seeder
                 'email' => $teacher['email'],
                 'password' => Hash::make('guru123'),
                 'role' => 'guru',
-                'divisi' => $teacher['divisi'],
                 'nomor_telp' => '0812345678' . substr($teacher['nip'], -2),
                 'nip' => $teacher['nip'],
             ]);

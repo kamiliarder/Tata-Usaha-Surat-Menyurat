@@ -890,6 +890,19 @@
                 </div>
             ` : '';
 
+            const isGuru = {{ Auth::user()->isGuru() ? 'true' : 'false' }};
+
+            const replyButton = !isGuru ? `
+                <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid #e5e7eb; text-align: right;">
+                    <a href="/pesan/create?reply_to=${letter.id_pesan}" class="btn btn-primary" style="display: inline-block; padding: 0.75rem 1.5rem; background-color: #991b1b; color: white; text-decoration: none; border-radius: 6px; font-weight: 500;">
+                        <svg style="display: inline-block; width: 16px; height: 16px; margin-right: 0.5rem; vertical-align: middle;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"/>
+                        </svg>
+                        Balas Surat
+                    </a>
+                </div>
+            ` : '';
+
             return `
                 <div class="detail-grid">
                     <div class="detail-item">
@@ -915,6 +928,10 @@
                     <div class="detail-item">
                         <div class="detail-label">Pengirim</div>
                         <div class="detail-value">${safeValue(letter.pengirim)}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Penerima</div>
+                        <div class="detail-value">${safeValue(letter.penerima?.nama)}</div>
                     </div>
                     <div class="detail-item">
                         <div class="detail-label">Instansi</div>
@@ -948,14 +965,7 @@
                         ${attachmentHTML}
                     </div>
                 </div>
-                <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid #e5e7eb; text-align: right;">
-                    <a href="/pesan/create?reply_to=${letter.id_pesan}" class="btn btn-primary" style="display: inline-block; padding: 0.75rem 1.5rem; background-color: #991b1b; color: white; text-decoration: none; border-radius: 6px; font-weight: 500;">
-                        <svg style="display: inline-block; width: 16px; height: 16px; margin-right: 0.5rem; vertical-align: middle;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"/>
-                        </svg>
-                        Balas Surat
-                    </a>
-                </div>
+                ${replyButton}
             `;
         }
 

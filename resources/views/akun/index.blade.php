@@ -386,12 +386,12 @@
                             <td class="table-cell">{{ $teacher->nip ?? '-' }}</td>
                             <td class="table-cell">
                                 <!-- View Detail Button -->
-                                <a href="{{ route('akun.show', $teacher->id_pengguna) }}" class="action-btn btn-view" title="Lihat Detail">
+                                <button onclick="openUserModal({{ $teacher->id_pengguna }})" class="action-btn btn-view" title="Lihat Detail">
                                     <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
                                         <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                                         <path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
                                     </svg>
-                                </a>
+                                </button>
 
                                 @if(auth()->user()->role === 'admin')
                                     <!-- Edit Button -->
@@ -426,4 +426,136 @@
             </div>
         </div>
     </div>
+
+    <!-- User Detail Modal -->
+    <div id="userModal" class="fixed inset-0 z-50 hidden overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <div class="flex items-center justify-center min-h-screen px-4 py-4">
+            <!-- Background overlay -->
+            <div class="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-75" aria-hidden="true" onclick="closeUserModal()"></div>
+
+            <!-- Modal panel -->
+            <div class="inline-block overflow-hidden text-left align-bottom transition-all transform bg-white rounded-3xl shadow-xl sm:align-middle sm:max-w-4xl sm:w-full relative">
+                <div class="flex bg-white">
+                    <!-- Left Side - Profile Info -->
+                    <div class="w-1/2 p-12">
+                        <h2 class="mb-8 text-4xl font-bold text-gray-900">Profile</h2>
+
+                        <div class="flex items-center space-x-6">
+                            <!-- Profile Photo -->
+                            <div class="flex-shrink-0">
+                                <div class="w-32 h-32 overflow-hidden bg-gray-200 rounded-3xl" id="modalProfilePicture">
+                                    <!-- Dynamic content will be inserted here -->
+                                </div>
+                            </div>
+
+                            <!-- Name and Role -->
+                            <div>
+                                <h3 class="text-2xl font-bold text-gray-900" id="modalName"></h3>
+                                <p class="mt-1 text-lg text-gray-600" id="modalRole"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Side - Details -->
+                    <div class="w-1/2 p-12 bg-gray-50">
+                        <div class="space-y-6">
+                            <!-- Nama Lengkap & NIP -->
+                            <div class="flex space-x-4">
+                                <div class="flex-1">
+                                    <label class="block mb-2 text-sm font-semibold text-gray-900">Nama Lengkap</label>
+                                    <div class="px-4 py-3 bg-white rounded-lg">
+                                        <p class="text-sm text-gray-700" id="modalNamaLengkap"></p>
+                                    </div>
+                                </div>
+                                <div class="flex-1">
+                                    <label class="block mb-2 text-sm font-semibold text-gray-900">NIP</label>
+                                    <div class="px-4 py-3 bg-white rounded-lg">
+                                        <p class="text-sm text-gray-700" id="modalNip"></p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Username & Role -->
+                            <div class="flex space-x-4">
+                                <div class="flex-1">
+                                    <label class="block mb-2 text-sm font-semibold text-gray-900">Username</label>
+                                    <div class="px-4 py-3 bg-white rounded-lg">
+                                        <p class="text-sm text-gray-700" id="modalUsername"></p>
+                                    </div>
+                                </div>
+                                <div class="flex-1">
+                                    <label class="block mb-2 text-sm font-semibold text-gray-900">Role</label>
+                                    <div class="px-4 py-3 bg-white rounded-lg">
+                                        <p class="text-sm text-gray-700" id="modalRoleText"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Close Button -->
+                <div class="absolute top-4 right-4">
+                    <button type="button" onclick="closeUserModal()" class="p-2 text-gray-400 transition-colors rounded-full hover:text-gray-600 hover:bg-gray-100">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @push('scripts')
+    <script>
+        // Store teacher data for modal
+        const teachersData = @json($teachers->keyBy('id_pengguna'));
+
+        function openUserModal(userId) {
+            const teacher = teachersData[userId];
+            if (!teacher) return;
+
+            // Populate modal with teacher data
+            document.getElementById('modalName').textContent = teacher.nama_lengkap;
+            document.getElementById('modalRole').textContent = teacher.role.charAt(0).toUpperCase() + teacher.role.slice(1);
+            document.getElementById('modalNamaLengkap').textContent = teacher.nama_lengkap;
+            document.getElementById('modalNip').textContent = teacher.nip || 'N/A';
+            document.getElementById('modalUsername').textContent = teacher.username;
+            document.getElementById('modalRoleText').textContent = teacher.role.charAt(0).toUpperCase() + teacher.role.slice(1);
+
+            // Set profile picture
+            const profilePicContainer = document.getElementById('modalProfilePicture');
+            if (teacher.profile_picture) {
+                profilePicContainer.innerHTML = `
+                    <img src="/storage/profile-pictures/${teacher.profile_picture}"
+                         alt="${teacher.username}"
+                         class="object-cover w-full h-full"
+                         onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\\'flex items-center justify-center w-full h-full bg-gray-300\\'><svg class=\\'w-16 h-16 text-gray-500\\' fill=\\'none\\' stroke=\\'currentColor\\' viewBox=\\'0 0 24 24\\'><path stroke-linecap=\\'round\\' stroke-linejoin=\\'round\\' stroke-width=\\'2\\' d=\\'M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z\\'></path></svg></div>';">
+                `;
+            } else {
+                profilePicContainer.innerHTML = `
+                    <div class="flex items-center justify-center w-full h-full bg-gray-300">
+                        <svg class="w-16 h-16 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                        </svg>
+                    </div>
+                `;
+            }
+
+            // Show modal
+            document.getElementById('userModal').classList.remove('hidden');
+        }
+
+        function closeUserModal() {
+            document.getElementById('userModal').classList.add('hidden');
+        }
+
+        // Close modal on Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeUserModal();
+            }
+        });
+    </script>
+    @endpush
 </x-app-custom>

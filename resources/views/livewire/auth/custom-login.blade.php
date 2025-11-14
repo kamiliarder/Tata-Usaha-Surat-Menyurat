@@ -85,7 +85,6 @@ new #[Layout('components.layouts.auth.custom-login')] class extends Component {
                 </div>
             </div>
         @endif
-
         <form wire:submit.prevent="login" class="login-form">
             <!-- Username -->
             <div class="form-group">

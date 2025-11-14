@@ -99,8 +99,8 @@
 
         /* Avatar Upload Styles */
         .avatar-upload-container {
-            background: #2d3748;
             border-radius: 12px;
+            border: 2px solid #e5e7eb;
             padding: 2rem;
             display: flex;
             flex-direction: column;
@@ -126,7 +126,7 @@
             height: 120px;
             border-radius: 50%;
             object-fit: cover;
-            border: 4px solid #4a5568;
+            border: 1px solid #e5e7eb;
             background: #4a5568;
         }
 
@@ -134,14 +134,14 @@
             width: 120px;
             height: 120px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #4a5568;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
             font-weight: 600;
             font-size: 2.5rem;
-            border: 4px solid #4a5568;
+            border: 1px solid #e5e7eb;
         }
 
         .remove-avatar-btn {
@@ -174,11 +174,10 @@
         }
 
         .browse-button {
-            background: #4a5568;
+            background: #991b1b;
             color: #e2e8f0;
             padding: 0.75rem 2rem;
             border-radius: 8px;
-            border: 1px solid #718096;
             cursor: pointer;
             font-size: 0.875rem;
             transition: all 0.2s;

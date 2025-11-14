@@ -209,6 +209,63 @@
                 <form action="{{ route('akun.update', $akun) }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
+                    <!-- Profile Picture -->
+                    <div class="form-group">
+                        <label class="form-label">Foto Profil</label>
+                        <div class="avatar-upload-container">
+                            <span class="avatar-upload-label">Upload avatar</span>
+
+                            <div class="avatar-preview-wrapper">
+                                @if($akun->profile_picture)
+                                    <img id="avatar-preview" class="avatar-preview" src="{{ asset('storage/profile-pictures/' . $akun->profile_picture) }}" alt="Avatar Preview">
+                                    <div id="avatar-placeholder" class="avatar-placeholder" style="display: none;">
+                                        <svg width="48" height="48" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                                        </svg>
+                                    </div>
+                                    <button type="button" id="remove-avatar" class="remove-avatar-btn show" title="Hapus foto">
+                                        <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M6 18L18 6M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                        </svg>
+                                    </button>
+                                @else
+                                    <img id="avatar-preview" class="avatar-preview" style="display: none;" src="" alt="Avatar Preview">
+                                    <div id="avatar-placeholder" class="avatar-placeholder">
+                                        <svg width="48" height="48" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                                        </svg>
+                                    </div>
+                                    <button type="button" id="remove-avatar" class="remove-avatar-btn" title="Hapus foto">
+                                        <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M6 18L18 6M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                        </svg>
+                                    </button>
+                                @endif
+                            </div>
+
+                            <input type="file"
+                                   id="profile_picture"
+                                   name="profile_picture"
+                                   class="file-input-hidden"
+                                   accept="image/*,.png,.jpg,.jpeg,.gif,.svg"
+                                   onchange="handleAvatarUpload(event)">
+
+                            <label for="profile_picture" class="browse-button">
+                                Browse...
+                            </label>
+
+                            <div class="file-requirements">
+                                SVG, PNG, JPG or GIF (MAX. 800×400px).
+                            </div>
+
+                            @if($akun->profile_picture)
+                                <input type="hidden" name="remove_profile_picture" id="remove_profile_picture_flag" value="0">
+                            @endif
+                        </div>
+                        @error('profile_picture')
+                            <p class="form-error">{{ $message }}</p>
+                        @enderror
+                    </div>
 
                     <!-- Nama Lengkap -->
                     <div class="form-group">
@@ -275,63 +332,7 @@
                         @enderror
                     </div>
 
-                    <!-- Profile Picture -->
-                    <div class="form-group">
-                        <label class="form-label">Foto Profil</label>
-                        <div class="avatar-upload-container">
-                            <span class="avatar-upload-label">Upload avatar</span>
 
-                            <div class="avatar-preview-wrapper">
-                                @if($akun->profile_picture)
-                                    <img id="avatar-preview" class="avatar-preview" src="{{ asset('storage/profile-pictures/' . $akun->profile_picture) }}" alt="Avatar Preview">
-                                    <div id="avatar-placeholder" class="avatar-placeholder" style="display: none;">
-                                        <svg width="48" height="48" fill="currentColor" viewBox="0 0 24 24">
-                                            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                                        </svg>
-                                    </div>
-                                    <button type="button" id="remove-avatar" class="remove-avatar-btn show" title="Hapus foto">
-                                        <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
-                                            <path d="M6 18L18 6M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                                        </svg>
-                                    </button>
-                                @else
-                                    <img id="avatar-preview" class="avatar-preview" style="display: none;" src="" alt="Avatar Preview">
-                                    <div id="avatar-placeholder" class="avatar-placeholder">
-                                        <svg width="48" height="48" fill="currentColor" viewBox="0 0 24 24">
-                                            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                                        </svg>
-                                    </div>
-                                    <button type="button" id="remove-avatar" class="remove-avatar-btn" title="Hapus foto">
-                                        <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
-                                            <path d="M6 18L18 6M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                                        </svg>
-                                    </button>
-                                @endif
-                            </div>
-
-                            <input type="file"
-                                   id="profile_picture"
-                                   name="profile_picture"
-                                   class="file-input-hidden"
-                                   accept="image/*,.png,.jpg,.jpeg,.gif,.svg"
-                                   onchange="handleAvatarUpload(event)">
-
-                            <label for="profile_picture" class="browse-button">
-                                Browse...
-                            </label>
-
-                            <div class="file-requirements">
-                                SVG, PNG, JPG or GIF (MAX. 800×400px).
-                            </div>
-
-                            @if($akun->profile_picture)
-                                <input type="hidden" name="remove_profile_picture" id="remove_profile_picture_flag" value="0">
-                            @endif
-                        </div>
-                        @error('profile_picture')
-                            <p class="form-error">{{ $message }}</p>
-                        @enderror
-                    </div>
 
                     <!-- Action Buttons -->
                     <div class="form-actions">

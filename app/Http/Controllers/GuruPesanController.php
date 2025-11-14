@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Pesan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class GuruPesanController extends Controller
 {
@@ -18,8 +19,22 @@ class GuruPesanController extends Controller
         // Teachers can see messages where:
         // 1. They are specifically assigned (id_penerima matches their id)
         // Note: Division-based filtering has been removed as the divisi field no longer exists
+
+        // Debug: Check what ID is being used
+        Log::info('GuruPesanController - User Details:', [
+            'id_pengguna' => $user->id_pengguna,
+            'name' => $user->nama,
+            'role' => $user->role
+        ]);
+
         $query = Pesan::with(['penerima', 'lampiran'])
             ->where('id_penerima', $user->id_pengguna); // Specifically assigned to them
+
+        // Debug: Log the SQL query
+        Log::info('GuruPesanController - SQL Query:', [
+            'sql' => $query->toSql(),
+            'bindings' => $query->getBindings()
+        ]);
 
         // Filter by type
         if ($request->filled('tipe')) {
@@ -41,15 +56,15 @@ class GuruPesanController extends Controller
             });
         }
 
-        $pesanList = $query->orderBy('tanggal_kirim', 'desc')->paginate(15);
+        $letters = $query->orderBy('tanggal_kirim', 'desc')->paginate(15);
 
-        return view('pesan.index', compact('pesanList'));
+        return view('pesan.index', compact('letters'));
     }
 
     /**
      * Show specific message details.
      */
-    public function show($id)
+    public function show($id, Request $request)
     {
         $user = Auth::user();
 
@@ -65,6 +80,11 @@ class GuruPesanController extends Controller
 
             // Refresh the model to get the updated status
             $pesan->refresh();
+        }
+
+        // If it's an AJAX request, return JSON
+        if ($request->expectsJson()) {
+            return response()->json($pesan);
         }
 
         return view('pesan.show', compact('pesan'));

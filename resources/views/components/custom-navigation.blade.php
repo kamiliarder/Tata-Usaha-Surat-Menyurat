@@ -20,11 +20,13 @@
                        style="{{ request()->routeIs('pesan.*') ? 'border-bottom: 2px solid #dc2626;' : '' }}">
                         Surat
                     </a>
+                    @if(!Auth::user()->isGuru())
                     <a href="{{ route('akun.index') }}"
                        class="px-3 py-2 font-medium transition-all duration-200 {{ request()->routeIs('akun.*') ? 'text-red-600' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50' }}"
                        style="{{ request()->routeIs('akun.*') ? 'border-bottom: 2px solid #dc2626;' : '' }}">
                         Akun Guru
                     </a>
+                    @endif
                 </nav>
             </div>
 

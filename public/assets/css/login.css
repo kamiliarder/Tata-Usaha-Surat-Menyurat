@@ -63,7 +63,7 @@
     justify-content: center;
     padding: 3rem;
     background: transparent;
-    min-height: 100vh; /* Full height */
+    min-height: 100%; /* Full height */
 }
 
 .form-wrapper {
@@ -72,10 +72,11 @@
 }
 
 .login-card {
-
+    
+    width: 50vh;
     padding: 2rem;
     border-radius: 1rem;
-
+    align-self: center;
 
 }
 

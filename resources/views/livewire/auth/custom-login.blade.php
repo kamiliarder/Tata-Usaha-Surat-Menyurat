@@ -104,16 +104,18 @@ new #[Layout('components.layouts.auth.custom-login')] class extends Component {
             </div>
 
             <!-- Remember me -->
-            <div class="remember-me">
-                <input
-                    wire:model="remember"
-                    id="remember"
-                    name="remember"
-                    type="checkbox"
-                    class="checkbox-input"
-                />
-                <span class="checkbox-label">Ingat saya</span>
-            </div>
+            {{--
+                        <div class="remember-me">
+                            <input
+                                wire:model="remember"
+                                id="remember"
+                                name="remember"
+                                type="checkbox"
+                                class="checkbox-input"
+                            />
+                            <span class="checkbox-label">Ingat saya</span>
+                        </div>
+            --}}
 
             <!-- Login button -->
             <button type="submit" class="login-button">

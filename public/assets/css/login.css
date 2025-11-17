@@ -79,16 +79,16 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    margin-bottom: 1.5rem; /* Reduced spacing */
+    margin-bottom: 3.5rem; /* Reduced spacing */
     padding-bottom: 0.75rem; /* Reduced padding */
     border-bottom: 4px solid #D1D5DB; /* Thicker line */
 }
 
 .logo {
     height: auto;
-    width: 240px; /* Adjusted size */
+    width: 270px; /* Adjusted size */
     object-fit: contain;
-    margin-bottom: 0.75rem; /* Reduced margin */
+    margin-bottom: 0.5rem; /* Reduced margin */
 }
 
 .login-title {

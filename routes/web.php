@@ -6,8 +6,6 @@ use App\Http\Controllers\AdminPesanController;
 use App\Http\Controllers\GuruPesanController;
 use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Request;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AkunController;
 
@@ -32,13 +30,7 @@ Route::middleware(['auth'])->group(function () {
 
     // Pesan (Correspondence) routes - no admin/teacher prefix
     Route::prefix('pesan')->name('pesan.')->group(function () {
-        // Route to appropriate controller based on user role
-        Route::get('/', function () {
-            if (Auth::user()->role === 'guru') {
-                return app(GuruPesanController::class)->index(request());
-            }
-            return app(AdminPesanController::class)->index(request());
-        })->name('index');
+        Route::get('/', [AdminPesanController::class, 'index'])->name('index');
 
         // Write operations - protected from 'guru' role by readonly middleware
         Route::middleware(['readonly'])->group(function () {
@@ -51,13 +43,7 @@ Route::middleware(['auth'])->group(function () {
         });
 
         // This must be after specific routes like /create to avoid matching "create" as an {id}
-        // Route to appropriate controller based on user role
-        Route::get('/{id}', function ($id, Request $request) {
-            if (Auth::user()->role === 'guru') {
-                return app(GuruPesanController::class)->show($id, $request);
-            }
-            return app(AdminPesanController::class)->show($id, $request);
-        })->name('show');
+        Route::get('/{id}', [AdminPesanController::class, 'show'])->name('show');
     });
 
     // Profile routes

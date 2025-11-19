@@ -1,4 +1,5 @@
-# <p align="center"><img src="https://via.placeholder.com/1200x300/1E40AF/FFFFFF?text=Tata+Usaha+Surat+Menyurat" alt="Banner Image"></p>
+#<p align="center"><img src="https://raw.githubusercontent.com/kamiliarder/Tata-Usaha-Surat-Menyurat/main/public/assets/logo.png" alt="Project Banner" width="100%"></p>
+
 
 <h1 align="center">📬 Sistem Tata Usaha Surat Menyurat</h1>
 

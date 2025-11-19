@@ -1,11 +1,18 @@
-#<p align="center"><img src="https://raw.githubusercontent.com/kamiliarder/Tata-Usaha-Surat-Menyurat/main/public/assets/logo.png" alt="Project Banner" width="100%"></p>
+<p align="center">
+  <img src="https://raw.githubusercontent.com/kamiliarder/Tata-Usaha-Surat-Menyurat/main/public/assets/logo.png" 
+       alt="Project Banner"
+       width="70%">
+</p>
 
+<p align="center">
+  <img src="https://via.placeholder.com/60x60/7F1D1D/ffffff?text=✉" 
+       alt="Minimal Icon"
+       style="border-radius:12px;">
+</p>
 
 <h1 align="center">📬 Sistem Tata Usaha Surat Menyurat</h1>
 
-<p align="center">
-A minimal & modern Laravel-based system for managing school administrative letters.
-</p>
+<p align="center">A minimal & modern Laravel-based system for managing school administrative letters.</p>
 
 <p align="center">
   <img src="https://img.shields.io/badge/Laravel-12-red?style=for-the-badge">
@@ -15,47 +22,46 @@ A minimal & modern Laravel-based system for managing school administrative lette
   <img src="https://img.shields.io/badge/License-MIT-brightgreen?style=for-the-badge">
 </p>
 
----
+<hr style="height:2px; border:none; background:linear-gradient(to right, transparent, rgb(127 29 29), transparent);">
 
 ## <p align="center">✨ Fitur Utama</p>
 
-* Surat masuk & keluar
-* Penomoran otomatis
-* Kategori & status tracking
-* Upload lampiran
-* Dashboard statistik
-* Portal publik pengajuan
-* Role Admin & Guru
-* Two-Factor Authentication
+- Surat masuk & keluar  
+- Penomoran otomatis  
+- Kategori & status tracking  
+- Upload lampiran  
+- Dashboard statistik  
+- Portal publik pengajuan  
+- Role Admin & Guru  
+- Two-Factor Authentication  
 
----
+<hr style="height:2px; border:none; background:linear-gradient(to right, transparent, rgb(127 29 29), transparent);">
 
 ## <p align="center">🛠 Teknologi</p>
 
-**Backend:** Laravel 12, PHP 8.2+, Livewire Volt
-**Frontend:** Tailwind CSS, Flux UI, Alpine.js, Chart.js
-**Tools:** Composer, NPM, Pest, Pint, Laravel Sail
+**Backend:** Laravel 12 · PHP 8.2+ · Livewire Volt  
+**Frontend:** TailwindCSS · Flux UI · Alpine.js · Chart.js  
+**Tools:** Composer · NPM · Pest · Pint · Laravel Sail  
 
----
+<hr style="height:2px; border:none; background:linear-gradient(to right, transparent, rgb(127 29 29), transparent);">
 
 ## <p align="center">📋 Persyaratan Sistem</p>
 
-* PHP 8.2+
-* Composer 2+
-* Node.js 18+
-* MySQL 8+
-* Ekstensi PHP penting: `BCMath`, `Mbstring`, `PDO`, `XML`, dll.
+- PHP 8.2+  
+- Composer 2+  
+- Node.js 18+  
+- MySQL 8+  
+- Ekstensi PHP: `BCMath`, `Mbstring`, `PDO`, `XML`, dll.  
 
----
+<hr style="height:2px; border:none; background:linear-gradient(to right, transparent, rgb(127 29 29), transparent);">
 
 ## <p align="center">⚡ Instalasi Cepat</p>
 
 ### 1. Clone
-
 ```bash
 git clone https://github.com/kamiliarder/Tata-Usaha-Surat-Menyurat.git
 cd Tata-Usaha-Surat-Menyurat
-```
+````
 
 ### 2. Install Dependencies
 
@@ -64,14 +70,14 @@ composer install
 npm install
 ```
 
-### 3. Environment
+### 3. Konfigurasi Environment
 
 ```bash
 cp .env.example .env
 php artisan key:generate
 ```
 
-### 4. Database
+### 4. Setup Database
 
 Edit `.env`:
 
@@ -93,14 +99,16 @@ php artisan migrate --seed
 php artisan storage:link
 ```
 
-### 6. Build Assets
+### 6. Build Frontend
 
 ```bash
-npm run dev    # development
-npm run build  # production
+npm run dev      # Development
+npm run build    # Production
 ```
 
----
+<!-- Gradient Divider -->
+
+<hr style="height:2px; border:none; background:linear-gradient(to right, transparent, rgb(127 29 29), transparent);">
 
 ## <p align="center">▶️ Menjalankan Aplikasi</p>
 
@@ -111,19 +119,20 @@ php artisan serve
 npm run dev
 ```
 
-### Composer Dev Script (All-in-one)
+### Composer Script (All-in-one)
 
 ```bash
 composer dev
 ```
 
-### Docker (Sail)
+### Docker (Laravel Sail)
 
 ```bash
 ./vendor/bin/sail up -d
 ```
 
----
+
+<hr style="height:2px; border:none; background:linear-gradient(to right, transparent, rgb(127 29 29), transparent);">
 
 ## <p align="center">🔐 Kredensial Login (Seeder)</p>
 
@@ -147,7 +156,9 @@ Password semua guru: **guru123**
 | Non Akademik | [nonakademik@sekolah.id](mailto:nonakademik@sekolah.id) |
 | Umum         | [umum@sekolah.id](mailto:umum@sekolah.id)               |
 
----
+<!-- Gradient Divider -->
+
+<hr style="height:2px; border:none; background:linear-gradient(to right, transparent, rgb(127 29 29), transparent);">
 
 ## <p align="center">🧪 Testing</p>
 
@@ -156,14 +167,12 @@ php artisan test
 ./vendor/bin/pest
 ```
 
----
+<!-- Gradient Divider -->
+
+<hr style="height:2px; border:none; background:linear-gradient(to right, transparent, rgb(127 29 29), transparent);">
 
 ## <p align="center">📄 Lisensi</p>
 
 MIT License
 
----
-
 <p align="center">Dibuat dengan ❤️ untuk digitalisasi administrasi sekolah di Indonesia.</p>
-
----

@@ -1,13 +1,7 @@
-<p align="center">
+<p align="center" style="background-color: white;">
   <img src="https://raw.githubusercontent.com/kamiliarder/Tata-Usaha-Surat-Menyurat/main/public/assets/logo.png" 
        alt="Project Banner"
        width="70%">
-</p>
-
-<p align="center">
-  <img src="https://via.placeholder.com/60x60/7F1D1D/ffffff?text=✉" 
-       alt="Minimal Icon"
-       style="border-radius:12px;">
 </p>
 
 <h1 align="center">📬 Sistem Tata Usaha Surat Menyurat</h1>
@@ -175,4 +169,3 @@ php artisan test
 
 MIT License
 
-<p align="center">Dibuat dengan ❤️ untuk digitalisasi administrasi sekolah di Indonesia.</p>

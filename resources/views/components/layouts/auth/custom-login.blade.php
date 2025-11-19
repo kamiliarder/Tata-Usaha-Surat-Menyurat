@@ -23,7 +23,7 @@
                     <div class="login-card">
                         <!-- Logo inside card -->
                         <div class="logo-container">
-                            <img src="{{ asset('assets/logo.png') }}" alt="{{ config('app.name') }} Logo" class="logo" />
+                            <a href="{{ url('/') }}"><img src="{{ asset('assets/logo.png') }}" alt="{{ config('app.name') }} Logo" class="logo"/></a>
                         </div>
                         {{ $slot }}
                     </div>

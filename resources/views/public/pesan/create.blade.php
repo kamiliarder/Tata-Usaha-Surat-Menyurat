@@ -214,7 +214,7 @@
     <!-- Page Title -->
     <div class="page-title">
                         <p class="text-gray-700 italic text-base ml-12">
-                            "Streamlining Correspondence, Empowering Administration."
+                            "No paper, no problem"
                         </p>
     </div>
 

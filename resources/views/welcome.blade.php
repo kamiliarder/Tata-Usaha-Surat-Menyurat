@@ -95,7 +95,7 @@
                     </p>
                     <blockquote class="px-4 py-3 my-6 bg-gray-100 border-l-4 border-red-600 rounded shadow-sm">
                         <p class="text-base italic text-gray-700">
-                            "Streamlining Correspondence, Empowering Administration."
+                            "No paper, no problem"
                         </p>
                     </blockquote>
                 </div>

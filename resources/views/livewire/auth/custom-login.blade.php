@@ -33,7 +33,7 @@ new #[Layout('components.layouts.auth.custom-login')] class extends Component {
             $this->errorMessage = 'Login gagal! Email atau password salah.';
             $this->addError('email', 'Email atau password salah.');
             $this->addError('password', 'Email atau password salah.');
-            
+
             // Trigger shake animation via JavaScript
             $this->dispatch('login-failed');
             return;
@@ -113,17 +113,6 @@ new #[Layout('components.layouts.auth.custom-login')] class extends Component {
                 <span class="field-error" id="password-error"></span>
             </div>
 
-            <!-- Remember me -->
-            <div class="remember-me">
-                <input
-                    wire:model="remember"
-                    id="remember"
-                    name="remember"
-                    type="checkbox"
-                    class="checkbox-input"
-                />
-                <span class="checkbox-label">Ingat saya</span>
-            </div>
 
             <!-- Login button -->
             <button type="submit" class="login-button">
@@ -193,15 +182,15 @@ new #[Layout('components.layouts.auth.custom-login')] class extends Component {
             Livewire.on('login-failed', () => {
                 const emailInput = document.getElementById('email');
                 const passwordInput = document.getElementById('password');
-                
+
                 // Trigger shake animation for both fields
                 triggerShakeAnimation(emailInput);
                 triggerShakeAnimation(passwordInput);
-                
+
                 // Auto-hide after 5 seconds
                 const emailError = document.getElementById('email-error');
                 const passwordError = document.getElementById('password-error');
-                
+
                 setTimeout(() => {
                     emailInput.classList.remove('input-error');
                     passwordInput.classList.remove('input-error');
@@ -231,7 +220,7 @@ new #[Layout('components.layouts.auth.custom-login')] class extends Component {
 
             form.addEventListener('submit', function(e) {
                 let isValid = true;
-                
+
                 // Clear previous errors
                 emailError.textContent = '';
                 passwordError.textContent = '';

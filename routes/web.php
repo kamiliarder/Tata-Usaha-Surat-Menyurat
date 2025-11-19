@@ -1,9 +1,7 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PublicPesanController;
 use App\Http\Controllers\AdminPesanController;
-use App\Http\Controllers\GuruPesanController;
 use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
@@ -46,11 +44,6 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/{id}', [AdminPesanController::class, 'show'])->name('show');
     });
 
-    // Profile routes
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
     // Account management routes
     // Index - accessible to all authenticated users
     Route::get('/akun', [AkunController::class, 'index'])->name('akun.index');
@@ -71,6 +64,3 @@ Route::middleware(['auth'])->group(function () {
 
 // Include Volt routes for custom authentication
 require __DIR__.'/volt.php';
-
-// Comment out the default auth routes since we're using custom Volt routes
-// require __DIR__.'/auth.php';

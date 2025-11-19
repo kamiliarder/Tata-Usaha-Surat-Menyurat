@@ -70,7 +70,6 @@
 }
 
 .login-card {
-    padding: 2rem;
     border-radius: 1rem;
 }
 
@@ -80,13 +79,13 @@
     align-items: center;
     justify-content: center;
     margin-bottom: 3.5rem; /* Reduced spacing */
-    padding-bottom: 0.75rem; /* Reduced padding */
+    padding-bottom: 0.5rem; /* Reduced padding */
     border-bottom: 4px solid #D1D5DB; /* Thicker line */
 }
 
 .logo {
     height: auto;
-    width: 270px; /* Adjusted size */
+    width: 360px; /* Adjusted size */
     object-fit: contain;
     margin-bottom: 0.5rem; /* Reduced margin */
 }

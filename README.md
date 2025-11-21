@@ -1,171 +1,364 @@
-<p align="center" style="background-color: white;">
-  <img src="https://raw.githubusercontent.com/kamiliarder/Tata-Usaha-Surat-Menyurat/main/public/assets/logo.png" 
-       alt="Project Banner"
-       width="70%">
-</p>
+<div align="center">
 
-<h1 align="center">📬 Sistem Tata Usaha Surat Menyurat</h1>
+<div style="background-color: white; padding: 40px; border-radius: 10px; display: inline-block;">
+  <img src="https://raw.githubusercontent.com/kamiliarder/Tata-Usaha-Surat-Menyurat/main/public/assets/logo.png" alt="Project Banner" width="600px">
+</div>
 
-<p align="center">A minimal & modern Laravel-based system for managing school administrative letters.</p>
+<br><br>
 
-<p align="center">
-  <img src="https://img.shields.io/badge/Laravel-12-red?style=for-the-badge">
-  <img src="https://img.shields.io/badge/PHP-8.2%2B-777BB3?style=for-the-badge">
-  <img src="https://img.shields.io/badge/Livewire-Volt-F72585?style=for-the-badge">
-  <img src="https://img.shields.io/badge/TailwindCSS-4-38BDF8?style=for-the-badge">
-  <img src="https://img.shields.io/badge/License-MIT-brightgreen?style=for-the-badge">
-</p>
+# 📬 Sistem Tata Usaha Surat Menyurat
 
-<hr style="height:2px; border:none; background:linear-gradient(to right, transparent, rgb(127 29 29), transparent);">
+### *Modern Laravel-Based Correspondence Management for Educational Institutions*
 
-## <p align="center">✨ Fitur Utama</p>
+[![Laravel](https://img.shields.io/badge/Laravel-12-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)](https://laravel.com)
+[![PHP](https://img.shields.io/badge/PHP-8.2+-777BB4?style=for-the-badge&logo=php&logoColor=white)](https://php.net)
+[![Livewire](https://img.shields.io/badge/Livewire-Volt-4E56A6?style=for-the-badge&logo=livewire&logoColor=white)](https://livewire.laravel.com)
+[![TailwindCSS](https://img.shields.io/badge/Tailwind-CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com)
+[![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 
-- Surat masuk & keluar  
-- Penomoran otomatis  
-- Kategori & status tracking  
-- Upload lampiran  
-- Dashboard statistik  
-- Portal publik pengajuan  
-- Role Admin & Guru  
-- Two-Factor Authentication  
+[Features](#-features) • [Tech Stack](#-tech-stack) • [Installation](#-quick-start) • [Usage](#️-running-the-app) • [Testing](#-testing)
 
-<hr style="height:2px; border:none; background:linear-gradient(to right, transparent, rgb(127 29 29), transparent);">
+---
 
-## <p align="center">🛠 Teknologi</p>
+</div>
 
-**Backend:** Laravel 12 · PHP 8.2+ · Livewire Volt  
-**Frontend:** TailwindCSS · Flux UI · Alpine.js · Chart.js  
-**Tools:** Composer · NPM · Pest · Pint · Laravel Sail  
+---
 
-<hr style="height:2px; border:none; background:linear-gradient(to right, transparent, rgb(127 29 29), transparent);">
+## ✨ Features
 
-## <p align="center">📋 Persyaratan Sistem</p>
+<table>
+<tr>
+<td width="50%">
 
-- PHP 8.2+  
-- Composer 2+  
-- Node.js 18+  
-- MySQL 8+  
-- Ekstensi PHP: `BCMath`, `Mbstring`, `PDO`, `XML`, dll.  
+### 📥 Core Features
+- ✅ **Incoming & Outgoing Letters** - Complete tracking system
+- 🔢 **Auto Numbering** - Automatic letter numbering
+- 📂 **Categorization** - Organized by department & type
+- 📎 **File Attachments** - Multi-file upload support
+- 🔄 **Status Tracking** - Real-time status updates
+- 💬 **Reply System** - Internal correspondence replies
 
-<hr style="height:2px; border:none; background:linear-gradient(to right, transparent, rgb(127 29 29), transparent);">
+</td>
+<td width="50%">
 
-## <p align="center">⚡ Instalasi Cepat</p>
+### 🎯 Advanced Features
+- 📊 **Dashboard Analytics** - Visual statistics & insights
+- 🌐 **Public Portal** - External submission gateway
+- 👥 **Role Management** - Admin & Teacher roles
+- 🔐 **Two-Factor Auth** - Enhanced security (2FA)
+- 📱 **Responsive Design** - Mobile-friendly interface
+- 🎨 **Modern UI** - Clean & intuitive design
 
-### 1. Clone
+</td>
+</tr>
+</table>
+
+---
+
+---
+
+## 🛠 Tech Stack
+
+<div align="center">
+
+### Backend
+![Laravel](https://img.shields.io/badge/Laravel_12-FF2D20?style=flat-square&logo=laravel&logoColor=white)
+![PHP](https://img.shields.io/badge/PHP_8.2+-777BB4?style=flat-square&logo=php&logoColor=white)
+![Livewire](https://img.shields.io/badge/Livewire_Volt-4E56A6?style=flat-square&logo=livewire&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL_8+-4479A1?style=flat-square&logo=mysql&logoColor=white)
+![Fortify](https://img.shields.io/badge/Laravel_Fortify-FF2D20?style=flat-square&logo=laravel&logoColor=white)
+
+### Frontend
+![TailwindCSS](https://img.shields.io/badge/TailwindCSS_4-38B2AC?style=flat-square&logo=tailwind-css&logoColor=white)
+![Alpine.js](https://img.shields.io/badge/Alpine.js-8BC0D0?style=flat-square&logo=alpine.js&logoColor=black)
+![Chart.js](https://img.shields.io/badge/Chart.js-FF6384?style=flat-square&logo=chart.js&logoColor=white)
+![Flux UI](https://img.shields.io/badge/Flux_UI-6366F1?style=flat-square)
+
+### Tools & Testing
+![Composer](https://img.shields.io/badge/Composer-885630?style=flat-square&logo=composer&logoColor=white)
+![NPM](https://img.shields.io/badge/NPM-CB3837?style=flat-square&logo=npm&logoColor=white)
+![Pest](https://img.shields.io/badge/Pest-8BC0D0?style=flat-square)
+![Vite](https://img.shields.io/badge/Vite-646CFF?style=flat-square&logo=vite&logoColor=white)
+![Laravel Sail](https://img.shields.io/badge/Laravel_Sail-FF2D20?style=flat-square&logo=docker&logoColor=white)
+
+</div>
+
+---
+
+---
+
+## 📋 System Requirements
+
+> **Important:** Make sure your system meets these requirements before installation.
+
+| Requirement | Version |
+|------------|---------|
+| 🐘 **PHP** | 8.2 or higher |
+| 🎼 **Composer** | 2.0 or higher |
+| 📦 **Node.js** | 18.0 or higher |
+| 🗄️ **MySQL** | 8.0 or higher |
+| 📝 **PHP Extensions** | BCMath, Ctype, Fileinfo, JSON, Mbstring, OpenSSL, PDO, Tokenizer, XML |
+
+---
+
+---
+
+## ⚡ Quick Start
+
+### 📥 Step 1: Clone Repository
+
 ```bash
 git clone https://github.com/kamiliarder/Tata-Usaha-Surat-Menyurat.git
 cd Tata-Usaha-Surat-Menyurat
-````
+```
 
-### 2. Install Dependencies
+### 📦 Step 2: Install Dependencies
 
 ```bash
+# Install PHP dependencies
 composer install
+
+# Install Node.js dependencies
 npm install
 ```
 
-### 3. Konfigurasi Environment
+### 🔧 Step 3: Environment Configuration
 
 ```bash
+# Copy environment file
 cp .env.example .env
+
+# Generate application key
 php artisan key:generate
 ```
 
-### 4. Setup Database
+### 🗄️ Step 4: Database Setup
 
-Edit `.env`:
+Edit your `.env` file with database credentials:
 
 ```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
 DB_DATABASE=tata_usaha
 DB_USERNAME=root
-DB_PASSWORD=your_password
+DB_PASSWORD=your_password_here
 ```
 
-Migrasi:
+Run migrations and seeders:
 
 ```bash
 php artisan migrate --seed
 ```
 
-### 5. Storage Link
+### 🔗 Step 5: Storage Link
 
 ```bash
 php artisan storage:link
 ```
 
-### 6. Build Frontend
+### 🎨 Step 6: Build Frontend Assets
 
 ```bash
-npm run dev      # Development
-npm run build    # Production
+# For development (with hot reload)
+npm run dev
+
+# For production (optimized)
+npm run build
 ```
 
-<!-- Gradient Divider -->
+<div align="center">
 
-<hr style="height:2px; border:none; background:linear-gradient(to right, transparent, rgb(127 29 29), transparent);">
+### 🎉 Installation Complete!
 
-## <p align="center">▶️ Menjalankan Aplikasi</p>
+Your application is now ready to use.
 
-### Development
+</div>
+
+---
+
+---
+
+## ▶️ Running the App
+
+<table>
+<tr>
+<td width="33%">
+
+### 🔨 Development Mode
 
 ```bash
+# Terminal 1: Laravel Server
 php artisan serve
+
+# Terminal 2: Vite Dev Server
 npm run dev
 ```
 
-### Composer Script (All-in-one)
+**Access:** http://localhost:8000
+
+</td>
+<td width="33%">
+
+### 🚀 Quick Start (All-in-One)
 
 ```bash
 composer dev
 ```
 
-### Docker (Laravel Sail)
+> Runs server, queue, logs, and Vite simultaneously using concurrently.
+
+</td>
+<td width="33%">
+
+### 🐳 Docker (Laravel Sail)
 
 ```bash
+# Start containers
 ./vendor/bin/sail up -d
+
+# Stop containers
+./vendor/bin/sail down
 ```
 
+**Access:** http://localhost
 
-<hr style="height:2px; border:none; background:linear-gradient(to right, transparent, rgb(127 29 29), transparent);">
+</td>
+</tr>
+</table>
 
-## <p align="center">🔐 Kredensial Login (Seeder)</p>
+---
 
-### Admin
+---
+
+## 🔐 Default Credentials
+
+> **Note:** These credentials are automatically created when running `php artisan db:seed`
+
+### 👨‍💼 Administrator Account
 
 ```
-Email: admin@sekolah.id
-Password: admin123
+📧 Email:    admin@sekolah.id
+🔑 Password: admin123
 ```
 
-### Guru
+### 👨‍🏫 Teacher Accounts
 
-Password semua guru: **guru123**
+> **All teachers use the same password:** `guru123`
 
-| Divisi       | Email                                                   |
-| ------------ | ------------------------------------------------------- |
-| Akademik     | [akademik@sekolah.id](mailto:akademik@sekolah.id)       |
-| Kesiswaan    | [kesiswaan@sekolah.id](mailto:kesiswaan@sekolah.id)     |
-| Keuangan     | [keuangan@sekolah.id](mailto:keuangan@sekolah.id)       |
-| Sarpras      | [sarpras@sekolah.id](mailto:sarpras@sekolah.id)         |
-| Non Akademik | [nonakademik@sekolah.id](mailto:nonakademik@sekolah.id) |
-| Umum         | [umum@sekolah.id](mailto:umum@sekolah.id)               |
+<table>
+<tr>
+<th>🏢 Division</th>
+<th>📧 Email</th>
+<th>👤 Role</th>
+</tr>
+<tr>
+<td>📚 Akademik</td>
+<td><code>akademik@sekolah.id</code></td>
+<td>Teacher</td>
+</tr>
+<tr>
+<td>🎓 Kesiswaan</td>
+<td><code>kesiswaan@sekolah.id</code></td>
+<td>Teacher</td>
+</tr>
+<tr>
+<td>💰 Keuangan</td>
+<td><code>keuangan@sekolah.id</code></td>
+<td>Teacher</td>
+</tr>
+<tr>
+<td>🏗️ Sarpras</td>
+<td><code>sarpras@sekolah.id</code></td>
+<td>Teacher</td>
+</tr>
+<tr>
+<td>📝 Non Akademik</td>
+<td><code>nonakademik@sekolah.id</code></td>
+<td>Teacher</td>
+</tr>
+<tr>
+<td>🔧 Umum</td>
+<td><code>umum@sekolah.id</code></td>
+<td>Teacher</td>
+</tr>
+</table>
 
-<!-- Gradient Divider -->
+<div align="center">
 
-<hr style="height:2px; border:none; background:linear-gradient(to right, transparent, rgb(127 29 29), transparent);">
+⚠️ **Security Warning:** Change these passwords in production!
 
-## <p align="center">🧪 Testing</p>
+</div>
+
+---
+
+---
+
+## 🧪 Testing
+
+### Run All Tests
 
 ```bash
+# Using Laravel's test command
 php artisan test
+
+# Using Pest directly
 ./vendor/bin/pest
+
+# With coverage
+./vendor/bin/pest --coverage
 ```
 
-<!-- Gradient Divider -->
+### Run Specific Tests
 
-<hr style="height:2px; border:none; background:linear-gradient(to right, transparent, rgb(127 29 29), transparent);">
+```bash
+# Run feature tests only
+php artisan test --testsuite=Feature
 
-## <p align="center">📄 Lisensi</p>
+# Run a specific test file
+./vendor/bin/pest tests/Feature/DashboardTest.php
+```
 
-MIT License
+---
+
+## 📚 Additional Resources
+
+<div align="center">
+
+| Resource | Description |
+|----------|-------------|
+| 📖 [MVC Architecture](./MVC_Architecture_Documentation.md) | System architecture overview |
+| 🔄 [System Flow](./System_Flow_Documentation.md) | Complete workflow documentation |
+| 🚀 [Setup Guide](./SETUP.md) | Detailed setup instructions |
+| 🔑 [Login Credentials](./LOGIN_CREDENTIALS.md) | Default user credentials |
+
+</div>
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+---
+
+## 📄 License
+
+This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
+
+---
+
+<div align="center">
+
+### Made with ❤️ for Telkom Schools
+
+**[⬆ Back to Top](#-sistem-tata-usaha-surat-menyurat)**
+
+</div>
 

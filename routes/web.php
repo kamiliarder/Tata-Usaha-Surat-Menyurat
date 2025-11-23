@@ -62,5 +62,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/akun/{akun}', [AkunController::class, 'show'])->name('akun.show');
 });
 
+
 // Include Volt routes for custom authentication
 require __DIR__.'/volt.php';

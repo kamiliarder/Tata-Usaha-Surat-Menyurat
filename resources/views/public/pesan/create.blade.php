@@ -240,7 +240,7 @@
 
                 <div class="form-group">
                     <label for="kategori">Kategori <span style="color: red;">*</span></label>
-                    <select id="kategori" name="kategori" required onchange="loadPenerima()">
+                    <select id="kategori" name="kategori" required>
                         <option value="">Pilih Kategori</option>
                         <option value="akademik" {{ old('kategori') == 'akademik' ? 'selected' : '' }}>Akademik</option>
                         <option value="kesiswaan" {{ old('kategori') == 'kesiswaan' ? 'selected' : '' }}>Kesiswaan</option>
@@ -272,8 +272,13 @@
 
                 <div class="form-group">
                     <label for="id_penerima">Ditujukan Kepada <span style="color: red;">*</span></label>
-                    <select id="id_penerima" name="id_penerima" required disabled>
-                        <option value="">Pilih kategori terlebih dahulu</option>
+                    <select id="id_penerima" name="id_penerima" required>
+                        <option value="">Pilih Penerima</option>
+                        @foreach($staffMembers as $staff)
+                            <option value="{{ $staff->id_pengguna }}" {{ old('id_penerima') == $staff->id_pengguna ? 'selected' : '' }}>
+                                {{ $staff->nama }}
+                            </option>
+                        @endforeach
                     </select>
                     @error('id_penerima')
                         <span class="error-text">{{ $message }}</span>
@@ -347,61 +352,6 @@
 
 @push('scripts')
 <script>
-    // Dynamic dropdown for penerima based on kategori
-    async function loadPenerima() {
-        const kategori = document.getElementById('kategori').value;
-        const penerimaSelect = document.getElementById('id_penerima');
-
-        console.log('Loading penerima for kategori:', kategori);
-
-        // Reset and disable penerima dropdown
-        penerimaSelect.innerHTML = '<option value="">Loading...</option>';
-        penerimaSelect.disabled = true;
-
-        if (!kategori) {
-            penerimaSelect.innerHTML = '<option value="">Pilih kategori terlebih dahulu</option>';
-            return;
-        }
-
-        try {
-            // Make AJAX request to get teachers by division
-            const url = `/api/pengguna/by-divisi/${kategori}`;
-            console.log('Fetching from URL:', url);
-
-            const response = await fetch(url);
-            console.log('Response status:', response.status);
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-
-            const teachers = await response.json();
-            console.log('Teachers received:', teachers);
-
-            // Clear and populate dropdown
-            penerimaSelect.innerHTML = '<option value="">Pilih Penerima</option>';
-
-            teachers.forEach(teacher => {
-                const option = document.createElement('option');
-                option.value = teacher.id_pengguna;
-                option.textContent = teacher.nama;
-                penerimaSelect.appendChild(option);
-            });
-
-            // Restore old value if exists
-            const oldValue = '{{ old("id_penerima") }}';
-            if (oldValue) {
-                penerimaSelect.value = oldValue;
-            }
-
-            penerimaSelect.disabled = false;
-            console.log('Dropdown populated successfully');
-        } catch (error) {
-            console.error('Error loading teachers:', error);
-            penerimaSelect.innerHTML = '<option value="">Error loading data</option>';
-        }
-    }
-
     // Update file name display
     function updateFileName() {
         const fileInput = document.getElementById('lampiran');
@@ -414,13 +364,5 @@
             uploadText.textContent = 'Browse files';
         }
     }
-
-    // Load penerima on page load if kategori is already selected (for old input)
-    document.addEventListener('DOMContentLoaded', function() {
-        const kategori = document.getElementById('kategori').value;
-        if (kategori) {
-            loadPenerima();
-        }
-    });
 </script>
 @endpush

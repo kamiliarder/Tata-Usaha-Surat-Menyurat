@@ -25,20 +25,6 @@ class PublicPesanController extends Controller
     }
 
     /**
-     * Get staff members filtered by division (AJAX endpoint).
-     * Note: Division filtering has been removed as the divisi field no longer exists.
-     */
-    public function getStaffByDivisi($divisi)
-    {
-        // Return all staff members regardless of division parameter
-        $staffMembers = User::where('email', '!=', 'visitor@dummy.local')
-            ->orderBy('nama')
-            ->get(['id_pengguna', 'nama']);
-
-        return response()->json($staffMembers);
-    }
-
-    /**
      * Store the submitted correspondence.
      */
     public function store(Request $request)

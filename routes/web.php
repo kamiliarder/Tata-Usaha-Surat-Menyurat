@@ -17,11 +17,6 @@ Route::name('public.pesan.')->group(function () {
     Route::get('/public/pesan/success', [PublicPesanController::class, 'success'])->name('success');
 });
 
-// API routes for dynamic dropdowns
-Route::prefix('api')->group(function () {
-    Route::get('/pengguna/by-divisi/{divisi}', [PublicPesanController::class, 'getStaffByDivisi']);
-});
-
 // Authenticated routes
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');

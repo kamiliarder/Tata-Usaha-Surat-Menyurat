@@ -352,7 +352,7 @@
 
 @push('scripts')
 <script>
-    // Update file name display
+    // Update tampilan nama file
     function updateFileName() {
         const fileInput = document.getElementById('lampiran');
         const uploadText = document.getElementById('upload-text');

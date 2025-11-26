@@ -13,18 +13,18 @@ use Illuminate\Validation\Rules\Password;
 class AkunController extends Controller
 {
     /**
-     * Display a listing of all teachers/users.
+     * Tampilkan daftar semua guru/user.
      */
     public function index(Request $request)
     {
-        // Get search query from request
+        // Ambil query pencarian dari request
         $search = $request->input('search');
 
         // Fetch semua user kecuali visitor dummy account
         // Mengambil field yang diinginkan
         $teachers = User::where('email', '!=', 'visitor@dummy.local')
             ->when($search, function($query, $search) {
-                // Search in multiple fields
+                // Cari di beberapa field sekaligus
                 $query->where(function($q) use ($search) {
                     $q->where('email', 'LIKE', "%{$search}%")
                       ->orWhere('nama', 'LIKE', "%{$search}%")
@@ -44,7 +44,7 @@ class AkunController extends Controller
             ->orderBy('nama', 'asc')
             ->get()
             ->map(function($user) {
-                // Field display friendly (lain passwordnya ini)
+                // Field yang ditampilin (kecuali passwordnya)
                 $user->password_display = '••••••••';
                 $user->nama_lengkap = $user->nama;
                 return $user;
@@ -54,7 +54,7 @@ class AkunController extends Controller
     }
 
     /**
-     * Show the form for creating a new user
+     * Tampilkan form buat bikin user baru.
      */
     public function create()
     {
@@ -62,11 +62,11 @@ class AkunController extends Controller
     }
 
     /**
-     * Store a newly created user.
+     * Simpan user yang baru dibuat.
      */
     public function store(Request $request)
     {
-        // Validate input
+        // Validasi input
         $validated = $request->validate([
             'nama' => 'required|string|max:255',
             'email' => 'required|email|unique:tb_pengguna,email',
@@ -91,7 +91,7 @@ class AkunController extends Controller
             ],
         ]);
 
-        // Handle profile picture upload
+        // Proses upload foto profil
         $profilePicturePath = null;
         if ($request->hasFile('profile_picture')) {
             $file = $request->file('profile_picture');
@@ -124,7 +124,7 @@ class AkunController extends Controller
             Log::info('No profile picture file received');
         }
 
-        // Create user
+        // Bikin user baru
         $user = User::create([
             'nama' => $validated['nama'],
             'email' => $validated['email'],
@@ -140,9 +140,9 @@ class AkunController extends Controller
     }
 
     /**
-     * Display the specified user.
+     * Tampilkan detail user tertentu.
      *
-     * @param User $akun - The user model instance (from route model binding)
+     * @param User $akun - Instance model User (dari route model binding)
      * @return \Illuminate\View\View
      */
     public function show(User $akun)
@@ -151,28 +151,28 @@ class AkunController extends Controller
     }
 
     /**
-     * Show the form for editing the specified user.
+     * Tampilkan form buat edit user tertentu.
      *
-     * @param User $akun - The user model instance (from route model binding)
+     * @param User $akun - Instance model User (dari route model binding)
      * @return \Illuminate\View\View
      */
     public function edit(User $akun)
     {
-        // $akun is already a User instance from route model binding
+        // $akun udah jadi instance User dari route model binding
         return view('akun.edit', compact('akun'));
     }
 
     /**
-     * Update the specified user.
+     * Update user tertentu.
      *
-     * @param Request $request - The HTTP request object containing form data
-     * @param User $akun - The user model instance (automatically injected via route model binding)
+     * @param Request $request - Object HTTP request yang berisi data form
+     * @param User $akun - Instance model User (otomatis diinject lewat route model binding)
      * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, User $akun)
     {
-        // Validate input from the request
-        // Note: $request and $akun are method parameters injected by Laravel, not undefined variables
+        // Validasi input dari request
+        // Catatan: $request dan $akun adalah parameter method yang diinject Laravel, bukan variabel undefined
         $validated = $request->validate([
             'nama' => 'required|string|max:255',
             'email' => 'required|email|unique:tb_pengguna,email,' . $akun->id_pengguna . ',id_pengguna',
@@ -197,11 +197,10 @@ class AkunController extends Controller
             ],
         ]);
 
-        // Continue with update logic
-        // Handle profile picture - preserve existing picture path initially
+        // Proses foto profil - simpan path foto yang ada dulu
         $profilePicturePath = $akun->profile_picture; // $akun comes from method parameter
 
-        // Check if user wants to remove existing profile picture
+        // Cek apakah user mau hapus foto profil yang ada
         if ($request->input('remove_profile_picture') == '1') { // $request comes from method parameter
             if ($akun->profile_picture) {
                 Storage::disk('public')->delete('profile-pictures/' . $akun->profile_picture);
@@ -209,21 +208,21 @@ class AkunController extends Controller
             $profilePicturePath = null;
         }
 
-        // Handle new profile picture upload from the request
+        // Proses upload foto profil baru dari request
         if ($request->hasFile('profile_picture')) { // $request is the method parameter
-            // Delete old picture if exists before uploading new one
+            // Hapus foto lama kalau ada sebelum upload yang baru
             if ($akun->profile_picture) { // $akun is the method parameter
                 Storage::disk('public')->delete('profile-pictures/' . $akun->profile_picture);
             }
 
-            // Store the new profile picture from the request
+            // Simpan foto profil baru dari request
             $file = $request->file('profile_picture'); // $request contains the uploaded file
             $filename = $file->hashName();
             $file->storeAs('profile-pictures', $filename, 'public');
             $profilePicturePath = $filename;
         }
 
-        // Update user data - prepare the array with validated and processed data
+        // Update data user - siapkan array dengan data yang udah divalidasi dan diproses
         $updateData = [
             'nama' => $validated['nama'],
             'email' => $validated['email'],
@@ -233,36 +232,36 @@ class AkunController extends Controller
             'profile_picture' => $profilePicturePath,
         ];
 
-        // Only update password if provided
+        // Update password cuma kalau diisi
         if (!empty($validated['password'])) {
             $updateData['password'] = Hash::make($validated['password']);
         }
 
-        // Perform the update on the User model instance ($akun is from method parameter)
+        // Jalankan update di instance model User ($akun dari parameter method)
         $akun->update($updateData);
 
-        // Redirect back to the account list with success message
+        // Redirect balik ke daftar akun dengan pesan sukses
         return redirect()->route('akun.index')
             ->with('success', 'Akun berhasil diperbarui untuk ' . $akun->nama); // $akun is the User model instance
     }
 
     /**
-     * Remove the specified user.
+     * Hapus user tertentu.
      *
-     * @param int $id - The ID of the user to delete (from route parameter)
+     * @param int $id - ID user yang mau dihapus (dari parameter route)
      * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy($id) // $id comes from the route parameter
     {
         $user = User::findOrFail($id); // $id is the method parameter from the route
 
-        // Prevent deleting yourself
+        // Cegah hapus akun sendiri
         if ($user->id_pengguna == Auth::id()) {
             return redirect()->route('akun.index')
                 ->with('error', 'Anda tidak dapat menghapus akun Anda sendiri.');
         }
 
-        // Delete profile picture if exists
+        // Hapus foto profil kalau ada
         if ($user->profile_picture) {
             Storage::disk('public')->delete('profile-pictures/' . $user->profile_picture);
         }

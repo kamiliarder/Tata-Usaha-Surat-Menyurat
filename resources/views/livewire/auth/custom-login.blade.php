@@ -23,7 +23,7 @@ new #[Layout('components.layouts.auth.custom-login')] class extends Component {
 
     public function login(): void
     {
-        // Clear previous messages
+        // Hapus pesan sebelumnya
         $this->successMessage = '';
         $this->errorMessage = '';
 
@@ -34,17 +34,17 @@ new #[Layout('components.layouts.auth.custom-login')] class extends Component {
             $this->addError('email', 'Email atau password salah.');
             $this->addError('password', 'Email atau password salah.');
 
-            // Trigger shake animation via JavaScript
+            // Trigger animasi shake lewat JavaScript
             $this->dispatch('login-failed');
             return;
         }
 
         Session::regenerate();
 
-        // Show success message
+        // Tampilkan pesan sukses
         $this->successMessage = 'Login berhasil! Mengarahkan ke dashboard...';
 
-        // Redirect after showing success message
+        // Redirect setelah tampilkan pesan sukses
         $this->js('
             setTimeout(() => {
                 window.location.href = "' . route('dashboard') . '";
@@ -54,11 +54,11 @@ new #[Layout('components.layouts.auth.custom-login')] class extends Component {
 }; ?>
 
 <div>
-    <!-- Main login form content -->
+    <!-- Konten utama form login -->
     <div>
         <h2 class="login-title">LOGIN</h2>
 
-        <!-- Error Alert -->
+        <!-- Alert Error -->
         @if($errorMessage)
             <div class="error-alert" id="error-alert">
                 <div class="flex items-center justify-center">
@@ -71,7 +71,7 @@ new #[Layout('components.layouts.auth.custom-login')] class extends Component {
         @endif
 
         <form wire:submit.prevent="login" class="login-form" novalidate id="loginForm">
-            <!-- Email with Icon -->
+            <!-- Email dengan Icon -->
             <div class="form-group">
                 <div class="input-wrapper">
                     <span class="input-icon">
@@ -92,7 +92,7 @@ new #[Layout('components.layouts.auth.custom-login')] class extends Component {
                 <span class="field-error" id="email-error"></span>
             </div>
 
-            <!-- Password with Eye Icon Only -->
+            <!-- Password dengan Icon Mata Saja -->
             <div class="form-group">
                 <div class="input-wrapper">
                     <input
@@ -114,14 +114,14 @@ new #[Layout('components.layouts.auth.custom-login')] class extends Component {
             </div>
 
 
-            <!-- Login button -->
+            <!-- Tombol login -->
             <button type="submit" class="login-button">
                 Log in
             </button>
         </form>
     </div>
 
-    <!-- Success notification -->
+    <!-- Notifikasi sukses -->
     @if($successMessage)
         <div class="success-notification" id="success-notification">
             <div class="success-content">
@@ -153,7 +153,7 @@ new #[Layout('components.layouts.auth.custom-login')] class extends Component {
             }
         }
 
-        // Auto-hide error messages after 5 seconds
+        // Sembunyikan pesan error otomatis setelah 5 detik
         function autoHideError(errorElement, inputElement) {
             if (errorElement && errorElement.textContent.trim() !== '') {
                 setTimeout(() => {
@@ -169,25 +169,25 @@ new #[Layout('components.layouts.auth.custom-login')] class extends Component {
             }
         }
 
-        // Trigger shake animation when login fails
+        // Trigger animasi shake ketika login gagal
         function triggerShakeAnimation(inputElement) {
             inputElement.classList.remove('input-error');
-            // Force reflow to restart animation
+            // Paksa reflow buat restart animasi
             void inputElement.offsetWidth;
             inputElement.classList.add('input-error');
         }
 
-        // Listen for login-failed event from Livewire
+        // Dengerin event login-failed dari Livewire
         document.addEventListener('livewire:init', () => {
             Livewire.on('login-failed', () => {
                 const emailInput = document.getElementById('email');
                 const passwordInput = document.getElementById('password');
 
-                // Trigger shake animation for both fields
+                // Trigger animasi shake untuk kedua field
                 triggerShakeAnimation(emailInput);
                 triggerShakeAnimation(passwordInput);
 
-                // Auto-hide after 5 seconds
+                // Sembunyikan otomatis setelah 5 detik
                 const emailError = document.getElementById('email-error');
                 const passwordError = document.getElementById('password-error');
 
@@ -198,7 +198,7 @@ new #[Layout('components.layouts.auth.custom-login')] class extends Component {
             });
         });
 
-        // Form validation
+        // Validasi form
         document.addEventListener('DOMContentLoaded', function() {
             const form = document.getElementById('loginForm');
             const emailInput = document.getElementById('email');
@@ -207,7 +207,7 @@ new #[Layout('components.layouts.auth.custom-login')] class extends Component {
             const passwordError = document.getElementById('password-error');
             const errorAlert = document.getElementById('error-alert');
 
-            // Auto-hide error alert after 5 seconds
+            // Sembunyikan error alert otomatis setelah 5 detik
             if (errorAlert) {
                 setTimeout(() => {
                     errorAlert.style.transition = 'opacity 0.3s ease-out';
@@ -221,7 +221,7 @@ new #[Layout('components.layouts.auth.custom-login')] class extends Component {
             form.addEventListener('submit', function(e) {
                 let isValid = true;
 
-                // Clear previous errors
+                // Hapus error sebelumnya
                 emailError.textContent = '';
                 passwordError.textContent = '';
                 emailError.classList.remove('fade-out');
@@ -229,7 +229,7 @@ new #[Layout('components.layouts.auth.custom-login')] class extends Component {
                 emailInput.classList.remove('input-error');
                 passwordInput.classList.remove('input-error');
 
-                // Validate email
+                // Validasi email
                 if (!emailInput.value.trim()) {
                     emailError.textContent = 'Email tidak boleh kosong';
                     emailInput.classList.add('input-error');
@@ -237,7 +237,7 @@ new #[Layout('components.layouts.auth.custom-login')] class extends Component {
                     isValid = false;
                 }
 
-                // Validate password
+                // Validasi password
                 if (!passwordInput.value.trim()) {
                     passwordError.textContent = 'Password tidak boleh kosong';
                     passwordInput.classList.add('input-error');
@@ -245,14 +245,14 @@ new #[Layout('components.layouts.auth.custom-login')] class extends Component {
                     isValid = false;
                 }
 
-                // If validation fails, prevent form submission
+                // Kalau validasi gagal, cegah form submit
                 if (!isValid) {
                     e.preventDefault();
                     e.stopPropagation();
                 }
             });
 
-            // Clear error on input - remove outline immediately when user types
+            // Hapus error saat input - hilangkan outline langsung ketika user ngetik
             emailInput.addEventListener('input', function() {
                 if (emailInput.value.trim()) {
                     emailError.classList.add('fade-out');

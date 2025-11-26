@@ -40,7 +40,7 @@
         background-position: center;
     }
 
-    /* Step connector lines */
+    /* Garis penghubung step */
     @media (min-width: 768px) {
         .step-connector::after {
             content: '';
@@ -62,10 +62,10 @@
 
 @section('content')
 <div class="min-h-screen bg-gradient-to-br from-gray-50 to-white">
-    <!-- Hero Section -->
+    <!-- Bagian Hero -->
     <div class="px-4 py-12 mx-auto max-w-7xl sm:px-6 lg:px-8">
         <div class="grid items-center gap-12 lg:grid-cols-2">
-            <!-- Left Content -->
+            <!-- Konten Kiri -->
             <div class="space-y-8">
                 <!-- Header -->
                 <div>
@@ -82,7 +82,7 @@
                     </div>
                 </div>
 
-                <!-- Description -->
+                <!-- Deskripsi -->
                 <div class="space-y-4">
                     <p class="text-lg leading-relaxed text-gray-600">
                         Selamat datang di sistem administrasi surat Telkom Schoolss Banjarbaru.
@@ -100,7 +100,7 @@
                     </blockquote>
                 </div>
 
-                <!-- Action Button -->
+                <!-- Tombol Aksi -->
                 <div class="pt-4">
                     <a href="{{ route('public.pesan.create') }}"
                        class="inline-flex items-center px-8 py-4 bg-red-800 text-white font-semibold rounded-lg hover:bg-red-900 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105">
@@ -112,7 +112,7 @@
                 </div>
             </div>
 
-            <!-- Right Content - Recent Letters -->
+            <!-- Konten Kanan - Surat Terbaru -->
             <div class="p-6 bg-white shadow-xl rounded-2xl">
                 <div class="flex items-center justify-between mb-6">
                     <h2 class="text-xl font-bold text-gray-900">Surat Terbaru</h2>
@@ -193,7 +193,7 @@
         </div>
     </div>
 
-    <!-- How It Works Section -->
+    <!-- Bagian Cara Kerja -->
     <div class="py-16 bg-gray-50">
         <div class="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
             <div class="mb-12 text-center">

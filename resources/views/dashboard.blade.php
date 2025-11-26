@@ -240,12 +240,12 @@
 
     <div class="py-6">
         <div class="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
-                <!-- Page Title -->
+                <!-- Judul Halaman -->
                 <div class="mb-8">
                     <h1 class="text-2xl font-bold text-gray-900">Dashboard - Tata Usaha Telkom Schools Banjarbaru</h1>
                 </div>
 
-            <!-- Stats Cards -->
+            <!-- Kartu Statistik -->
             <div class="grid grid-cols-1 gap-6 mb-8 md:grid-cols-3">
                 <!-- Surat Masuk -->
                 <div class="stats-card stats-card-red">
@@ -293,9 +293,9 @@
                 </div>
             </div>
 
-            <!-- Main Content Grid -->
+            <!-- Grid Konten Utama -->
             <div class="grid grid-cols-1 gap-6 mb-8 lg:grid-cols-2">
-                <!-- Statistics Chart -->
+                <!-- Grafik Statistik -->
                 <div class="dashboard-card">
                     <div class="card-header">
                         <h3 class="card-title">Statistik Surat</h3>
@@ -305,7 +305,7 @@
                     </div>
                 </div>
 
-                <!-- Recent Letters -->
+                <!-- Surat Terbaru -->
                 <div class="dashboard-card">
                     <div class="card-header">
                         <h3 class="card-title">Surat Terbaru</h3>
@@ -351,7 +351,7 @@
                 </div>
             </div>
 
-            <!-- Action Buttons -->
+            <!-- Tombol Aksi -->
             <div class="mb-8">
                 <h3 class="mb-4 text-xl font-bold text-gray-900">Aksi Cepat</h3>
                 <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
@@ -376,13 +376,13 @@
     </div>
 
     @push('scripts')
-    <!-- Chart.js Script -->
+    <!-- Script Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const ctx = document.getElementById('statistikChart').getContext('2d');
 
-            // Get real data from PHP
+            // Ambil data asli dari PHP
             const chartDataMasuk = @json($chartDataMasuk);
             const chartDataKeluar = @json($chartDataKeluar);
 

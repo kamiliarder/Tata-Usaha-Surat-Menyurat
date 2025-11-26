@@ -352,7 +352,7 @@
             const removeBtn = document.getElementById('remove-avatar');
 
             if (file) {
-                // Validate file type - check extension as fallback for MIME type issues
+                // Validasi tipe file - cek ekstensi sebagai fallback untuk masalah MIME type
                 const fileName = file.name.toLowerCase();
                 const validExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.svg'];
                 const validTypes = ['image/svg+xml', 'image/png', 'image/jpeg', 'image/jpg', 'image/gif', 'image/x-png'];
@@ -366,15 +366,15 @@
                     return;
                 }
 
-                // Validate file size (5MB)
-                const maxSize = 5 * 1024 * 1024; // 5MB in bytes
+                // Validasi ukuran file (5MB)
+                const maxSize = 5 * 1024 * 1024; // 5MB dalam bytes
                 if (file.size > maxSize) {
                     alert('Ukuran file terlalu besar. Maksimal 5MB.');
                     event.target.value = '';
                     return;
                 }
 
-                // Show preview
+                // Tampilkan preview
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     preview.src = e.target.result;
@@ -386,7 +386,7 @@
             }
         }
 
-        // Remove avatar functionality
+        // Fungsi hapus avatar
         document.getElementById('remove-avatar').addEventListener('click', function() {
             const fileInput = document.getElementById('profile_picture');
             const preview = document.getElementById('avatar-preview');
@@ -394,7 +394,7 @@
             const removeBtn = document.getElementById('remove-avatar');
             const removeFlag = document.getElementById('remove_profile_picture_flag');
 
-            // Reset file input
+            // Reset input file
             fileInput.value = '';
 
             // Reset preview
@@ -403,7 +403,7 @@
             placeholder.style.display = 'flex';
             removeBtn.classList.remove('show');
 
-            // Set flag to remove existing profile picture
+            // Set flag buat hapus foto profil yang ada
             if (removeFlag) {
                 removeFlag.value = '1';
             }

@@ -1,31 +1,41 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PublicPesanController;
 use App\Http\Controllers\AdminPesanController;
+use App\Http\Controllers\GuruPesanController;
 use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AkunController;
 
-// Public routes (no authentication required)
+// Route publik (nggak perlu login)
 Route::get('/', [WelcomeController::class, 'index']);
 
-// Public correspondence submission (no prefix to avoid conflict with authenticated routes)
+// Form kirim surat dari publik (tanpa prefix biar nggak konflik sama route yang perlu login)
 Route::name('public.pesan.')->group(function () {
     Route::get('/public/pesan/create', [PublicPesanController::class, 'create'])->name('create');
     Route::post('/public/pesan/store', [PublicPesanController::class, 'store'])->name('store');
     Route::get('/public/pesan/success', [PublicPesanController::class, 'success'])->name('success');
 });
 
-// Authenticated routes
+// Route yang perlu login dulu
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    // Pesan (Correspondence) routes - no admin/teacher prefix
+    // Route Pesan (Surat-Menyurat)
     Route::prefix('pesan')->name('pesan.')->group(function () {
-        Route::get('/', [AdminPesanController::class, 'index'])->name('index');
+        // Arahkan ke controller yang sesuai berdasarkan role user
+        Route::get('/', function () {
+            if (Auth::user()->role === 'guru') {
+                return app(GuruPesanController::class)->index(request());
+            }
+            return app(AdminPesanController::class)->index(request());
+        })->name('index');
 
-        // Write operations - protected from 'guru' role by readonly middleware
+        // Middleware readonly buat role guru
         Route::middleware(['readonly'])->group(function () {
             Route::get('/create', [AdminPesanController::class, 'create'])->name('create');
             Route::post('/', [AdminPesanController::class, 'store'])->name('store');
@@ -35,15 +45,20 @@ Route::middleware(['auth:sanctum'])->group(function () {
             Route::post('/{id}/reply', [AdminPesanController::class, 'storeReply'])->name('store-reply');
         });
 
-        // This must be after specific routes like /create to avoid matching "create" as an {id}
-        Route::get('/{id}', [AdminPesanController::class, 'show'])->name('show');
+        // Arahkan ke controller yang sesuai berdasarkan role user
+        Route::get('/{id}', function ($id, Request $request) {
+            if (Auth::user()->role === 'guru') {
+                return app(GuruPesanController::class)->show($id, $request);
+            }
+            return app(AdminPesanController::class)->show($id, $request);
+        })->name('show');
     });
 
-    // Account management routes
-    // Index - accessible to all authenticated users
+    // Route manajemen akun
+    // Index - bisa diakses semua user yang udah login
     Route::get('/akun', [AkunController::class, 'index'])->name('akun.index');
 
-    // Create, Edit, Update, Delete - admin only (must be before {akun} routes)
+    // Create, Edit, Update, Delete - khusus admin
     Route::middleware(['admin'])->group(function () {
         Route::get('/akun/create', [AkunController::class, 'create'])->name('akun.create');
         Route::post('/akun', [AkunController::class, 'store'])->name('akun.store');
@@ -53,10 +68,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::delete('/akun/{akun}', [AkunController::class, 'destroy'])->name('akun.destroy');
     });
 
-    // Show - accessible to all authenticated users (must be after /akun/create)
+    // Show - bisa diakses semua user yang udah login
     Route::get('/akun/{akun}', [AkunController::class, 'show'])->name('akun.show');
 });
 
-
-// Include Volt routes for custom authentication
+// Include route Volt untuk autentikasi custom
 require __DIR__.'/volt.php';

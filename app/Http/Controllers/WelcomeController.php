@@ -9,7 +9,7 @@ class WelcomeController extends Controller
 {
     public function index()
     {
-        // Get recent letters for public display (limit 5-6 letters)
+        // Ambil surat-surat terbaru buat ditampilin di publik (limit 5-6 surat)
         $recentLetters = Pesan::with(['lampiran'])
             ->select(['id_pesan', 'nomor_pesan', 'judul', 'kategori', 'tipe', 'tanggal_kirim', 'status_pesan'])
             ->orderBy('tanggal_kirim', 'desc')

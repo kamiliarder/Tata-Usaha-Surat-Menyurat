@@ -331,12 +331,12 @@
             const removeBtn = document.getElementById('remove-avatar');
 
             if (file) {
-                // Debug: Log file information
+                // Debug: Log info file
                 console.log('File name:', file.name);
                 console.log('File type:', file.type);
                 console.log('File size:', file.size);
 
-                // Validate file type - check extension as fallback for MIME type issues
+                // Validasi tipe file - cek ekstensi sebagai fallback untuk masalah MIME type
                 const fileName = file.name.toLowerCase();
                 const validExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.svg'];
                 const validTypes = ['image/svg+xml', 'image/png', 'image/jpeg', 'image/jpg', 'image/gif', 'image/x-png', 'application/octet-stream'];
@@ -351,15 +351,15 @@
                     alert('Format file tidak valid. Gunakan SVG, PNG, JPG atau GIF.\nFile type: ' + file.type);
                     event.target.value = '';
                     return;
-                }                // Validate file size (5MB)
-                const maxSize = 5 * 1024 * 1024; // 5MB in bytes
+                }                // Validasi ukuran file (5MB)
+                const maxSize = 5 * 1024 * 1024; // 5MB dalam bytes
                 if (file.size > maxSize) {
                     alert('Ukuran file terlalu besar. Maksimal 5MB.');
                     event.target.value = '';
                     return;
                 }
 
-                // Show preview
+                // Tampilkan preview
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     preview.src = e.target.result;
@@ -371,14 +371,14 @@
             }
         }
 
-        // Remove avatar functionality
+        // Fungsi hapus avatar
         document.getElementById('remove-avatar').addEventListener('click', function() {
             const fileInput = document.getElementById('profile_picture');
             const preview = document.getElementById('avatar-preview');
             const placeholder = document.getElementById('avatar-placeholder');
             const removeBtn = document.getElementById('remove-avatar');
 
-            // Reset file input
+            // Reset input file
             fileInput.value = '';
 
             // Reset preview

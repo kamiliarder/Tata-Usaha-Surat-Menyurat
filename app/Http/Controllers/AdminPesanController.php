@@ -11,23 +11,23 @@ use Illuminate\Support\Facades\Storage;
 class AdminPesanController extends Controller
 {
     /**
-     * Display admin dashboard with all messages.
+     * Perlihatkan semua surat. 
      */
     public function index(Request $request)
     {
         $query = Pesan::with(['penerima', 'lampiran']);
 
-        // Filter by type
+        // Filter dari tipe
         if ($request->filled('tipe')) {
             $query->where('tipe', $request->tipe);
         }
 
-        // Filter by status
+        // Filter dari status
         if ($request->filled('status')) {
             $query->where('status_pesan', $request->status);
         }
 
-        // Filter by category
+        // Filter dari kategori
         if ($request->filled('kategori')) {
             $query->where('kategori', $request->kategori);
         }
@@ -48,20 +48,15 @@ class AdminPesanController extends Controller
     }
 
     /**
-     * Show form to create new outgoing letter.
+     * Tampilkan form untuk membuat surat keluar baru.
      */
     public function create()
     {
-        // Get all staff members for recipient selection
-        $staffMembers = User::where('email', '!=', 'visitor@dummy.local')
-            ->orderBy('nama')
-            ->get();
-
-        return view('pesan.create', compact('staffMembers'));
+        return view('pesan.create');
     }
 
     /**
-     * Store new outgoing letter.
+     * Store surat keluar baru.
      */
     public function store(Request $request)
     {
@@ -78,10 +73,10 @@ class AdminPesanController extends Controller
             'lampiran.*' => 'nullable|file|max:10240|mimes:pdf,doc,docx,jpg,jpeg,png,gif',
         ]);
 
-        // Get dummy visitor account for outgoing messages
+        // Ambil akun visitor untuk surat keluar
         $dummyAccount = User::where('email', 'visitor@dummy.local')->first();
 
-        // Generate unique message number with retry logic for race conditions
+        // Buat nomor surat unik dengan logic retry untuk kondisi race (ketika 2 orang mencoba membuat surat sekaligus)
         $maxRetries = 5;
         $attempt = 0;
         $pesan = null;
@@ -90,7 +85,7 @@ class AdminPesanController extends Controller
             try {
                 $nomorPesan = Pesan::generateNomorPesan();
 
-                // Create outgoing letter
+                // Buat surat keluar
                 $pesan = Pesan::create([
                     'nomor_pesan' => $nomorPesan,
                     'judul' => $validated['judul'],
@@ -99,24 +94,24 @@ class AdminPesanController extends Controller
                     'tipe' => 'keluar',
                     'tanggal_kirim' => now(),
                     'pengirim' => $validated['pengirim'],
-                    'id_penerima' => $dummyAccount->id_pengguna, // Dummy account for external recipient
-                    'status_pesan' => 'diterima', // Outgoing letters start as "diterima"
+                    'id_penerima' => $dummyAccount->id_pengguna, // Akun dummy untuk penerima surat keluar
+                    'status_pesan' => 'diterima', // Surat keluar dianggap diterima
                     'instansi' => $validated['instansi'],
-                    'kontak_pengirim' => $validated['kontak_penerima'], // Store recipient contact
-                    'alamat_pengirim' => $validated['alamat_penerima'], // Store recipient address
-                    'id_pesan_terkait' => $validated['id_pesan_terkait'] ?? null, // Link to original message if this is a reply
+                    'kontak_pengirim' => $validated['kontak_penerima'], // Store kontak penerima
+                    'alamat_pengirim' => $validated['alamat_penerima'], // Store alamat penerima
+                    'id_pesan_terkait' => $validated['id_pesan_terkait'] ?? null, // Link ke pesan yang terkait kalau ini surat balasan
                 ]);
             } catch (\Illuminate\Database\UniqueConstraintViolationException $e) {
                 $attempt++;
                 if ($attempt >= $maxRetries) {
                     throw $e;
                 }
-                // Small delay before retry
+                // Delay sebelum retry
                 usleep(100000); // 100ms
             }
         }
 
-        // Handle file uploads
+        // File upload
         if ($request->hasFile('lampiran')) {
             foreach ($request->file('lampiran') as $file) {
                 $originalName = $file->getClientOriginalName();
@@ -141,35 +136,31 @@ class AdminPesanController extends Controller
     }
 
     /**
-     * Show specific message details.
+     * Detail surat spesifik
      */
     public function show($id, Request $request)
     {
         $pesan = Pesan::with(['penerima', 'lampiran', 'pesanTerkait', 'balasan'])
             ->findOrFail($id);
 
-        // Auto-update status from 'pending' to 'diterima' when admin views the message
+        // Auto-update status dari pending ke diterima ketika ada yang view
         if ($pesan->status_pesan === 'pending') {
             $pesan->update(['status_pesan' => 'diterima']);
 
-            // Refresh the model to get the updated status
+            // Refresh model tuk mendapatkan status yang diperbarui
             $pesan->refresh();
         }
 
-        // If it's an AJAX request, return JSON
+        // Jika request adalah AJAX, kembalikan data dalam format JSON
         if ($request->expectsJson()) {
             return response()->json($pesan);
         }
 
-        $staffMembers = User::where('email', '!=', 'visitor@dummy.local')
-            ->orderBy('nama')
-            ->get();
-
-        return view('pesan.show', compact('pesan', 'staffMembers'));
+        return view('pesan.show', compact('pesan'));
     }
 
     /**
-     * Update message status or assignment.
+     * Update status
      */
     public function update(Request $request, $id)
     {
@@ -177,23 +168,11 @@ class AdminPesanController extends Controller
 
         $validated = $request->validate([
             'status_pesan' => 'required|in:pending,diterima,dalam_proses,perlu_perbaikan,disetujui,ditolak',
-            'id_penerima' => 'nullable|exists:tb_pengguna,id_pengguna',
         ]);
-
-        // Prevent assignment to dummy visitor account for incoming messages
-        if ($pesan->tipe === 'masuk' && isset($validated['id_penerima'])) {
-            $dummyAccountId = User::where('email', 'visitor@dummy.local')->first()->id_pengguna;
-            if ($validated['id_penerima'] == $dummyAccountId) {
-                if ($request->expectsJson()) {
-                    return response()->json(['success' => false, 'message' => 'Cannot assign visitor account to incoming messages.'], 400);
-                }
-                return back()->withErrors(['id_penerima' => 'Cannot assign visitor account to incoming messages.']);
-            }
-        }
 
         $pesan->update($validated);
 
-        // If it's an AJAX request, return JSON
+        // Kalau ini request AJAX, kembalikan dalam format JSON
         if ($request->expectsJson()) {
             return response()->json(['success' => true, 'message' => 'Status berhasil diperbarui.']);
         }
@@ -203,20 +182,20 @@ class AdminPesanController extends Controller
     }
 
     /**
-     * Show form to create outgoing message (reply).
+     * Tampilkan form untuk bikin pesan keluar (balasan).
      */
     public function createReply($originalMessageId)
     {
         $originalPesan = Pesan::with('penerima')->findOrFail($originalMessageId);
 
-        // Get dummy visitor account for outgoing messages
+        // Ambil akun visitor dummy untuk pesan keluar
         $dummyAccount = User::where('email', 'visitor@dummy.local')->first();
 
         return view('pesan.create-reply', compact('originalPesan', 'dummyAccount'));
     }
 
     /**
-     * Store outgoing message (reply).
+     * Simpan pesan keluar (balasan).
      */
     public function storeReply(Request $request, $originalMessageId)
     {
@@ -230,10 +209,10 @@ class AdminPesanController extends Controller
             'lampiran.*' => 'nullable|file|max:10240|mimes:pdf,doc,docx,jpg,jpeg,png,gif',
         ]);
 
-        // Get dummy visitor account
+        // Ambil akun visitor dummy
         $dummyAccount = User::where('email', 'visitor@dummy.local')->first();
 
-        // Generate unique message number with retry logic for race conditions
+        // Bikin nomor surat unik dengan logic retry untuk kondisi race (ketika 2 orang mencoba bikin surat sekaligus)
         $maxRetries = 5;
         $attempt = 0;
         $replyPesan = null;
@@ -242,31 +221,31 @@ class AdminPesanController extends Controller
             try {
                 $nomorPesan = Pesan::generateNomorPesan();
 
-                // Create reply message
+                // Bikin pesan balasan
                 $replyPesan = Pesan::create([
                     'nomor_pesan' => $nomorPesan,
                     'judul' => $validated['judul'],
                     'perihal' => $validated['perihal'],
-                    'kategori' => $originalPesan->kategori, // Same category as original
+                    'kategori' => $originalPesan->kategori, // Kategori sama dengan pesan aslinya
                     'tipe' => 'keluar',
                     'tanggal_kirim' => now(),
                     'pengirim' => $validated['pengirim'],
-                    'id_penerima' => $dummyAccount->id_pengguna, // Dummy account for external recipient
+                    'id_penerima' => $dummyAccount->id_pengguna, // Akun dummy untuk penerima eksternal
                     'status_pesan' => 'diterima',
                     'instansi' => $validated['instansi'],
-                    'id_pesan_terkait' => $originalMessageId, // Link to original message
+                    'id_pesan_terkait' => $originalMessageId, // Link ke pesan aslinya
                 ]);
             } catch (\Illuminate\Database\UniqueConstraintViolationException $e) {
                 $attempt++;
                 if ($attempt >= $maxRetries) {
                     throw $e;
                 }
-                // Small delay before retry
+                // Delay dikit sebelum retry
                 usleep(100000); // 100ms
             }
         }
 
-        // Handle file uploads
+        // Proses upload file
         if ($request->hasFile('lampiran')) {
             foreach ($request->file('lampiran') as $file) {
                 $originalName = $file->getClientOriginalName();
@@ -286,13 +265,13 @@ class AdminPesanController extends Controller
     }
 
     /**
-     * Delete a message.
+     * Hapus pesan.
      */
     public function destroy($id, Request $request)
     {
         $pesan = Pesan::with('lampiran')->findOrFail($id);
 
-        // Only allow deletion if status is 'perlu_perbaikan' or 'ditolak'
+        // Hanya boleh dihapus kalau statusnya 'perlu_perbaikan' atau 'ditolak'
         if (!in_array($pesan->status_pesan, ['perlu_perbaikan', 'ditolak'])) {
             if ($request->expectsJson()) {
                 return response()->json(['success' => false, 'message' => 'Surat hanya dapat dihapus jika statusnya "Perlu Perbaikan" atau "Ditolak".'], 400);
@@ -301,17 +280,18 @@ class AdminPesanController extends Controller
                 ->with('error', 'Surat hanya dapat dihapus jika statusnya "Perlu Perbaikan" atau "Ditolak".');
         }
 
-        // Delete associated files from storage and database records
+        // Hapus file terkait dari storage dan record database-nya
         foreach ($pesan->lampiran as $lampiran) {
-            // Delete physical file from storage
+            // Hapus file fisiknya dari storage
             Storage::disk('public')->delete($lampiran->path_file);
-            // Delete lampiran record from database
+            // Hapus record lampiran dari database
             $lampiran->delete();
         }
 
-        // Now delete the message (no foreign key constraint violation)
+        // Sekarang hapus pesannya
         $pesan->delete();
 
+        // Kalau ini request AJAX, kembalikan dalam format JSON
         if ($request->expectsJson()) {
             return response()->json(['success' => true, 'message' => 'Surat berhasil dihapus.']);
         }

@@ -757,16 +757,16 @@
                 <button type="button" class="close-btn" onclick="closeModal('detailModal')">&times;</button>
             </div>
             <div id="detailContent">
-                <!-- Content will be loaded here -->
+                <!-- Konten akan dimuat di sini -->
             </div>
         </div>
     </div>
 
     @push('scripts')
     <script>
-        // Show edit status modal
+        // Tampilkan modal edit status
         function showEditStatus(letterId, currentStatus) {
-            // Clear all radio selections and styling
+            // Hapus semua pilihan radio dan styling
             document.querySelectorAll('.radio-item').forEach(item => {
                 item.classList.remove('selected');
             });
@@ -774,7 +774,7 @@
                 radio.checked = false;
             });
 
-            // Select the current status radio button
+            // Pilih radio button status saat ini
             const targetRadio = document.querySelector(`input[name="status_pesan"][value="${currentStatus}"]`);
             const targetItem = document.querySelector(`.radio-item[data-value="${currentStatus}"]`);
 
@@ -787,7 +787,7 @@
             showModal('editStatusModal');
         }
 
-        // Show detail modal
+        // Tampilkan modal detail
         function showDetail(letterId) {
             console.log('Fetching details for letter ID:', letterId);
 
@@ -820,9 +820,9 @@
                     document.getElementById('detailContent').innerHTML = generateDetailHTML(data);
                     showModal('detailModal');
 
-                    // Check if status was auto-updated from pending to diterima
+                    // Cek apakah status otomatis diupdate dari pending ke diterima
                     if (data.status_pesan === 'diterima') {
-                        // Update the status badge in the table row for this letter
+                        // Update badge status di baris tabel untuk surat ini
                         updateTableRowStatus(letterId, 'diterima');
                     }
                 })
@@ -832,9 +832,9 @@
                 });
         }
 
-        // Helper function to update table row status
+        // Fungsi helper untuk update status baris tabel
         function updateTableRowStatus(letterId, newStatus) {
-            // Find the table row for this letter and update the status badge
+            // Cari baris tabel untuk surat ini dan update badge statusnya
             const tableRows = document.querySelectorAll('.table-row');
             tableRows.forEach(row => {
                 const viewButton = row.querySelector(`button[onclick="showDetail(${letterId})"]`);
@@ -843,7 +843,7 @@
                     if (statusCell) {
                         const statusBadge = statusCell.querySelector('.status-badge');
                         if (statusBadge) {
-                            // Update the badge class and text
+                            // Update class dan teks badge
                             statusBadge.className = `status-badge status-${newStatus}`;
                             statusBadge.textContent = newStatus.charAt(0).toUpperCase() + newStatus.slice(1).replace('_', ' ');
                         }
@@ -852,11 +852,11 @@
             });
         }
 
-        // Generate detail HTML
+        // Generate HTML detail
         function generateDetailHTML(letter) {
             console.log('Generating HTML for letter:', letter);
 
-            // Safely access properties with fallbacks
+            // Akses properti dengan aman menggunakan fallback
             const attachments = letter.lampiran || [];
             const attachmentHTML = attachments.length > 0
                 ? attachments.map(att => `
@@ -878,7 +878,7 @@
 
             const safeValue = (value) => value || '-';
 
-            // Check if this letter has been replied to
+            // Cek apakah surat ini sudah dibalas
             const balasan = letter.balasan || [];
             const hasReply = balasan.length > 0;
             const replyIndicator = hasReply ? `
@@ -969,7 +969,7 @@
             `;
         }
 
-        // Confirm delete
+        // Konfirmasi hapus
         function confirmDelete(letterId) {
             if (confirm('Apakah Anda yakin ingin menghapus surat ini?')) {
                 const form = document.createElement('form');
@@ -993,7 +993,7 @@
             }
         }
 
-        // Modal functions
+        // Fungsi modal
         function showModal(modalId) {
             document.getElementById(modalId).classList.add('show');
         }
@@ -1002,12 +1002,12 @@
             document.getElementById(modalId).classList.remove('show');
         }
 
-        // Handle edit status form submission
+        // Handle submit form edit status
         document.getElementById('editStatusForm').addEventListener('submit', function(e) {
             e.preventDefault();
 
             const formData = new FormData(this);
-            formData.append('_method', 'PATCH'); // Add method spoofing for Laravel
+            formData.append('_method', 'PATCH'); // Tambahin method spoofing buat Laravel
             const url = this.action;
 
             console.log('Submitting status update to:', url);
@@ -1055,7 +1055,7 @@
             });
         });
 
-        // Close modal when clicking outside
+        // Tutup modal ketika klik di luar
         window.onclick = function(event) {
             const modals = document.querySelectorAll('.modal');
             modals.forEach(modal => {
@@ -1065,7 +1065,7 @@
             });
         }
 
-        // Search functionality
+        // Fungsi pencarian
         document.addEventListener('DOMContentLoaded', function() {
             const searchForm = document.getElementById('searchForm');
             const searchInput = document.getElementById('search');
@@ -1073,7 +1073,7 @@
             const tipeSelect = document.getElementById('tipe');
             const statusSelect = document.getElementById('status');
 
-            // Auto-submit form when filters change
+            // Auto-submit form ketika filter berubah
             kategoriSelect.addEventListener('change', function() {
                 searchForm.submit();
             });
@@ -1086,27 +1086,27 @@
                 searchForm.submit();
             });
 
-            // Debounced search for text input
+            // Pencarian dengan debounce untuk input teks
             let searchTimeout;
             searchInput.addEventListener('input', function() {
                 clearTimeout(searchTimeout);
                 searchTimeout = setTimeout(function() {
                     searchForm.submit();
-                }, 500); // Wait 500ms after user stops typing
+                }, 500); // Tunggu 500ms setelah user berhenti ngetik
             });
         });
 
-        // Radio button styling and interaction
+        // Styling dan interaksi radio button
         document.addEventListener('DOMContentLoaded', function() {
-            // Handle radio button selection styling
+            // Handle styling pilihan radio button
             document.querySelectorAll('input[name="status_pesan"]').forEach(radio => {
                 radio.addEventListener('change', function() {
-                    // Remove selected class from all items
+                    // Hapus class selected dari semua item
                     document.querySelectorAll('.radio-item').forEach(item => {
                         item.classList.remove('selected');
                     });
 
-                    // Add selected class to the parent of the checked radio
+                    // Tambahin class selected ke parent dari radio yang dicek
                     if (this.checked) {
                         const parentItem = this.closest('.radio-item');
                         if (parentItem) {
@@ -1116,10 +1116,10 @@
                 });
             });
 
-            // Handle clicking on the radio item container
+            // Handle klik di container item radio
             document.querySelectorAll('.radio-item').forEach(item => {
                 item.addEventListener('click', function(e) {
-                    // Prevent double-firing if radio input was clicked directly
+                    // Cegah double-firing kalau input radio diklik langsung
                     if (e.target.type === 'radio') return;
 
                     const radio = this.querySelector('input[type="radio"]');

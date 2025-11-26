@@ -508,14 +508,14 @@
 
     @push('scripts')
     <script>
-        // Store teacher data for modal
+        // Simpan data guru untuk modal
         const teachersData = @json($teachers->keyBy('id_pengguna'));
 
         function openUserModal(userId) {
             const teacher = teachersData[userId];
             if (!teacher) return;
 
-            // Populate modal with teacher data
+            // Isi modal dengan data guru
             document.getElementById('modalName').textContent = teacher.nama_lengkap;
             document.getElementById('modalRole').textContent = teacher.role.charAt(0).toUpperCase() + teacher.role.slice(1);
             document.getElementById('modalNamaLengkap').textContent = teacher.nama_lengkap;
@@ -523,7 +523,7 @@
             document.getElementById('modalUsername').textContent = teacher.username;
             document.getElementById('modalRoleText').textContent = teacher.role.charAt(0).toUpperCase() + teacher.role.slice(1);
 
-            // Set profile picture
+            // Set foto profil
             const profilePicContainer = document.getElementById('modalProfilePicture');
             if (teacher.profile_picture) {
                 profilePicContainer.innerHTML = `
@@ -542,7 +542,7 @@
                 `;
             }
 
-            // Show modal
+            // Tampilkan modal
             document.getElementById('userModal').classList.remove('hidden');
         }
 
@@ -550,7 +550,7 @@
             document.getElementById('userModal').classList.add('hidden');
         }
 
-        // Close modal on Escape key
+        // Tutup modal dengan tombol Escape
         document.addEventListener('keydown', function(event) {
             if (event.key === 'Escape') {
                 closeUserModal();

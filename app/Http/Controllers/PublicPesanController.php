@@ -12,11 +12,11 @@ use Illuminate\Support\Str;
 class PublicPesanController extends Controller
 {
     /**
-     * Show the public form for submitting correspondence.
+     * Tampilkan form publik buat kirim surat.
      */
     public function create()
     {
-        // Get all staff members except dummy visitor account
+        // Ambil semua staff kecuali akun visitor dummy
         $staffMembers = User::where('email', '!=', 'visitor@dummy.local')
             ->orderBy('nama')
             ->get();
@@ -25,11 +25,11 @@ class PublicPesanController extends Controller
     }
 
     /**
-     * Store the submitted correspondence.
+     * Simpan surat yang dikirim.
      */
     public function store(Request $request)
     {
-        // Validate the request
+        // Validasi request
         $validated = $request->validate([
             'judul' => 'required|string|max:200',
             'perihal' => 'nullable|string',
@@ -42,16 +42,16 @@ class PublicPesanController extends Controller
             'lampiran.*' => 'nullable|file|max:10240|mimes:pdf,doc,docx,jpg,jpeg,png,gif', // Max 10MB
         ]);
 
-        // Prevent selection of dummy visitor account
+        // Cegah pemilihan akun visitor dummy
         $dummyAccountId = User::where('email', 'visitor@dummy.local')->first()->id_pengguna;
         if ($validated['id_penerima'] == $dummyAccountId) {
             return back()->withErrors(['id_penerima' => 'Invalid recipient selection. Please choose a valid staff member.']);
         }
 
-        // Generate unique message number
+        // Bikin nomor pesan unik
         $nomorPesan = Pesan::generateNomorPesan();
 
-        // Create the message
+        // Bikin pesannya
         $pesan = Pesan::create([
             'nomor_pesan' => $nomorPesan,
             'judul' => $validated['judul'],
@@ -67,7 +67,7 @@ class PublicPesanController extends Controller
             'alamat_pengirim' => $validated['alamat_pengirim'],
         ]);
 
-        // Handle file uploads
+        // Proses upload file
         if ($request->hasFile('lampiran')) {
             foreach ($request->file('lampiran') as $file) {
                 $originalName = $file->getClientOriginalName();
@@ -87,7 +87,7 @@ class PublicPesanController extends Controller
     }
 
     /**
-     * Show success page after submission.
+     * Tampilkan halaman sukses setelah kirim surat.
      */
     public function success()
     {

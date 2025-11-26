@@ -93,7 +93,7 @@
 
 | Requirement | Version |
 |------------|---------|
-| 🐘 **PHP** | 8.2 or higher |
+| 🐘 **PHP** | 8.3 or higher |
 | 🎼 **Composer** | 2.0 or higher |
 | 📦 **Node.js** | 18.0 or higher |
 | 🗄️ **MySQL** | 8.0 or higher |
@@ -321,21 +321,6 @@ php artisan test --testsuite=Feature
 
 ---
 
-## 📚 Additional Resources
-
-<div align="center">
-
-| Resource | Description |
-|----------|-------------|
-| 📖 [MVC Architecture](./MVC_Architecture_Documentation.md) | System architecture overview |
-| 🔄 [System Flow](./System_Flow_Documentation.md) | Complete workflow documentation |
-| 🚀 [Setup Guide](./SETUP.md) | Detailed setup instructions |
-| 🔑 [Login Credentials](./LOGIN_CREDENTIALS.md) | Default user credentials |
-
-</div>
-
----
-
 ## 🤝 Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
@@ -345,12 +330,6 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
-
----
-
-## 📄 License
-
-This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
 
 ---
 

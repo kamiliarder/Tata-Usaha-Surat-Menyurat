@@ -224,6 +224,11 @@
             max-width: 100%;
         }
 
+        /* Single button - full width */
+        .action-buttons-grid.single-button {
+            grid-template-columns: 1fr;
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .stats-content {
@@ -370,13 +375,15 @@
             <!-- Tombol Aksi -->
             <div class="mb-8">
                 <h3 class="mb-4 text-xl font-bold text-gray-900">Aksi Cepat</h3>
-                <div class="action-buttons-grid">
+                <div class="action-buttons-grid {{ Auth::user()->isGuru() ? 'single-button' : '' }}">
+                @if(!Auth::user()->isGuru())
                     <a href="{{ route('pesan.create') }}" class="action-btn action-btn-red">
                         <svg class="action-btn-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                         </svg>
                         Buat Surat Baru
                     </a>
+                    @endif
 
                     <a href="{{ route('pesan.index') }}" class="action-btn action-btn-red">
                         <svg class="action-btn-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -267,7 +267,7 @@
                 </div>
 
             <!-- Kartu Statistik -->
-            <div class="grid grid-cols-1 gap-6 mb-8 md:grid-cols-3">
+            <div class="grid gap-6 mb-8 {{ Auth::user()->isGuru() ? 'grid-cols-1 sm:grid-cols-2' : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3' }}">
                 <!-- Surat Masuk -->
                 <div class="stats-card stats-card-red">
                     <div class="stats-content">
@@ -284,6 +284,7 @@
                 </div>
 
                 <!-- Surat Keluar -->
+                @if(!Auth::user()->isGuru())
                 <div class="stats-card stats-card-green">
                     <div class="stats-content">
                         <div class="stats-text">
@@ -297,6 +298,7 @@
                         </div>
                     </div>
                 </div>
+                @endif
 
                 <!-- Surat Proses -->
                 <div class="stats-card stats-card-yellow">

@@ -941,7 +941,7 @@
                         <div class="detail-label">Kontak Pengirim</div>
                         <div class="detail-value">${safeValue(letter.kontak_pengirim)}</div>
                     </div>
-                    <div class="detail-item">
+                    <div class="detail-item full-width">
                         <div class="detail-label">Status</div>
                         <div class="detail-value">
                             <span class="status-badge status-${letter.status_pesan || 'pending'}">

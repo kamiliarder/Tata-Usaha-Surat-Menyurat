@@ -290,7 +290,8 @@
                         <div class="form-group">
                             <label for="penerima" class="form-label required">Penerima</label>
                             <input type="text" id="penerima" name="penerima" class="form-input"
-                                   value="{{ old('penerima') }}" placeholder="Nama penerima" required>
+                                   value="{{ old('penerima', 'Pengunjung') }}" placeholder="Nama penerima" required readonly>
+                            <small style="color: #6b7280; font-size: 0.75rem; margin-top: 0.25rem; display: block;">Default: Pengunjung (akun dummy untuk penerima eksternal)</small>
                             @error('penerima')
                                 <div class="error-message">{{ $message }}</div>
                             @enderror
@@ -403,10 +404,12 @@
                         kategoriSelect.value = letter.kategori;
                     }
 
-                    // 2. Set penerima to the original sender
+                    // 2. Set penerima to the original sender (override readonly for replies)
                     const penerimaInput = document.getElementById('penerima');
                     if (penerimaInput && letter.pengirim) {
+                        penerimaInput.removeAttribute('readonly');
                         penerimaInput.value = letter.pengirim;
+                        penerimaInput.setAttribute('readonly', true);
                     }
 
                     // 3. Set instansi if available

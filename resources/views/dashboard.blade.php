@@ -196,6 +196,8 @@
             border: none;
             cursor: pointer;
             transition: all 0.2s;
+            width: 100%;
+            text-decoration: none;
         }
 
         .action-btn-red {
@@ -205,11 +207,21 @@
 
         .action-btn-red:hover {
             background-color: #7f1d1d;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(153, 27, 27, 0.3);
         }
 
         .action-btn-icon {
             width: 20px;
             height: 20px;
+        }
+
+        /* Action Buttons Container */
+        .action-buttons-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+            max-width: 100%;
         }
 
         /* Responsive */
@@ -233,6 +245,10 @@
             .letter-time {
                 text-align: left;
                 min-width: auto;
+            }
+
+            .action-buttons-grid {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -354,7 +370,7 @@
             <!-- Tombol Aksi -->
             <div class="mb-8">
                 <h3 class="mb-4 text-xl font-bold text-gray-900">Aksi Cepat</h3>
-                <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
+                <div class="action-buttons-grid">
                     <a href="{{ route('pesan.create') }}" class="action-btn action-btn-red">
                         <svg class="action-btn-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>

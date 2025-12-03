@@ -239,7 +239,7 @@
                             </label>
 
                             <div class="file-requirements">
-                                SVG, PNG, JPG or GIF (MAX. 800×400px).
+                                PNG, JPG(MAX 5MB).
                             </div>
                         </div>
                         @error('profile_picture')
@@ -297,7 +297,7 @@
                     <!-- NIP -->
                     <div class="form-group">
                         <label for="nip" class="form-label">NIP</label>
-                        <input type="text" id="nip" name="nip" class="form-input" value="{{ old('nip') }}">
+                        <input type="text" id="nip" name="nip" class="form-input" value="{{ old('nip') }}" required>
                         @error('nip')
                             <p class="form-error">{{ $message }}</p>
                         @enderror

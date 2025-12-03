@@ -91,6 +91,16 @@
             cursor: not-allowed;
         }
 
+        /* Autocomplete styling */
+        input[type="text"][list]::-webkit-calendar-picker-indicator {
+            cursor: pointer;
+            opacity: 0.6;
+        }
+
+        input[type="text"][list]::-webkit-calendar-picker-indicator:hover {
+            opacity: 1;
+        }
+
         textarea {
             min-height: 120px;
             resize: vertical;
@@ -264,7 +274,12 @@
 
                 <div class="form-group">
                     <label for="instansi">Instansi Asal</label>
-                    <input type="text" id="instansi" name="instansi" value="{{ old('instansi') }}">
+                    <input type="text" id="instansi" name="instansi" value="{{ old('instansi') }}" list="instansi-list" autocomplete="off">
+                    <datalist id="instansi-list">
+                        @foreach($institutions as $institution)
+                            <option value="{{ $institution }}">
+                        @endforeach
+                    </datalist>
                     @error('instansi')
                         <span class="error-text">{{ $message }}</span>
                     @enderror
@@ -315,14 +330,14 @@
                 <div class="upload-box">
                     <label>Upload Surat (Lampiran)</label>
                     <div class="upload-area" onclick="document.getElementById('lampiran').click()">
-                        <input type="file" id="lampiran" name="lampiran[]" multiple accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" style="display: none;" onchange="updateFileName()">
+                        <input type="file" id="lampiran" name="lampiran[]" multiple accept=".pdf,.doc,.docx" style="display: none;" onchange="validateAndUpdateFileName()">
                         <div class="upload-icon">
                             <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
                             </svg>
                         </div>
                         <div class="upload-text" id="upload-text">Browse files</div>
-                        <div class="upload-hint">PDF, DOC, DOCX, JPG, PNG (Max 10MB per file)</div>
+                        <div class="upload-hint">Hanya PDF, DOC, DOCX (Maks 10MB per file)</div>
                     </div>
                     @error('lampiran')
                         <span class="error-text">{{ $message }}</span>
@@ -330,7 +345,7 @@
                 </div>
 
                 <div class="upload-box">
-                    <label>Unduh Template Surat</label>
+                    <label>Unduh KOP Surat</label>
                     <a href="{{ asset('files/KOP SURAT 2022.docx') }}" download class="download-link">
                         <div class="upload-area download-area">
                             <div class="download-icon">
@@ -338,7 +353,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                                 </svg>
                             </div>
-                            <span class="download-btn">Unduh Template</span>
+                            <span class="download-btn">Unduh KOP Surat</span>
                         </div>
                     </a>
                 </div>
@@ -352,14 +367,40 @@
 
 @push('scripts')
 <script>
-    // Update tampilan nama file
-    function updateFileName() {
+    // Validasi dan update tampilan nama file
+    function validateAndUpdateFileName() {
         const fileInput = document.getElementById('lampiran');
         const uploadText = document.getElementById('upload-text');
+        const allowedExtensions = ['pdf', 'doc', 'docx'];
+        const validFiles = [];
+        const invalidFiles = [];
 
-        if (fileInput.files.length > 0) {
-            const fileNames = Array.from(fileInput.files).map(file => file.name);
-            uploadText.textContent = `${fileInput.files.length} file(s) selected: ${fileNames.join(', ')}`;
+        // Cek setiap file yang dipilih
+        Array.from(fileInput.files).forEach(file => {
+            const fileName = file.name;
+            const fileExtension = fileName.split('.').pop().toLowerCase();
+            
+            if (allowedExtensions.includes(fileExtension)) {
+                validFiles.push(file);
+            } else {
+                invalidFiles.push(fileName);
+            }
+        });
+
+        // Jika ada file yang tidak valid, tampilkan alert
+        if (invalidFiles.length > 0) {
+            alert(`File berikut tidak diizinkan:\n\n${invalidFiles.join('\n')}\n\nHanya file PDF, DOC, dan DOCX yang diperbolehkan.`);
+            
+            // Reset input file
+            fileInput.value = '';
+            uploadText.textContent = 'Browse files';
+            return;
+        }
+
+        // Update tampilan jika semua file valid
+        if (validFiles.length > 0) {
+            const fileNames = validFiles.map(file => file.name);
+            uploadText.textContent = `${validFiles.length} file(s) dipilih: ${fileNames.join(', ')}`;
         } else {
             uploadText.textContent = 'Browse files';
         }

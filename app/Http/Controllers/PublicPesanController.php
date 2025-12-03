@@ -21,7 +21,14 @@ class PublicPesanController extends Controller
             ->orderBy('nama')
             ->get();
 
-        return view('public.pesan.create', compact('staffMembers'));
+        // Ambil daftar instansi unik untuk autocomplete
+        $institutions = Pesan::whereNotNull('instansi')
+            ->where('instansi', '!=', '')
+            ->distinct()
+            ->orderBy('instansi')
+            ->pluck('instansi');
+
+        return view('public.pesan.create', compact('staffMembers', 'institutions'));
     }
 
     /**
@@ -39,7 +46,7 @@ class PublicPesanController extends Controller
             'instansi' => 'nullable|string|max:50',
             'kontak_pengirim' => 'required|string|max:100',
             'alamat_pengirim' => 'nullable|string|max:255',
-            'lampiran.*' => 'nullable|file|max:10240|mimes:pdf,doc,docx,jpg,jpeg,png,gif', // Max 10MB
+            'lampiran.*' => 'nullable|file|max:10240|mimes:pdf,doc,docx', // Max 10MB
         ]);
 
         // Cegah pemilihan akun visitor dummy
@@ -48,12 +55,9 @@ class PublicPesanController extends Controller
             return back()->withErrors(['id_penerima' => 'Invalid recipient selection. Please choose a valid staff member.']);
         }
 
-        // Bikin nomor pesan unik
-        $nomorPesan = Pesan::generateNomorPesan();
-
-        // Bikin pesannya
+        // Bikin pesannya (nomor pesan dibiarkan kosong untuk surat masuk)
         $pesan = Pesan::create([
-            'nomor_pesan' => $nomorPesan,
+            'nomor_pesan' => null, // Surat masuk tidak punya nomor surat
             'judul' => $validated['judul'],
             'perihal' => $validated['perihal'],
             'kategori' => $validated['kategori'],
@@ -83,7 +87,7 @@ class PublicPesanController extends Controller
         }
 
         return redirect()->route('public.pesan.success')
-            ->with('success', 'Pesan berhasil dikirim dengan nomor: ' . $nomorPesan);
+            ->with('success', 'Surat berhasil dikirim dan akan segera diproses.');
     }
 
     /**

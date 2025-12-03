@@ -250,6 +250,16 @@
 
                     <!-- Letter Information -->
                     <div class="form-group">
+                        <label for="nomor_pesan" class="form-label required">Nomor Surat</label>
+                        <input type="text" id="nomor_pesan" name="nomor_pesan" class="form-input"
+                               value="{{ old('nomor_pesan') }}" placeholder="Contoh: 001/SK/XII/2024" required>
+                        <small style="color: #6b7280; font-size: 0.75rem; margin-top: 0.25rem; display: block;">Masukkan nomor surat secara manual</small>
+                        @error('nomor_pesan')
+                            <div class="error-message">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="form-group">
                         <label for="judul" class="form-label required">Judul Surat</label>
                         <input type="text" id="judul" name="judul" class="form-input"
                                value="{{ old('judul') }}" placeholder="Masukkan judul surat" required>
@@ -348,9 +358,9 @@
                             <div class="file-upload-text">
                                 <span class="file-upload-button">Klik untuk upload</span> atau drag & drop file
                                 <br>
-                                <small>PDF, DOC, DOCX, JPG, PNG (Max: 10MB)</small>
+                                <small>Hanya PDF, DOC, DOCX (Maks: 10MB)</small>
                             </div>
-                            <input type="file" name="lampiran[]" multiple accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.gif"
+                            <input type="file" name="lampiran[]" multiple accept=".pdf,.doc,.docx"
                                    style="display: none;" id="fileInput">
                         </div>
                         <div class="file-list" id="fileList"></div>
@@ -486,12 +496,11 @@
 
             function validateFile(file) {
                 const allowedTypes = ['application/pdf', 'application/msword',
-                    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-                    'image/jpeg', 'image/png', 'image/gif'];
+                    'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
                 const maxSize = 10 * 1024 * 1024; // 10MB
 
                 if (!allowedTypes.includes(file.type)) {
-                    alert(`File ${file.name} tidak didukung. Gunakan PDF, DOC, DOCX, JPG, PNG, atau GIF.`);
+                    alert(`File ${file.name} tidak didukung. Hanya file PDF, DOC, dan DOCX yang diperbolehkan.`);
                     return false;
                 }
 

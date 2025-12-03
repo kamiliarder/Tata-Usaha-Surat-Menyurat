@@ -35,10 +35,10 @@ class AdminPesanController extends Controller
         // Search
         if ($request->filled('search')) {
             $search = $request->search;
-            $query->where(function($q) use ($search) {
+            $query->where(function ($q) use ($search) {
                 $q->where('judul', 'like', "%{$search}%")
-                  ->orWhere('pengirim', 'like', "%{$search}%")
-                  ->orWhere('nomor_pesan', 'like', "%{$search}%");
+                    ->orWhere('pengirim', 'like', "%{$search}%")
+                    ->orWhere('nomor_pesan', 'like', "%{$search}%");
             });
         }
 
@@ -61,6 +61,7 @@ class AdminPesanController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
+            'nomor_pesan' => 'required|string|max:100|unique:tb_pesan,nomor_pesan',
             'judul' => 'required|string|max:200',
             'perihal' => 'nullable|string',
             'kategori' => 'required|in:akademik,kesiswaan,keuangan,sarpras,non_akademik,umum',
@@ -70,46 +71,28 @@ class AdminPesanController extends Controller
             'kontak_penerima' => 'nullable|string|max:20',
             'alamat_penerima' => 'nullable|string',
             'id_pesan_terkait' => 'nullable|exists:tb_pesan,id_pesan',
-            'lampiran.*' => 'nullable|file|max:10240|mimes:pdf,doc,docx,jpg,jpeg,png,gif',
+            'lampiran.*' => 'nullable|file|max:10240|mimes:pdf,doc,docx',
         ]);
 
         // Ambil akun visitor untuk surat keluar
         $dummyAccount = User::where('email', 'visitor@dummy.local')->first();
 
-        // Buat nomor surat unik dengan logic retry untuk kondisi race (ketika 2 orang mencoba membuat surat sekaligus)
-        $maxRetries = 5;
-        $attempt = 0;
-        $pesan = null;
-
-        while ($attempt < $maxRetries && !$pesan) {
-            try {
-                $nomorPesan = Pesan::generateNomorPesan();
-
-                // Buat surat keluar
-                $pesan = Pesan::create([
-                    'nomor_pesan' => $nomorPesan,
-                    'judul' => $validated['judul'],
-                    'perihal' => $validated['perihal'],
-                    'kategori' => $validated['kategori'],
-                    'tipe' => 'keluar',
-                    'tanggal_kirim' => now(),
-                    'pengirim' => $validated['pengirim'],
-                    'id_penerima' => $dummyAccount->id_pengguna, // Akun dummy untuk penerima surat keluar
-                    'status_pesan' => 'diterima', // Surat keluar dianggap diterima
-                    'instansi' => $validated['instansi'],
-                    'kontak_pengirim' => $validated['kontak_penerima'], // Store kontak penerima
-                    'alamat_pengirim' => $validated['alamat_penerima'], // Store alamat penerima
-                    'id_pesan_terkait' => $validated['id_pesan_terkait'] ?? null, // Link ke pesan yang terkait kalau ini surat balasan
-                ]);
-            } catch (\Illuminate\Database\UniqueConstraintViolationException $e) {
-                $attempt++;
-                if ($attempt >= $maxRetries) {
-                    throw $e;
-                }
-                // Delay sebelum retry
-                usleep(100000); // 100ms
-            }
-        }
+        // Buat surat keluar dengan nomor yang diinput manual
+        $pesan = Pesan::create([
+            'nomor_pesan' => $validated['nomor_pesan'],
+            'judul' => $validated['judul'],
+            'perihal' => $validated['perihal'],
+            'kategori' => $validated['kategori'],
+            'tipe' => 'keluar',
+            'tanggal_kirim' => now(),
+            'pengirim' => $validated['pengirim'],
+            'id_penerima' => $dummyAccount->id_pengguna, // Akun dummy untuk penerima surat keluar
+            'status_pesan' => 'diterima', // Surat keluar dianggap diterima
+            'instansi' => $validated['instansi'],
+            'kontak_pengirim' => $validated['kontak_penerima'], // Store kontak penerima
+            'alamat_pengirim' => $validated['alamat_penerima'], // Store alamat penerima
+            'id_pesan_terkait' => $validated['id_pesan_terkait'] ?? null, // Link ke pesan yang terkait kalau ini surat balasan
+        ]);
 
         // File upload
         if ($request->hasFile('lampiran')) {
@@ -202,48 +185,31 @@ class AdminPesanController extends Controller
         $originalPesan = Pesan::findOrFail($originalMessageId);
 
         $validated = $request->validate([
+            'nomor_pesan' => 'required|string|max:100|unique:tb_pesan,nomor_pesan',
             'judul' => 'required|string|max:200',
             'perihal' => 'nullable|string',
             'pengirim' => 'required|string|max:200',
             'instansi' => 'nullable|string|max:50',
-            'lampiran.*' => 'nullable|file|max:10240|mimes:pdf,doc,docx,jpg,jpeg,png,gif',
+            'lampiran.*' => 'nullable|file|max:10240|mimes:pdf,doc,docx',
         ]);
 
         // Ambil akun visitor dummy
         $dummyAccount = User::where('email', 'visitor@dummy.local')->first();
 
-        // Bikin nomor surat unik dengan logic retry untuk kondisi race (ketika 2 orang mencoba bikin surat sekaligus)
-        $maxRetries = 5;
-        $attempt = 0;
-        $replyPesan = null;
-
-        while ($attempt < $maxRetries && !$replyPesan) {
-            try {
-                $nomorPesan = Pesan::generateNomorPesan();
-
-                // Bikin pesan balasan
-                $replyPesan = Pesan::create([
-                    'nomor_pesan' => $nomorPesan,
-                    'judul' => $validated['judul'],
-                    'perihal' => $validated['perihal'],
-                    'kategori' => $originalPesan->kategori, // Kategori sama dengan pesan aslinya
-                    'tipe' => 'keluar',
-                    'tanggal_kirim' => now(),
-                    'pengirim' => $validated['pengirim'],
-                    'id_penerima' => $dummyAccount->id_pengguna, // Akun dummy untuk penerima eksternal
-                    'status_pesan' => 'diterima',
-                    'instansi' => $validated['instansi'],
-                    'id_pesan_terkait' => $originalMessageId, // Link ke pesan aslinya
-                ]);
-            } catch (\Illuminate\Database\UniqueConstraintViolationException $e) {
-                $attempt++;
-                if ($attempt >= $maxRetries) {
-                    throw $e;
-                }
-                // Delay dikit sebelum retry
-                usleep(100000); // 100ms
-            }
-        }
+        // Bikin pesan balasan dengan nomor yang diinput manual
+        $replyPesan = Pesan::create([
+            'nomor_pesan' => $validated['nomor_pesan'],
+            'judul' => $validated['judul'],
+            'perihal' => $validated['perihal'],
+            'kategori' => $originalPesan->kategori, // Kategori sama dengan pesan aslinya
+            'tipe' => 'keluar',
+            'tanggal_kirim' => now(),
+            'pengirim' => $validated['pengirim'],
+            'id_penerima' => $dummyAccount->id_pengguna, // Akun dummy untuk penerima eksternal
+            'status_pesan' => 'diterima',
+            'instansi' => $validated['instansi'],
+            'id_pesan_terkait' => $originalMessageId, // Link ke pesan aslinya
+        ]);
 
         // Proses upload file
         if ($request->hasFile('lampiran')) {

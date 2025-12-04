@@ -161,7 +161,7 @@
 
         .table-header th {
             padding: 1rem;
-            text-align: left;
+            text-align: center;
             border-right: 1px solid #9ca3af;
         }
 
